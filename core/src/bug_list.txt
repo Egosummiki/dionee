@@ -1,0 +1,6 @@
+* The collision system is almost perfect... although if velocity > |block_size px/frm| the node can walk through the walls.
+But it should not happen during the game.
+* Setting alternative shape of the node in "isSolid" still doesn't work, it makes entities jump weirdly because
+the collision system is not prepared for this.
+* Timestep works great for FPS > 20, but if the frame rate is low it causes different bugs, it's dangerous to allow low frame rate because
+some levels can be possible to pass during low FPS.
