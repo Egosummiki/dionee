@@ -46,34 +46,36 @@ public class Map {
         }
     }
 
-    public short[] nodes;
-    public byte[] nodes_data;
-    public byte[] nodes_back;
+    private short[] nodes;
+    private byte[] nodesData;
+    private byte[] nodesBack;
 
-    public Vector<TimerData> timers;
+    private Vector<Line> hitMap;
+
+    private Vector<TimerData> timers;
 
     NodeManager nodeMan;
 
     int width;
     int height;
 
-    int block_sz;
+    int blockDimension;
 
     public Map(int map_width, int map_height, NodeManager nd, int b_s)
     {
         width = map_width;
         height = map_height;
         nodeMan = nd;
-        block_sz = b_s;
+        blockDimension = b_s;
 
         timers = new Vector<TimerData>();
 
         nodes = new short[width * height];
-        nodes_data = new byte[width * height];
-        nodes_back = new byte[width * height];
+        nodesData = new byte[width * height];
+        nodesBack = new byte[width * height];
         Arrays.fill(nodes, (short)0);
-        Arrays.fill(nodes_data, (byte)0);
-        Arrays.fill(nodes_back, (byte)0);
+        Arrays.fill(nodesData, (byte)0);
+        Arrays.fill(nodesBack, (byte)0);
     }
 
     public void render(Render textureRender)
@@ -94,22 +96,74 @@ public class Map {
             {
                 if(getBackNode(x, y) > 0)
                 {
-                    nodeMan.getBackNode(getBackNode(x, y)).render(textureRender, x*block_sz, y*block_sz, getNodeData(x, y));
+                    nodeMan.getBackNode(getBackNode(x, y)).render(textureRender, x* blockDimension, y* blockDimension, getNodeData(x, y));
                 }
 
-                nodeMan.getNode(getNode(x, y)).render(textureRender, x*block_sz, y*block_sz, getNodeData(x, y));
+                nodeMan.getNode(getNode(x, y)).render(textureRender, x* blockDimension, y* blockDimension, getNodeData(x, y));
             }
         }
     }
 
     public void generateHitGrids()
     {
+        hitMap.clear();
+
+        for(int x = 0; x < width; x++)
+        {
+            if(nodeMan.getNode(getNode(x,0)).getStructure() == Node.Structure.custom)
+            {
+                nodeMan.getNode(getNode(x,0)).applyCustomHitMap(hitMap);
+            }
+        }
+
         for(int y = 1; y < height; y++)
         {
-            int startx = 0;
+            int startx = -1;
             for(int x = 0; x < width; x++)
             {
-               //if(isSolid())
+                Node.Structure up       = nodeMan.getNode(getNode(x,y)).getStructure();
+                Node.Structure bottom   = nodeMan.getNode(getNode(x,y-1)).getStructure();
+
+                if(up == Node.Structure.custom)
+                {
+                    nodeMan.getNode(getNode(x,y)).applyCustomHitMap(hitMap);
+                }
+
+                if( (up == Node.Structure.solid || bottom == Node.Structure.solid) && up != bottom)
+                {
+                    if(startx == -1)
+                    {
+                        startx = (x == 0 ? (x == width-1 ? width+10 : -10) : x);
+                    }
+                } else {
+                    if(startx != -1)
+                    {
+                        hitMap.add(new Line(new Vector2(startx, y), new Vector2(x,y)));
+                    }
+                }
+            }
+        }
+
+        for(int x = 1; x < height; x++)
+        {
+            int starty = -1;
+            for(int y = 0; y < width; y++)
+            {
+                Node.Structure right  = nodeMan.getNode(getNode(x,y)).getStructure();
+                Node.Structure left   = nodeMan.getNode(getNode(x-1,y)).getStructure();
+
+                if( (right == Node.Structure.solid || left == Node.Structure.solid) && right != left)
+                {
+                    if(starty == -1)
+                    {
+                        starty = y;
+                    }
+                } else {
+                    if(starty != -1)
+                    {
+                        hitMap.add(new Line(new Vector2(x, starty), new Vector2(x,y)));
+                    }
+                }
             }
         }
 
@@ -147,26 +201,26 @@ public class Map {
     public void setBackNode(int x, int y, byte n)
     {
         //nodeMan.getBackNode(n).onSet(this, x, y);
-        if(x > -1 && x < 30 && y > -1 && y < 17) nodes_back[x + y * width] = n;
+        if(x > -1 && x < 30 && y > -1 && y < 17) nodesBack[x + y * width] = n;
     }
 
     public byte getBackNode(int x, int y)
     {
-        if(x > -1 && x < 30 && y > -1 && y < 17) return nodes_back[x + y * width];
+        if(x > -1 && x < 30 && y > -1 && y < 17) return nodesBack[x + y * width];
 
         return 0;
     }
 
     public byte getNodeData(int x, int y)
     {
-        if(x > -1 && x < 30 && y > -1 && y < 17) return nodes_data[x + y * width];
+        if(x > -1 && x < 30 && y > -1 && y < 17) return nodesData[x + y * width];
 
         return 0;
     }
 
     public void setNodeData(int x, int y, byte n)
     {
-        if(x > -1 && x < 30 && y > -1 && y < 17) nodes_data[x + y * width] = n;
+        if(x > -1 && x < 30 && y > -1 && y < 17) nodesData[x + y * width] = n;
     }
 
     public boolean isSolid(int x, int y, float i_x, float i_y)
@@ -179,14 +233,14 @@ public class Map {
         return nodeMan.getNode(getNode(x, y)).isRemoveable();
     }
 
-    public float getMaxDistanceToBlockX(float x_bot, float x_up, float mov) //Works only if mov < block_sz
+    public float getMaxDistanceToBlockX(float x_bot, float x_up, float mov) //Works only if mov < blockDimension
     {
         if(mov > 0)
         {
-            return (float)Math.floor((x_up+mov)/block_sz)*block_sz - x_up + 1;
+            return (float)Math.floor((x_up+mov)/ blockDimension)* blockDimension - x_up + 1;
         } else
         {
-            return ((float)Math.floor((x_bot+mov)/block_sz)+1)*block_sz - x_bot - 1;
+            return ((float)Math.floor((x_bot+mov)/ blockDimension)+1)* blockDimension - x_bot - 1;
         }
     }
 
@@ -206,14 +260,14 @@ public class Map {
         return new Vector2(-1, -1);
     }
 
-    public float getMaxDistanceToBlockY(float y_bot, float y_up, float mov) //Works only if mov < block_sz
+    public float getMaxDistanceToBlockY(float y_bot, float y_up, float mov) //Works only if mov < blockDimension
     {
         if(mov > 0)
         {
-            return (float)Math.floor((y_up+mov)/block_sz)*block_sz - y_up - 1;
+            return (float)Math.floor((y_up+mov)/ blockDimension)* blockDimension - y_up - 1;
         } else
         {
-            return ((float)Math.floor((y_bot+mov)/block_sz)+1)*block_sz - y_bot + 1;
+            return ((float)Math.floor((y_bot+mov)/ blockDimension)+1)* blockDimension - y_bot + 1;
         }
     }
 
@@ -244,7 +298,7 @@ public class Map {
 
     public int getBlockSize()
     {
-        return block_sz;
+        return blockDimension;
     }
 
     public Boolean loadLevel(Texture tex)

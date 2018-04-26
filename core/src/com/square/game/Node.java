@@ -1,15 +1,23 @@
 package com.square.game;
 
+import java.util.Vector;
+
 /**
  * Created by Mikolaj on 07.10.2015.
  */
 public class Node {
+
+    public enum Structure
+    {
+        blank, solid, custom
+    }
 
     int id;
     protected int texture;
     private String name;
     private int color;
     private boolean solid;
+    private Structure structure;
     private boolean removeable;
 
 
@@ -31,6 +39,16 @@ public class Node {
     public String getName()
     {
         return name;
+    }
+
+    public Structure getStructure()
+    {
+        return structure;
+    }
+
+    public void applyCustomHitMap(Vector<Map.Line> hitMap)
+    {
+
     }
 
     public boolean isSolid(float x, float y) { return solid; }

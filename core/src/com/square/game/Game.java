@@ -54,7 +54,7 @@ public class Game extends ApplicationAdapter {
 
 		levelMan = new LevelManager(gameMap, textureRender, entityMan, ctrl);
 
-		//current_gui = new GuiGame(ctrl, gameMap, entityMan, block_sz);
+		//current_gui = new GuiGame(ctrl, gameMap, entityMan, blockDimension);
 		Gui.menu = new GuiMenu(textureRender, levelMan);
 		Gui.game = new GuiGame(ctrl, gameMap, entityMan, block_sz);
 		Gui.levels = new GuiLevels(textureRender, levelMan);
