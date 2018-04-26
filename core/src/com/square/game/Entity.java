@@ -1,6 +1,7 @@
 package com.square.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Mikolaj on 09.10.2015.
@@ -13,12 +14,10 @@ public class Entity {
 
     private float position_x;
     private float position_y;
+    private float angle;
 
     private float velocity_x;
     private float velocity_y;
-
-    private float angle;
-
     private float angular_velocity;
 
     private float box_length;
@@ -41,7 +40,7 @@ public class Entity {
         position_x = pos_x;
         position_y = pos_y;
 
-        box_length = box_len;
+        box_length = box_len + 1;
         box_length_dst = box_len / (float)Math.sqrt(2);
 
         angle = 0.0f;
@@ -202,7 +201,7 @@ public class Entity {
 
             if(ox != nx || oy != ny)
             {
-                gameMap.senOnLostInfluence(this, ox, oy, nx, ny);
+                gameMap.sendOnLostInfluence(this, ox, oy, nx, ny);
             }
 
             position_x = pos_x;
@@ -215,37 +214,6 @@ public class Entity {
         return false;
     }
 
-    /*
-    * public float getExtremumX(float pos_x, float alpha, boolean right)
-    {
-        float a = 0.5f * box_length;
-        float b = (float)Math.sqrt(2) * a;
-        float beta = alpha + 0.25f * GameMath.pi;
-
-        float p_A = pos_x + a - b*(float)Math.sin(beta);
-        float p_B = pos_x + a + b*(float)Math.cos(beta);
-        float p_C = pos_x + a + b*(float)Math.sin(beta);
-        float p_D = pos_x + a - b*(float)Math.cos(beta);
-
-        if(right)
-        {
-            if(p_A > p_B && p_A > p_C && p_A > p_D) return p_A;
-            if(p_B > p_A && p_B > p_C && p_B > p_D) return p_B;
-            if(p_C > p_B && p_C > p_A && p_C > p_D) return p_C;
-            if(p_D > p_B && p_D > p_C && p_D > p_A) return p_D;
-        }
-
-        if(p_A < p_B && p_A < p_C && p_A < p_D) return p_A;
-        if(p_B < p_A && p_B < p_C && p_B < p_D) return p_B;
-        if(p_C < p_B && p_C < p_A && p_C < p_D) return p_C;
-        if(p_D < p_B && p_D < p_C && p_D < p_A) return p_D;
-
-        return 0;
-    }
-    *
-    *
-    *
-    * */
 
     public float getExtremumX(Map gameMap, float pos_x, float pos_y, float alpha, boolean right)
     {
@@ -353,32 +321,6 @@ public class Entity {
         return d[top];
     }
 
-   /* public float getExtremumY(float pos_y, float alpha, boolean up)
-    {
-        float a = 0.5f * box_length;
-        float b = (float)Math.sqrt(2) * a;
-        float beta = alpha + 0.25f * GameMath.pi;
-
-        float p_A = pos_y + a + b*(float)Math.cos(beta);
-        float p_B = pos_y + a + b*(float)Math.sin(beta);
-        float p_C = pos_y + a - b*(float)Math.cos(beta);
-        float p_D = pos_y + a - b*(float)Math.sin(beta);
-
-        if(up)
-        {
-            if(p_A > p_B && p_A > p_C && p_A > p_D) return p_A;
-            if(p_B > p_A && p_B > p_C && p_B > p_D) return p_B;
-            if(p_C > p_B && p_C > p_A && p_C > p_D) return p_C;
-            if(p_D > p_B && p_D > p_C && p_D > p_A) return p_D;
-        }
-
-        if(p_A < p_B && p_A < p_C && p_A < p_D) return p_A;
-        if(p_B < p_A && p_B < p_C && p_B < p_D) return p_B;
-        if(p_C < p_B && p_C < p_A && p_C < p_D) return p_C;
-        if(p_D < p_B && p_D < p_C && p_D < p_A) return p_D;
-
-        return 0;
-    }*/
 
     public void kill()
     {
@@ -390,8 +332,26 @@ public class Entity {
         return n >= 0 ? 1 : -1;
     }
 
+
+    public void alternativeUpdate(float time, Map gameMap)
+    {
+        // Calculate entity new position
+
+        float next_pos_x = position_x   + velocity_x;
+        float next_pos_y = position_y   + velocity_y;
+        float next_angle = angle        + angular_velocity;
+
+        while ( next_angle < 0.0f           ) next_angle += GameMath.tau;
+        while ( next_angle >= GameMath.tau  ) next_angle -= GameMath.tau;
+
+        // Check the legality of the move
+
+
+    }
+
     public void update(float time, Map gameMap)
     {
+
         if(position_x >= 0 && position_x < Gdx.graphics.getWidth() && position_y >= 0 && position_y < Gdx.graphics.getHeight())
         {
             gameMap.sendOnEntityWalkOn((int)((position_x + 0.5f*box_length)/box_length), (int)((position_y + 0.5f*box_length)/box_length), this);

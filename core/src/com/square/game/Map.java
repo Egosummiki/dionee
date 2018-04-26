@@ -12,12 +12,12 @@ import java.util.Vector;
  */
 public class Map {
 
-    private class timer_data{
+    private class TimerData {
         int x;
         int y;
         long time;
 
-        public timer_data(int _x, int _y, long _t)
+        public TimerData(int _x, int _y, long _t)
         {
             x = _x;
             y = _y;
@@ -29,7 +29,7 @@ public class Map {
     public byte[] nodes_data;
     public byte[] nodes_back;
 
-    public Vector<timer_data> timers;
+    public Vector<TimerData> timers;
 
     NodeManager nodeMan;
 
@@ -45,7 +45,7 @@ public class Map {
         nodeMan = nd;
         block_sz = b_s;
 
-        timers = new Vector<timer_data>();
+        timers = new Vector<TimerData>();
 
         nodes = new short[width * height];
         nodes_data = new byte[width * height];
@@ -71,8 +71,6 @@ public class Map {
         {
             for(int x = 0; x < width; x++)
             {
-                short node_id = getNode(x, y);
-
                 if(getBackNode(x, y) > 0)
                 {
                     nodeMan.getBackNode(getBackNode(x, y)).render(textureRender, x*block_sz, y*block_sz, getNodeData(x, y));
@@ -81,6 +79,11 @@ public class Map {
                 nodeMan.getNode(getNode(x, y)).render(textureRender, x*block_sz, y*block_sz, getNodeData(x, y));
             }
         }
+    }
+
+    public void generateHitGrids()
+    {
+
     }
 
     public void sendReset()
@@ -96,7 +99,7 @@ public class Map {
 
     public void setTimer(int x, int y, int milisecs)
     {
-        timers.add(new timer_data(x, y, System.currentTimeMillis() + milisecs));
+        timers.add(new TimerData(x, y, System.currentTimeMillis() + milisecs));
     }
 
     public short getNode(int x, int y)
@@ -205,7 +208,7 @@ public class Map {
         nodeMan.getNode(getNode(x, y)).onEntityWalkOn(this, e, x, y);
     }
 
-    public void senOnLostInfluence(Entity e, int old_x, int old_y, int new_x, int new_y)
+    public void sendOnLostInfluence(Entity e, int old_x, int old_y, int new_x, int new_y)
     {
         nodeMan.getNode(getNode(old_x, old_y)).onLostInfluence(this, e, old_x, old_y, new_x, new_y);
     }
