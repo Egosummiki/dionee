@@ -1,3 +1,3 @@
 # DIONEE PROJECT
 
-This is a reposioty of an android game called dionee.
+This is a repository of an android game called dionee.
