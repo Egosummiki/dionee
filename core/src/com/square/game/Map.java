@@ -33,12 +33,12 @@ public class Map {
 
     private Vector<TimerData> timers;
 
-    NodeManager nodeMan;
+    private NodeManager nodeMan;
 
-    int width;
-    int height;
+    private int width;
+    private int height;
 
-    int blockDimension;
+    private int blockDimension;
 
     public Map(int map_width, int map_height, NodeManager nd, int b_s)
     {
@@ -131,15 +131,18 @@ public class Map {
             }
         }
 
-        for(int x = 1; x < height; x++)
+        for(int x = 1; x < width; x++)
         {
             int starty = -1;
-            for(int y = 0; y < width; y++)
+            for(int y = 0; y < height; y++)
             {
                 Node.Structure right  = nodeMan.getNode(getNode(x,y)).getStructure();
                 Node.Structure left   = nodeMan.getNode(getNode(x-1,y)).getStructure();
 
-                if( (right == Node.Structure.solid || left == Node.Structure.solid) && right != left)
+                if(right == Node.Structure.custom) right = Node.Structure.blank;
+                if(left == Node.Structure.custom) left = Node.Structure.blank;
+
+                if(right != left)
                 {
                     if(starty == -1)
                     {

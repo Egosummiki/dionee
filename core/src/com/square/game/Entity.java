@@ -86,17 +86,19 @@ public class Entity {
         angular_velocity = 0;
     }
 
+    private static final float speed = 1.6f;
+
     public void setRightDirection()
     {
         e_direction = direction.RIGHT;
-        velocity_x = 1.6f;
+        velocity_x = speed;
         angular_velocity = -GameMath.pi*0.02f;
     }
 
     public void setLeftDirection()
     {
         e_direction = direction.LEFT;
-        velocity_x = -1.6f;
+        velocity_x = speed;
         angular_velocity = GameMath.pi*0.02f;
     }
 
@@ -342,13 +344,22 @@ public class Entity {
         return n >= 0 ? 1 : -1;
     }
 
-    private static final float bounce = -0.1f;
+    private static final float friction = 0.01f;
+    private static final float fightBack = 0.25f;
 
     public void alternativeUpdate(Map gameMap)
     {
         // Gravitation
 
         velocity_y -= GameMath.gravitational_constant;
+        if(e_direction == direction.RIGHT)
+        {
+            if(velocity_x < speed)
+            {
+                velocity_x += fightBack;
+            }
+            if(velocity_x > speed) velocity_x = speed;
+        }
 
         // Calculate entity new position
 
@@ -387,8 +398,8 @@ public class Entity {
             {
                 allNull = false;
 
-                velocity_x -= 0.01f*(test.x - position_x);
-                velocity_y -= 0.01f*(test.y - position_y);
+                velocity_x -= friction*(test.x - position_x);
+                velocity_y -= friction*(test.y - position_y);
             }
         }
 
@@ -575,6 +586,6 @@ public class Entity {
 
     public void draw(Render ren)
     {
-        ren.drawCenterScale(texture, (int)position_x, (int)position_y, (int)box_length, (int)box_length, (float)Math.toDegrees(angle));
+        ren.drawCenterScale(texture, (int)position_x - (int)box_length/2, (int)position_y - (int)box_length/2, (int)box_length, (int)box_length, (float)Math.toDegrees(angle));
     }
 }
