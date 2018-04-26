@@ -25,32 +25,11 @@ public class Map {
         }
     }
 
-    public class Line {
-        private Vector2 a;
-        private Vector2 b;
-
-        public Line(Vector2 a, Vector2 b)
-        {
-            this.a = a;
-            this.b = b;
-        }
-
-        public Vector2 getA()
-        {
-            return a;
-        }
-
-        public Vector2 getB()
-        {
-            return b;
-        }
-    }
-
     private short[] nodes;
     private byte[] nodesData;
     private byte[] nodesBack;
 
-    private Vector<Line> hitMap;
+    private Vector<HitLine> hitMap;
 
     private Vector<TimerData> timers;
 
@@ -69,6 +48,7 @@ public class Map {
         blockDimension = b_s;
 
         timers = new Vector<TimerData>();
+        hitMap = new Vector<HitLine>();
 
         nodes = new short[width * height];
         nodesData = new byte[width * height];
@@ -104,7 +84,7 @@ public class Map {
         }
     }
 
-    public void generateHitGrids()
+    public void generateHitMap()
     {
         hitMap.clear();
 
@@ -127,19 +107,26 @@ public class Map {
                 if(up == Node.Structure.custom)
                 {
                     nodeMan.getNode(getNode(x,y)).applyCustomHitMap(hitMap);
+                    up = Node.Structure.blank;
                 }
 
-                if( (up == Node.Structure.solid || bottom == Node.Structure.solid) && up != bottom)
+                if(bottom == Node.Structure.custom) bottom = Node.Structure.blank;
+
+                if(up != bottom)
                 {
                     if(startx == -1)
                     {
-                        startx = (x == 0 ? (x == width-1 ? width+10 : -10) : x);
+                        startx = (x == 0 ? -10 : x);
                     }
                 } else {
                     if(startx != -1)
                     {
-                        hitMap.add(new Line(new Vector2(startx, y), new Vector2(x,y)));
+                        if(x == width-1) x += 10;
+                        hitMap.add(new HitLine( new Vector2(blockDimension*startx, blockDimension*y),
+                                                new Vector2(blockDimension*x,blockDimension*y)));
                     }
+
+                    startx = -1;
                 }
             }
         }
@@ -161,12 +148,28 @@ public class Map {
                 } else {
                     if(starty != -1)
                     {
-                        hitMap.add(new Line(new Vector2(x, starty), new Vector2(x,y)));
+                        hitMap.add(new HitLine(new Vector2(blockDimension*x, blockDimension*starty),
+                                                new Vector2(blockDimension*x,blockDimension*y)));
                     }
+                    starty = -1;
                 }
             }
         }
 
+    }
+
+    public Vector2 hitTest(HitLine line)
+    {
+        for(HitLine compare : hitMap)
+        {
+            Vector2 result = GameMath.linearTest(compare, line);
+            if(result != null)
+            {
+               return result;
+            }
+        }
+
+        return null;
     }
 
     public void sendReset()
@@ -196,11 +199,11 @@ public class Map {
     {
         nodeMan.getNode(n).onSet(this, x, y);
         if(x > -1 && x < 30 && y > -1 && y < 17) nodes[x + y * width] = n;
+        //generateHitMap();
     }
 
     public void setBackNode(int x, int y, byte n)
     {
-        //nodeMan.getBackNode(n).onSet(this, x, y);
         if(x > -1 && x < 30 && y > -1 && y < 17) nodesBack[x + y * width] = n;
     }
 
@@ -338,6 +341,8 @@ public class Map {
 
             }
         }
+
+        generateHitMap();
 
         return true;
     }

@@ -8,11 +8,11 @@ import java.util.Vector;
 public class Level {
 
     Map gameMap;
-    Render texturerRen;
-    Control ctrl;
+    Render gameRender;
+    Control control;
 
     int texture;
-    int starting_block;
+    int startingBlock;
 
     protected Vector<InvItem> items;
 
@@ -21,10 +21,10 @@ public class Level {
     {
         items = new Vector<InvItem>();
         gameMap = gm;
-        texturerRen = tr;
+        gameRender = tr;
         texture = tex;
-        starting_block = sb;
-        ctrl = c;
+        startingBlock = sb;
+        control = c;
     }
 
     public Level addStartingItem(int type, int amount)
@@ -42,11 +42,11 @@ public class Level {
             newitmset.add(new InvItem(items.get(i)));
         }
 
-        ctrl.setStartingItems(newitmset);
-        ctrl.setMode(ControlMode.NONE);
-        ctrl.loadInvGui();
-        ctrl.starting_bl = starting_block;
-        return gameMap.loadLevel(texturerRen.getLevelTexture(texture));
+        control.setStartingItems(newitmset);
+        control.setMode(ControlMode.NONE);
+        control.loadInvGui();
+        control.starting_bl = startingBlock;
+        return gameMap.loadLevel(gameRender.getLevelTexture(texture));
     }
 
 }

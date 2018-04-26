@@ -22,10 +22,10 @@ public class LevelTutorial extends Level {
             newitmset.add(new InvItem(items.get(i)));
         }
 
-        ctrl.setStartingItems(newitmset);
-        ctrl.setMode(ControlMode.NONE);
-        ctrl.loadInvGui();
-        ctrl.starting_bl = starting_block;
-        return gameMap.loadLevel(texturerRen.getLevelTutorialTexture(texture));
+        control.setStartingItems(newitmset);
+        control.setMode(ControlMode.NONE);
+        control.loadInvGui();
+        control.starting_bl = startingBlock;
+        return gameMap.loadLevel(gameRender.getLevelTutorialTexture(texture));
     }
 }

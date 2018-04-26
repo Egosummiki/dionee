@@ -1,6 +1,7 @@
 package com.square.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Mikolaj on 09.10.2015.
@@ -19,8 +20,13 @@ public class Entity {
     private float velocity_y;
     private float angular_velocity;
 
-    private float box_length;
-    private float box_length_dst;
+    private Vector2 topLeft;
+    private Vector2 topRight;
+    private Vector2 bottomLeft;
+    private Vector2 bottomRight;
+
+    private final float box_length;
+    private final float box_length_dst;
 
     public boolean apply_death = false;
 
@@ -39,7 +45,12 @@ public class Entity {
         position_x = pos_x;
         position_y = pos_y;
 
-        box_length = box_len + 1;
+        topLeft = new Vector2(0,0);
+        topRight = new Vector2(0,0);
+        bottomLeft = new Vector2(0,0);
+        bottomRight = new Vector2(0,0);
+
+        box_length = box_len;
         box_length_dst = box_len / (float)Math.sqrt(2);
 
         angle = 0.0f;
@@ -331,26 +342,69 @@ public class Entity {
         return n >= 0 ? 1 : -1;
     }
 
+    private static final float bounce = -0.1f;
 
-    public void alternativeUpdate(float time, Map gameMap)
+    public void alternativeUpdate(Map gameMap)
     {
+        // Gravitation
+
+        velocity_y -= GameMath.gravitational_constant;
+
         // Calculate entity new position
 
-        float next_pos_x = position_x   + velocity_x;
-        float next_pos_y = position_y   + velocity_y;
-        float next_angle = angle        + angular_velocity;
+        float nextPositionX = position_x + velocity_x;
+        float nextPositionY = position_y + velocity_y;
 
-        while ( next_angle < 0.0f           ) next_angle += GameMath.tau;
-        while ( next_angle >= GameMath.tau  ) next_angle -= GameMath.tau;
+        float nextAngle = angle + angular_velocity;
+
+        while ( nextAngle < 0.0f           ) nextAngle += GameMath.tau;
+        while ( nextAngle >= GameMath.tau  ) nextAngle -= GameMath.tau;
+
+        // Recalculate the corners
+
+        topRight.x      = nextPositionX + box_length_dst * (float)Math.cos(nextAngle - GameMath.pi/4.0);
+        topRight.y      = nextPositionY + box_length_dst * (float)Math.sin(nextAngle - GameMath.pi/4.0);
+        bottomRight.x   = nextPositionX + box_length_dst * (float)Math.cos(nextAngle + GameMath.pi/4.0);
+        bottomRight.y   = nextPositionY + box_length_dst * (float)Math.sin(nextAngle + GameMath.pi/4.0);
+        bottomLeft.x    = nextPositionX + box_length_dst * (float)Math.cos(nextAngle + GameMath.pi*3.0/4.0);
+        bottomLeft.y    = nextPositionY + box_length_dst * (float)Math.sin(nextAngle + GameMath.pi*3.0/4.0);
+        topLeft.x       = nextPositionX + box_length_dst * (float)Math.cos(nextAngle - GameMath.pi*3.0/4.0);
+        topLeft.y       = nextPositionY + box_length_dst * (float)Math.sin(nextAngle - GameMath.pi*3.0/4.0);
 
         // Check the legality of the move
 
+        Vector2[] tests = new Vector2[4];
+        tests[0] = gameMap.hitTest(new HitLine(topRight, bottomRight));
+        tests[1] = gameMap.hitTest(new HitLine(bottomRight, bottomLeft));
+        tests[2] = gameMap.hitTest(new HitLine(bottomLeft, topLeft));
+        tests[3] = gameMap.hitTest(new HitLine(topLeft, topRight));
+
+        boolean allNull = true;
+
+        for(Vector2 test : tests)
+        {
+            if(test != null)
+            {
+                allNull = false;
+
+                velocity_x -= 0.01f*(test.x - position_x);
+                velocity_y -= 0.01f*(test.y - position_y);
+            }
+        }
+
+        if(allNull)
+        {
+            position_x = nextPositionX;
+            position_y = nextPositionY;
+            angle = nextAngle;
+        }
 
     }
 
     public void update(float time, Map gameMap)
     {
-
+        alternativeUpdate(gameMap);
+/*
         if(position_x >= 0 && position_x < Gdx.graphics.getWidth() && position_y >= 0 && position_y < Gdx.graphics.getHeight())
         {
             gameMap.sendOnEntityWalkOn((int)((position_x + 0.5f*box_length)/box_length), (int)((position_y + 0.5f*box_length)/box_length), this);
@@ -498,6 +552,8 @@ public class Entity {
             gameMap.sendOnEntityEnter((int)((position_x / box_length) + 0.5f), (int)(position_y / box_length) - 1, this);
         }
 
+        */
+
     }
 
     public float getVelocityX()
@@ -519,6 +575,6 @@ public class Entity {
 
     public void draw(Render ren)
     {
-        ren.drawCenter(texture, (int)position_x, (int)position_y, (float)Math.toDegrees(angle));
+        ren.drawCenterScale(texture, (int)position_x, (int)position_y, (int)box_length, (int)box_length, (float)Math.toDegrees(angle));
     }
 }

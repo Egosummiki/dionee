@@ -26,7 +26,7 @@ public class NodeUpwards extends Node {
     @Override
     public void render(Render ren, float x, float y, byte data)
     {
-        int py = (int)(y / Game.block_sz);
+        int py = (int)(y / Game.blockDimension);
 
         int s = (int)(System.currentTimeMillis() % (4*200));
         int k = s / 200;

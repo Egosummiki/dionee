@@ -30,7 +30,7 @@ public class Game extends ApplicationAdapter {
 	float n_fps = 0.06f;
 	float l_fps = 0.06f;
 
-	public static int block_sz = 0;
+	public static int blockDimension = 0;
 
 
 	
@@ -39,24 +39,24 @@ public class Game extends ApplicationAdapter {
 
 		logger = new Logger("GAME LOG", Logger.DEBUG);
 
-		block_sz = Gdx.graphics.getWidth() / 30;
+		blockDimension = Gdx.graphics.getWidth() / 30;
 
-		if(Gdx.graphics.getWidth() % 30 > 0) block_sz++;
+		if(Gdx.graphics.getWidth() % 30 > 0) blockDimension++;
 
 		rand = new Random();
 		entityMan = new EntityManager();
-		textureRender = new Render(block_sz);
+		textureRender = new Render(blockDimension);
 		nodeMan = new NodeManager();
 		bgr = new BackgroundMenu();
 		ctrl = new Control(textureRender, nodeMan);
 
-		gameMap = new Map(30, 17, nodeMan, block_sz); // 30x17 blocks
+		gameMap = new Map(30, 17, nodeMan, blockDimension); // 30x17 blocks
 
 		levelMan = new LevelManager(gameMap, textureRender, entityMan, ctrl);
 
-		//current_gui = new GuiGame(ctrl, gameMap, entityMan, blockDimension);
+		//current_gui = new GuiGame(control, gameMap, entityMan, blockDimension);
 		Gui.menu = new GuiMenu(textureRender, levelMan);
-		Gui.game = new GuiGame(ctrl, gameMap, entityMan, block_sz);
+		Gui.game = new GuiGame(ctrl, gameMap, entityMan, blockDimension);
 		Gui.levels = new GuiLevels(textureRender, levelMan);
 		Gui.level_cleared = new GuiLevelFinish(textureRender, levelMan);
 		Gui.tutorial = new GuiTutorial(levelMan);

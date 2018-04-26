@@ -29,10 +29,10 @@ public class NodeJump extends Node {
     {
         if(data == 0)
         {
-            ren.drawScale(texture, (int) x, (int) y, Game.block_sz, Game.block_sz);
+            ren.drawScale(texture, (int) x, (int) y, Game.blockDimension, Game.blockDimension);
         } else
         {
-            ren.drawScale(Render.TEXTURE_JUMP_USE, (int) x, (int) y, Game.block_sz, Game.block_sz);
+            ren.drawScale(Render.TEXTURE_JUMP_USE, (int) x, (int) y, Game.blockDimension, Game.blockDimension);
         }
     }
 

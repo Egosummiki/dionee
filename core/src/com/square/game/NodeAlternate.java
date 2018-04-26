@@ -51,7 +51,7 @@ public class NodeAlternate extends Node {
     @Override
     public void render(Render ren, float x, float y, byte data)
     {
-        ren.drawScale(texture + data, (int) x, (int) y, Game.block_sz, Game.block_sz);
+        ren.drawScale(texture + data, (int) x, (int) y, Game.blockDimension, Game.blockDimension);
     }
 
     @Override

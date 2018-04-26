@@ -28,6 +28,14 @@ public class Node {
         name = node_name;
         color = _color;
         solid = _solid;
+
+        if(solid)
+        {
+            structure = Structure.solid;
+        } else {
+            structure = Structure.blank;
+        }
+
         removeable = _removeable;
     }
 
@@ -46,7 +54,7 @@ public class Node {
         return structure;
     }
 
-    public void applyCustomHitMap(Vector<Map.Line> hitMap)
+    public void applyCustomHitMap(Vector<HitLine> hitMap)
     {
 
     }
@@ -64,7 +72,7 @@ public class Node {
 
     public void render(Render ren, float x, float y, byte data)
     {
-        ren.drawScale(texture, (int)x, (int)y, Game.block_sz, Game.block_sz);
+        ren.drawScale(texture, (int)x, (int)y, Game.blockDimension, Game.blockDimension);
     }
 
     public void onEntityEnter(Map gameMap, Entity e, int x, int y)

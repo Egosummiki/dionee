@@ -17,26 +17,31 @@ public class GameMath {
         return (float)Math.sqrt(Math.pow(vec2.x - vec1.x, 2) + Math.pow(vec2.y - vec1.y, 2));
     }
 
-    public static boolean linearTest(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+    public static Vector2 linearTest(HitLine line1, HitLine line2)
     {
-        if(a1.x == a2.x || b1.x == b2.x) return false;
+        if(line1.getA().x == line1.getB().x || line2.getA().x == line2.getB().x) return null;
 
-        float aDen = (a2.x - a1.x);
-        float aA = (a2.y - a1.y) / aDen;
-        float aB = (a1.y*a2.x - a2.y*a1.x) / aDen;
+        float aDen = (line1.getB().x - line1.getA().x);
+        float aA = (line1.getB().y - line1.getA().y) / aDen;
+        float aB = (line1.getA().y* line1.getB().x - line1.getB().y* line1.getA().x) / aDen;
 
-        float bDen = (b2.x - b1.x);
-        float bA = (b2.y - b1.y) / bDen;
-        float bB = (b1.y*b2.x - b2.y*b1.x) / bDen;
+        float bDen = (line2.getB().x - line2.getA().x);
+        float bA = (line2.getB().y - line2.getA().y) / bDen;
+        float bB = (line2.getA().y* line2.getB().x - line2.getB().y* line2.getA().x) / bDen;
 
         float commonDen = (aA - bA);
-        if(commonDen == 0.0f) return aB == bB;
+        if(commonDen == 0.0f) return null; //return aB == bB;
 
         Vector2 common = new Vector2( (bB - aB) / commonDen, (bB*aA - aB*bA) / commonDen );
 
-        float aDiff = Math.abs(distance(a1, a2) - distance(a1, common) - distance(common, a2));
-        float bDiff = Math.abs(distance(b1, b2) - distance(b1, common) - distance(common, b2));
+        float aDiff = Math.abs(distance(line1.getA(), line1.getB()) - distance(line1.getA(), common) - distance(common, line1.getB()));
+        float bDiff = Math.abs(distance(line2.getA(), line2.getB()) - distance(line2.getA(), common) - distance(common, line2.getB()));
 
-        return aDiff < 0.001f && bDiff < 0.001f;
+        if(aDiff < 0.001f && bDiff < 0.001f)
+        {
+            return common;
+        }
+
+        return null;
     }
 }

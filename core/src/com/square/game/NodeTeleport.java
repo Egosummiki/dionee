@@ -47,10 +47,10 @@ public class NodeTeleport extends Node {
     {
         if(data == 0)
         {
-            ren.drawCenterScale(texture, (int)x, (int)y, Game.block_sz, Game.block_sz, (System.currentTimeMillis() / 10) % 360 );
+            ren.drawCenterScale(texture, (int)x, (int)y, Game.blockDimension, Game.blockDimension, (System.currentTimeMillis() / 10) % 360 );
         } else
         {
-            ren.drawCenterScale(texture_in_use, (int)x, (int)y, Game.block_sz, Game.block_sz, (System.currentTimeMillis() / 10) % 360 );
+            ren.drawCenterScale(texture_in_use, (int)x, (int)y, Game.blockDimension, Game.blockDimension, (System.currentTimeMillis() / 10) % 360 );
         }
     }
 

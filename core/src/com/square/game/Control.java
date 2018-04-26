@@ -329,7 +329,8 @@ public class Control {
             if(System.currentTimeMillis() - time_offset > 1000 && entityMan.getRealsedEntities() < 5)
             {
                 time_offset = System.currentTimeMillis();
-                Entity en = new Entity(Render.TEXTURE_ENTITY_TEST, -block_sz, starting_bl*block_sz+3.0f + 1, block_sz);
+                //-block_sz
+                Entity en = new Entity(Render.TEXTURE_ENTITY_TEST, 3*block_sz, starting_bl*block_sz+3.0f + 1, block_sz);
                 en.setRightDirection();
                 entityMan.spawn(en);
             }

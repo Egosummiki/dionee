@@ -181,16 +181,6 @@ public class Render {
 
     public Render(int block_sz)
     {
-        //Let's test linear
-
-        boolean result = GameMath.linearTest(
-                new Vector2(0.0f,0.0f),
-                new Vector2(200.0f,100.0f),
-                new Vector2(100.0f,10.0f),
-                new Vector2(50.0f,200.0f)
-        );
-
-
         level_registry = new Texture[LEVEL_NUMBER];
         level_tut_registry = new Texture[LEVEL_TUT_NUMBER];
         batch = new SpriteBatch();
