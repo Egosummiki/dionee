@@ -86,7 +86,7 @@ public class Entity {
         angular_velocity = 0;
     }
 
-    private static final float speed = 1.6f;
+    private static final float speed = 2.6f;
 
     public void setRightDirection()
     {

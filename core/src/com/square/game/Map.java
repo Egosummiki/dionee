@@ -114,18 +114,12 @@ public class Map {
 
                 if(up != bottom)
                 {
-                    if(startx == -1)
-                    {
-                        startx = (x == 0 ? -10 : x);
-                    }
-                } else {
-                    if(startx != -1)
-                    {
-                        if(x == width-1) x += 10;
-                        hitMap.add(new HitLine( new Vector2(blockDimension*startx, blockDimension*y),
-                                                new Vector2(blockDimension*x,blockDimension*y)));
-                    }
-
+                    if(startx == -1) startx = (x == 0 ? -10 : x);
+                } else if(startx != -1)
+                {
+                    if(x == width-1) x += 10;
+                    hitMap.add(new HitLine( new Vector2(blockDimension*startx, blockDimension*y),
+                                            new Vector2(blockDimension*x,blockDimension*y)));
                     startx = -1;
                 }
             }
@@ -144,16 +138,11 @@ public class Map {
 
                 if(right != left)
                 {
-                    if(starty == -1)
-                    {
-                        starty = y;
-                    }
-                } else {
-                    if(starty != -1)
-                    {
-                        hitMap.add(new HitLine(new Vector2(blockDimension*x, blockDimension*starty),
-                                                new Vector2(blockDimension*x,blockDimension*y)));
-                    }
+                    if(starty == -1) starty = y;
+                } else if(starty != -1)
+                {
+                    hitMap.add(new HitLine(new Vector2(blockDimension*x, blockDimension*starty),
+                                            new Vector2(blockDimension*x,blockDimension*y)));
                     starty = -1;
                 }
             }
