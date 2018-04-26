@@ -1,7 +1,6 @@
 package com.square.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Mikolaj on 09.10.2015.
@@ -114,7 +113,7 @@ public class Entity {
 
     public boolean point_check(Map gameMap, float x, float y)
     {
-        return !gameMap.isBlockSolid((int)(x/gameMap.getBlockSize()), (int)(y/gameMap.getBlockSize()), x % gameMap.getBlockSize(), y % gameMap.getBlockSize());
+        return !gameMap.isSolid((int)(x/gameMap.getBlockSize()), (int)(y/gameMap.getBlockSize()), x % gameMap.getBlockSize(), y % gameMap.getBlockSize());
     }
 
     public boolean linear_equation(float x, float y, float xa, float ya, float xb, float yb)

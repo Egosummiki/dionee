@@ -364,7 +364,7 @@ public class Control {
                     int block_x = (int)Math.floor(Gdx.input.getX() / block_sz);
                     int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / block_sz);
 
-                    if(((gameMap.isBlockRemoveable(block_x, block_y) && (gameMap.getNode(block_x-1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y-1) == 0 ||
+                    if(((gameMap.isRemoveable(block_x, block_y) && (gameMap.getNode(block_x-1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y-1) == 0 ||
                             gameMap.getNode(block_x+1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y+1) == 0)) || edit_mode) &&  (!edit_mode || block_x > 3 || block_y > 1))
                     {
                         if(!edit_mode) addItem(gameMap.getNode(block_x,block_y), 1);

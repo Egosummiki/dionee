@@ -25,6 +25,27 @@ public class Map {
         }
     }
 
+    public class Line {
+        private Vector2 a;
+        private Vector2 b;
+
+        public Line(Vector2 a, Vector2 b)
+        {
+            this.a = a;
+            this.b = b;
+        }
+
+        public Vector2 getA()
+        {
+            return a;
+        }
+
+        public Vector2 getB()
+        {
+            return b;
+        }
+    }
+
     public short[] nodes;
     public byte[] nodes_data;
     public byte[] nodes_back;
@@ -83,6 +104,14 @@ public class Map {
 
     public void generateHitGrids()
     {
+        for(int y = 1; y < height; y++)
+        {
+            int startx = 0;
+            for(int x = 0; x < width; x++)
+            {
+               //if(isSolid())
+            }
+        }
 
     }
 
@@ -140,12 +169,12 @@ public class Map {
         if(x > -1 && x < 30 && y > -1 && y < 17) nodes_data[x + y * width] = n;
     }
 
-    public boolean isBlockSolid(int x, int y, float i_x, float i_y)
+    public boolean isSolid(int x, int y, float i_x, float i_y)
     {
         return nodeMan.getNode(getNode(x, y)).isSolid(i_x, i_y);
     }
 
-    public boolean isBlockRemoveable(int x, int y)
+    public boolean isRemoveable(int x, int y)
     {
         return nodeMan.getNode(getNode(x, y)).isRemoveable();
     }

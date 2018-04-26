@@ -28,6 +28,6 @@ public class NodeTurn extends Node {
     @Override
     public boolean canBePlacedOn(Map gameMap, int x, int y)
     {
-        return super.canBePlacedOn(gameMap, x, y) && gameMap.getNode(x, y-1) != NodeManager.NODE_WATER && gameMap.isBlockSolid(x, y-1, 0, 0);
+        return super.canBePlacedOn(gameMap, x, y) && gameMap.getNode(x, y-1) != NodeManager.NODE_WATER && gameMap.isSolid(x, y-1, 0, 0);
     }
 }
