@@ -22,15 +22,15 @@ public class NodeTeleport extends Node {
     @Override
     public void onEntityWalkOn(Map gameMap, Entity e, int x, int y)
     {
-        if(!(e.teleport_lock))
+        if(!(e.moveLock))
         {
-            e.teleport_lock = true;
+            e.moveLock = true;
             Vector2 des = gameMap.findBlockByID(teleport_to);
 
             if(des.x > 0)
             {
                 boolean right = e.getVelocityX() > 0 ? true : false;
-                e.apply_position(gameMap, des.x * gameMap.getBlockSize(), des.y * gameMap.getBlockSize() + 6.627417f*e.getAngle(), 0);
+                e.applyPosition(gameMap, des.x * gameMap.getBlockSize(), des.y * gameMap.getBlockSize() + 6.627417f*e.getAngle(), 0);
                 if(right) e.setRightDirection(); else e.setLeftDirection();
 
                 gameMap.setNodeData(x, y, (byte)1);

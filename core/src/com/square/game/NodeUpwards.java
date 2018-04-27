@@ -37,7 +37,7 @@ public class NodeUpwards extends Node {
     @Override
     public void onEntityWalkOn(Map gameMap, Entity e, int x, int y)
     {
-        if(e.getDirection() == Entity.direction.RIGHT)
+        if(e.getDirection() == Entity.Direction.RIGHT)
         {
             if(e.getPositionX() + 0.5f*gameMap.getBlockSize() - (x*gameMap.getBlockSize()) < 0.5f*gameMap.getBlockSize()) return;
         } else
@@ -46,7 +46,7 @@ public class NodeUpwards extends Node {
         }
 
         e.stop();
-        if(e.getDirection() == Entity.direction.RIGHT) e.accelerate(1.0f, 2.0f, 0); else e.accelerate(-1.0f, 2.0f, 0);
+        if(e.getDirection() == Entity.Direction.RIGHT) e.accelerate(1.0f, 2.0f, 0); else e.accelerate(-1.0f, 2.0f, 0);
 
 
         /*if(y < gameMap.getHeight()-1)

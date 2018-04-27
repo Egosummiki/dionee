@@ -70,7 +70,7 @@ public class Game extends ApplicationAdapter {
 
 	public void update(float time)
 	{
-		entityMan.update(time, gameMap);
+		entityMan.update(gameMap);
 		Gui.current_gui.update(time);
 		bgr.update(time);
 

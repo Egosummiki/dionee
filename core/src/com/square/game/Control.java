@@ -34,16 +34,6 @@ public class Control {
         mode = ControlMode.NONE;
         textureRender = ren;
         nodeMan = nd;
-
-
-        // Some Linear test
-
-        Vector2 result1 = GameMath.linearTest(
-                new HitLine(new Vector2(0.0f, 0.0f), new Vector2(200.0f, 100.0f)),
-                new HitLine(new Vector2(100.0f, 0.0f), new Vector2(0.0f, 100.0f))
-        );
-
-        int none = 0;
     }
 
     public void setGui(Gui g)

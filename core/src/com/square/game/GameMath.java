@@ -10,7 +10,7 @@ public class GameMath {
     public final static float pi = 3.14159265359f;
     public final static float tau = 6.28318530718f;
 
-    public final static float gravitational_constant = 0.2f;
+    public final static float gravitationalConstant = 0.2f;
 
     public static float distance(Vector2 vec1, Vector2 vec2)
     {

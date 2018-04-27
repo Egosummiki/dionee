@@ -20,11 +20,11 @@ public class EntityManager {
         entity_list = new Vector();
     }
 
-    public void spawn(Entity e)
+    public void spawn(Entity entity)
     {
         realsed_entities++;
-        e.setSpawned(entity_list.size(), this);
-        entity_list.add(e);
+        entity.setSpawned(entity_list.size(), this);
+        entity_list.add(entity);
     }
 
     public int getRealsedEntities()
@@ -60,27 +60,15 @@ public class EntityManager {
         return entity_finished == num_entites;
     }
 
-    public boolean does_collide(int my_id, float x, float y)
-    {
-        for(int i = 0; i < entity_list.size(); i++)
-        {
-            if(i != my_id && entity_list.get(i).inside_check(x, y))
-            {
-                return true;
-            }
-        }
 
-        return false;
-    }
-
-    public void update(float time, Map gameMap)
+    public void update(Map gameMap)
     {
         entity_finished = 0;
         for(int i = 0; i < entity_list.size(); i++)
         {
-            if(!entity_list.get(i).apply_death)
+            if(!entity_list.get(i).murder)
             {
-                entity_list.get(i).update(time, gameMap);
+                entity_list.get(i).update(gameMap);
 
                 if(entity_list.get(i).getPositionX() > Gdx.graphics.getWidth() && entity_list.get(i).getPositionY() > 0)
                 {
