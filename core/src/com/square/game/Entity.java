@@ -39,6 +39,8 @@ public class Entity {
 
     private int texture;
 
+    private Vector2 cornerVector;
+
     public boolean moveLock = false;
 
     private int id;
@@ -63,6 +65,7 @@ public class Entity {
         angularVelocity = 0.0f;
 
         aimPosition = new Vector2(0.0f, 0.0f);
+        cornerVector = new Vector2(0.0f, 0.0f);
 
         hitTests = new Vector2[4];
         hitLines = new HitLine[4];
@@ -144,6 +147,7 @@ public class Entity {
     private static final float friction = 0.01f;
     private static final float fightBack = 0.25f;
 
+
     public void update(Map gameMap)
     {
         // Gravitation and fight back
@@ -172,20 +176,18 @@ public class Entity {
 
         // Recalculate the corners
 
-        double topRightAngle = aimAngle - GameMath.pi/4.0;
-        Vector2 topRightVector = new Vector2(
-                (float)Math.cos(topRightAngle),
-                (float)Math.sin(topRightAngle)
-        );
+        double cornerAngle = aimAngle - GameMath.pi/4.0;
+        cornerVector.x = diagonal*(float)Math.cos(cornerAngle);
+        cornerVector.y = diagonal*(float)Math.sin(cornerAngle);
 
-        topRight.x      = aimPosition.x + diagonal * (float)Math.cos(aimAngle - GameMath.pi/4.0);
-        topRight.y      = aimPosition.y + diagonal * (float)Math.sin(aimAngle - GameMath.pi/4.0);
-        bottomRight.x   = aimPosition.x + diagonal * (float)Math.cos(aimAngle + GameMath.pi/4.0);
-        bottomRight.y   = aimPosition.y + diagonal * (float)Math.sin(aimAngle + GameMath.pi/4.0);
-        bottomLeft.x    = aimPosition.x + diagonal * (float)Math.cos(aimAngle + GameMath.pi*3.0/4.0);
-        bottomLeft.y    = aimPosition.y + diagonal * (float)Math.sin(aimAngle + GameMath.pi*3.0/4.0);
-        topLeft.x       = aimPosition.x + diagonal * (float)Math.cos(aimAngle - GameMath.pi*3.0/4.0);
-        topLeft.y       = aimPosition.y + diagonal * (float)Math.sin(aimAngle - GameMath.pi*3.0/4.0);
+        topRight.x      = aimPosition.x + cornerVector.x;
+        topRight.y      = aimPosition.y + cornerVector.y;
+        bottomRight.x   = aimPosition.x + cornerVector.y;
+        bottomRight.y   = aimPosition.y - cornerVector.x;
+        bottomLeft.x    = aimPosition.x - cornerVector.x;
+        bottomLeft.y    = aimPosition.y - cornerVector.y;
+        topLeft.x       = aimPosition.x - cornerVector.y;
+        topLeft.y       = aimPosition.y + cornerVector.x;
 
         // Check the legality of the move
 
