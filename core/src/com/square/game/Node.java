@@ -54,7 +54,7 @@ public class Node {
         return structure;
     }
 
-    public void applyCustomHitMap(Vector<HitLine> hitMap)
+    public void applyCustomHitMap(Map gameMap, Vector<HitLine> hitMap, int x, int y)
     {
 
     }

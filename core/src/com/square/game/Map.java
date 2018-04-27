@@ -92,7 +92,7 @@ public class Map {
         {
             if(nodeMan.getNode(getNode(x,0)).getStructure() == Node.Structure.custom)
             {
-                nodeMan.getNode(getNode(x,0)).applyCustomHitMap(hitMap);
+                nodeMan.getNode(getNode(x,0)).applyCustomHitMap(this, hitMap, x, 0);
             }
         }
 
@@ -106,7 +106,7 @@ public class Map {
 
                 if(up == Node.Structure.custom)
                 {
-                    nodeMan.getNode(getNode(x,y)).applyCustomHitMap(hitMap);
+                    nodeMan.getNode(getNode(x,y)).applyCustomHitMap(this, hitMap, x, y);
                     up = Node.Structure.blank;
                 }
 
@@ -117,11 +117,16 @@ public class Map {
                     if(startx == -1) startx = (x == 0 ? -10 : x);
                 } else if(startx != -1)
                 {
-                    if(x == width-1) x += 10;
                     hitMap.add(new HitLine( new Vector2(blockDimension*startx, blockDimension*y),
                                             new Vector2(blockDimension*x,blockDimension*y)));
                     startx = -1;
                 }
+            }
+
+            if(startx != -1)
+            {
+                hitMap.add(new HitLine( new Vector2(blockDimension*startx, blockDimension*y),
+                        new Vector2(blockDimension*(width+10),blockDimension*y)));
             }
         }
 
@@ -145,6 +150,12 @@ public class Map {
                                             new Vector2(blockDimension*x,blockDimension*y)));
                     starty = -1;
                 }
+            }
+
+            if(starty != -1)
+            {
+                hitMap.add(new HitLine(new Vector2(blockDimension*x, blockDimension*starty),
+                        new Vector2(blockDimension*x,blockDimension*height)));
             }
         }
 

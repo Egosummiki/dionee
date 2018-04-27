@@ -1,6 +1,9 @@
 package com.square.game;
 
+import com.badlogic.gdx.math.Vector2;
+
 import java.util.Random;
+import java.util.Vector;
 
 /**
  * Created by Mikolaj on 18.10.2015.
@@ -37,6 +40,12 @@ public class NodeWater extends Node {
         gameMap.setNodeData(x, y, (byte)rand.nextInt(varriation));
         gameMap.setTimer(x, y, 500 + rand.nextInt(500));
         return true;
+    }
+
+    @Override
+    public void applyCustomHitMap(Map gameMap, Vector<HitLine> hitMap, int x, int y) {
+        hitMap.add(new HitLine(new Vector2(x*gameMap.getBlockSize(), y*gameMap.getBlockSize() + 3*gameMap.getBlockSize()/4),
+                new Vector2((x+1)*gameMap.getBlockSize(), y*gameMap.getBlockSize() + 3*gameMap.getBlockSize()/4)));
     }
 
     @Override

@@ -19,6 +19,9 @@ public class Entity {
     private float angularVelocity;
     private float aimAngle;
 
+    private int previousBlockX = -1;
+    private int previousBlockY = -1;
+
     private Vector2[] hitTests;
     private HitLine[] hitLines;
     private Vector2 topLeft;
@@ -202,6 +205,16 @@ public class Entity {
             position.x = aimPosition.x;
             position.y = aimPosition.y;
             angle = aimAngle;
+
+            int blockX = (int)position.x / gameMap.getBlockSize();
+            int blockY = (int)position.y / gameMap.getBlockSize();
+
+            if(blockX != previousBlockX || blockY != previousBlockY)
+            {
+                gameMap.sendOnEntityInside(blockX, blockY, this);
+                previousBlockX = blockX;
+                previousBlockY = blockY;
+            }
         }
 
     }
