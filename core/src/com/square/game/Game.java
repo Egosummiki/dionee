@@ -12,13 +12,13 @@ public class Game extends ApplicationAdapter {
 	Map gameMap;
 	Random rand;
 	Control ctrl;
-	public static Background bgr;
+	public static Background background;
 	public static final String game_name = "Dionees";
 	public static final String game_name_singular = "Dionee";
 
 	LevelManager levelMan;
 
-	//Gui current_gui;
+	//Gui currentGui;
 
 	Logger logger;
 
@@ -47,14 +47,14 @@ public class Game extends ApplicationAdapter {
 		entityMan = new EntityManager();
 		textureRender = new Render(blockDimension);
 		nodeMan = new NodeManager();
-		bgr = new BackgroundMenu();
+		background = new BackgroundMenu();
 		ctrl = new Control(textureRender, nodeMan);
 
 		gameMap = new Map(30, 17, nodeMan, blockDimension); // 30x17 blocks
 
 		levelMan = new LevelManager(gameMap, textureRender, entityMan, ctrl);
 
-		//current_gui = new GuiGame(control, gameMap, entityMan, blockDimension);
+		//currentGui = new GuiGame(control, gameMap, entityMan, blockDimension);
 		Gui.menu = new GuiMenu(textureRender, levelMan);
 		Gui.game = new GuiGame(ctrl, gameMap, entityMan, blockDimension);
 		Gui.levels = new GuiLevels(textureRender, levelMan);
@@ -72,7 +72,7 @@ public class Game extends ApplicationAdapter {
 	{
 		entityMan.update(gameMap);
 		Gui.current_gui.update(time);
-		bgr.update(time);
+		background.update(time);
 
 		GameMusic.update();
 
@@ -128,7 +128,7 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		textureRender.begin();
-		bgr.draw(textureRender);
+		background.draw(textureRender);
 
 		Gui.current_gui.draw(textureRender);
 

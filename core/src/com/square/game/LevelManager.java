@@ -55,7 +55,7 @@ public class LevelManager {
 
     public void setEditMode(boolean e)
     {
-        ctrl.edit_mode = e;
+        ctrl.editMode = e;
     }
 
     public Level createTutorialLevel(int lvl_tex, int starting_block)

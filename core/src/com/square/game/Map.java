@@ -173,6 +173,7 @@ public class Map {
                 nodeMan.getNode(getNode(x, y)).onReset(this, x, y);
             }
         }
+
     }
 
     public void setTimer(int x, int y, int milisecs)
@@ -266,24 +267,14 @@ public class Map {
         }
     }
 
-    public void sendOnEntityEnter(int x, int y, Entity e)
+    public void sendOnEntityTouch(int x, int y, Entity e)
     {
-        nodeMan.getNode(getNode(x, y)).onEntityEnter(this, e, x, y);
+        nodeMan.getNode(getNode(x, y)).onEntityTouch(this, e, x, y);
     }
 
-    public int getWidth()
+    public void sendOnEntityInside(int x, int y, Entity e)
     {
-        return width;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public void sendOnEntityWalkOn(int x, int y, Entity e)
-    {
-        nodeMan.getNode(getNode(x, y)).onEntityWalkOn(this, e, x, y);
+        nodeMan.getNode(getNode(x, y)).onEntityInside(this, e, x, y);
     }
 
     public void sendOnLostInfluence(Entity e, int old_x, int old_y, int new_x, int new_y)
@@ -291,6 +282,14 @@ public class Map {
         nodeMan.getNode(getNode(old_x, old_y)).onLostInfluence(this, e, old_x, old_y, new_x, new_y);
     }
 
+    public int getWidth()
+    {
+        return width;
+    }
+    public int getHeight()
+    {
+        return height;
+    }
     public int getBlockSize()
     {
         return blockDimension;
@@ -333,8 +332,6 @@ public class Map {
 
             }
         }
-
-        generateHitMap();
 
         return true;
     }

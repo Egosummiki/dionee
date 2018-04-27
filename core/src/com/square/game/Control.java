@@ -1,7 +1,6 @@
 package com.square.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 
 import java.util.Vector;
 
@@ -12,33 +11,33 @@ import java.util.Vector;
 public class Control {
 
     private ControlMode mode;
-    private int item_sel;
-    public Gui current_gui;
-    private boolean refresh_game = false;
-    private boolean load_buttons = true;
+    private int selectedItem;
+    public Gui currentGui;
+    private boolean refreshGame = false;
+    private boolean loadButtons = true;
 
-    private int edit_itm = 1;
+    private int editItem = 1;
 
-    public boolean edit_mode = false;
+    public boolean editMode = false;
 
-    public int starting_bl = 9;
+    public int startingBlock= 9;
 
-    Render textureRender;
+    Render render;
     NodeManager nodeMan;
 
     private Vector<InvItem> items;
 
-    public Control(Render ren, NodeManager nd)
+    public Control(Render render, NodeManager nodeMan)
     {
-        item_sel = 0;
+        selectedItem = 0;
         mode = ControlMode.NONE;
-        textureRender = ren;
-        nodeMan = nd;
+        this.render = render;
+        this.nodeMan = nodeMan;
     }
 
     public void setGui(Gui g)
     {
-        current_gui = g;
+        currentGui = g;
     }
 
     public void setStartingItems(Vector<InvItem> its)
@@ -67,19 +66,19 @@ public class Control {
 
         @Override
         public void onTapRelease(Button but, float time) {
-            item_sel = index;
+            selectedItem = index;
             setMode(ControlMode.ADD);
         }
     }
 
     public void loadInvGui()
     {
-        current_gui.clear();
+        currentGui.clear();
 
-        Button button_play;
+        Button buttonPlay;
 
-        button_play = new Button(Render.TEXTURE_BUTTON_PLAY, 16, Gdx.graphics.getHeight()-16-48, 48, 48);
-        button_play.setAction(new ButtonAction() {
+        buttonPlay = new Button(Render.TEXTURE_BUTTON_PLAY, 16, Gdx.graphics.getHeight()-64, 48, 48);
+        buttonPlay.setAction(new ButtonAction() {
             @Override
             public void onPress(Button but, float time) {
             }
@@ -113,10 +112,10 @@ public class Control {
             }
         });
 
-        current_gui.addElement(button_play);
-        current_gui.addElement(button_remove);
+        currentGui.addElement(buttonPlay);
+        currentGui.addElement(button_remove);
 
-        current_gui.addElement(new Button(Render.TEXTURE_BUTTON_EXIT, Gdx.graphics.getWidth() - 16 - 48, Gdx.graphics.getHeight() - 16 - 48, 48, 48).setAction(new ButtonAction() {
+        currentGui.addElement(new Button(Render.TEXTURE_BUTTON_EXIT, Gdx.graphics.getWidth() - 16 - 48, Gdx.graphics.getHeight() - 16 - 48, 48, 48).setAction(new ButtonAction() {
             @Override
             public void onPress(Button but, float time) {
 
@@ -140,12 +139,12 @@ public class Control {
             button_node = new Button(nodeMan.getNode(items.get(i).type).getTexture(), 89 + (i+1)*(48+8), Gdx.graphics.getHeight()-16-48, 48, 48);
             button_node.setAction(new buttonAction_node(i));
 
-            current_gui.addElement(button_node);
+            currentGui.addElement(button_node);
         }
 
-        if(edit_mode)
+        if(editMode)
         {
-            current_gui.addElement(new Button(Render.TEXTURE_PLUS, 16, 16, 48, 48).setAction(new ButtonAction() {
+            currentGui.addElement(new Button(Render.TEXTURE_PLUS, 16, 16, 48, 48).setAction(new ButtonAction() {
                 @Override
                 public void onPress(Button but, float time) {
 
@@ -158,11 +157,11 @@ public class Control {
 
                 @Override
                 public void onTapRelease(Button but, float time) {
-                    addItem(edit_itm, 1);
+                    addItem(editItem, 1);
                 }
             }));
 
-            current_gui.addElement(new Button(nodeMan.getNode(edit_itm).getTexture(), 32 + 48, 16, 48, 48).setAction(new ButtonAction() {
+            currentGui.addElement(new Button(nodeMan.getNode(editItem).getTexture(), 32 + 48, 16, 48, 48).setAction(new ButtonAction() {
                 @Override
                 public void onPress(Button but, float time) {
 
@@ -175,30 +174,33 @@ public class Control {
 
                 @Override
                 public void onTapRelease(Button but, float time) {
-                    edit_itm++;
-                    if(edit_itm >= nodeMan.getSize()) edit_itm = 1;
-                    but.setTextureNormal(nodeMan.getNode(edit_itm).getTexture());
-                    but.setTexturePressed(nodeMan.getNode(edit_itm).getTexture());
-                    but.setTexture(nodeMan.getNode(edit_itm).getTexture());
+                    editItem++;
+                    if(editItem >= nodeMan.getSize()) editItem = 1;
+                    but.setTextureNormal(nodeMan.getNode(editItem).getTexture());
+                    but.setTexturePressed(nodeMan.getNode(editItem).getTexture());
+                    but.setTexture(nodeMan.getNode(editItem).getTexture());
                 }
             }));
         }
     }
 
-    public void setMode(ControlMode new_mode)
+    private boolean hitMapGenerated = false;
+
+    public void setMode(ControlMode newMode)
     {
-        if(new_mode != ControlMode.RUN)
+        if(newMode != ControlMode.RUN)
         {
             if(mode == ControlMode.RUN)
             {
                 loadInvGui();
             }
 
-            mode = new_mode;
+            mode = newMode;
         } else
         {
-            mode = new_mode;
-            current_gui.clear();
+            hitMapGenerated = false;
+            mode = newMode;
+            currentGui.clear();
 
             Button button_refresh;
 
@@ -216,12 +218,12 @@ public class Control {
                 public void onTapRelease(Button but, float time) {
 
                     setMode(ControlMode.NONE);
-                    refresh_game = true;
+                    refreshGame = true;
 
                 }
             });
 
-            current_gui.addElement(button_refresh);
+            currentGui.addElement(button_refresh);
         }
     }
 
@@ -299,7 +301,7 @@ public class Control {
             ren.draw(Render.TEXTURE_HIGHLIGHT, 89, Gdx.graphics.getHeight()-16-48-12);
         } else if(mode == ControlMode.ADD)
         {
-            ren.draw(Render.TEXTURE_HIGHLIGHT, 145 + item_sel*56, Gdx.graphics.getHeight()-16-48-12);
+            ren.draw(Render.TEXTURE_HIGHLIGHT, 145 + selectedItem *56, Gdx.graphics.getHeight()-16-48-12);
         }
 
 
@@ -313,25 +315,28 @@ public class Control {
 
     }
 
-    long time_offset = 0;
-
+    private long time_offset = 0;
 
     public void update(float time, EntityManager entityMan, Map gameMap, int block_sz)
     {
-        if(refresh_game)
+        if(refreshGame)
         {
-            refresh_game = false;
+            refreshGame = false;
             entityMan.killAll();
             gameMap.sendReset();
         }
 
         if(mode == ControlMode.RUN)
         {
+            if(!hitMapGenerated)
+            {
+                hitMapGenerated = true;
+                gameMap.generateHitMap();
+            }
             if(System.currentTimeMillis() - time_offset > 1000 && entityMan.getRealsedEntities() < 5)
             {
                 time_offset = System.currentTimeMillis();
-                //-block_sz
-                Entity en = new Entity(Render.TEXTURE_ENTITY_TEST, 3*block_sz, starting_bl*block_sz+3.0f + 1, block_sz);
+                Entity en = new Entity(Render.TEXTURE_ENTITY_TEST, -2*block_sz, (startingBlock+1)*block_sz, block_sz);
                 en.setRightDirection();
                 entityMan.spawn(en);
             }
@@ -347,13 +352,13 @@ public class Control {
                     int block_x = (int)Math.floor(Gdx.input.getX() / block_sz);
                     int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / block_sz);
 
-                    if((gameMap.getNode(block_x, block_y) == 0 || edit_mode) && block_y < gameMap.getHeight()-3 && (!edit_mode || block_x > 3 || block_y > 1))
+                    if((gameMap.getNode(block_x, block_y) == 0 || editMode) && block_y < gameMap.getHeight()-3 && (!editMode || block_x > 3 || block_y > 1))
                     {
-                        if((nodeMan.getNode((short)items.get(item_sel).type).canBePlacedOn(gameMap, block_x, block_y) || edit_mode) && items.get(item_sel).amount > 0)
+                        if((nodeMan.getNode((short)items.get(selectedItem).type).canBePlacedOn(gameMap, block_x, block_y) || editMode) && items.get(selectedItem).amount > 0)
                         {
-                            gameMap.setNode(block_x, block_y, (short)items.get(item_sel).type);
+                            gameMap.setNode(block_x, block_y, (short)items.get(selectedItem).type);
 
-                            if(!edit_mode) takeItemId(item_sel, 1);
+                            if(!editMode) takeItemId(selectedItem, 1);
                         }
                     }
 
@@ -367,9 +372,9 @@ public class Control {
                     int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / block_sz);
 
                     if(((gameMap.isRemoveable(block_x, block_y) && (gameMap.getNode(block_x-1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y-1) == 0 ||
-                            gameMap.getNode(block_x+1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y+1) == 0)) || edit_mode) &&  (!edit_mode || block_x > 3 || block_y > 1))
+                            gameMap.getNode(block_x+1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y+1) == 0)) || editMode) &&  (!editMode || block_x > 3 || block_y > 1))
                     {
-                        if(!edit_mode) addItem(gameMap.getNode(block_x,block_y), 1);
+                        if(!editMode) addItem(gameMap.getNode(block_x,block_y), 1);
                         gameMap.setNode(block_x, block_y, (short)0);
                     }
 

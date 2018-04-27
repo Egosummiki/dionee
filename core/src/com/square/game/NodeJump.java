@@ -11,11 +11,11 @@ public class NodeJump extends Node {
     }
 
     @Override
-    public void onEntityEnter(Map gameMap, Entity e, int x, int y)
+    public void onEntityTouch(Map gameMap, Entity e, int x, int y)
     {
         gameMap.setNodeData(x, y, (byte)1);
         gameMap.setTimer(x, y, 600);
-        e.accelerate(0, 6.0f, 0);
+        e.applyForce(0, 6.0f, 0);
     }
 
     @Override

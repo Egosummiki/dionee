@@ -20,7 +20,7 @@ public class NodeUpwards extends Node {
     public void onLostInfluence(Map gameMap, Entity e, int old_x, int old_y, int new_x, int new_y)
     {
         e.continueDirection();
-        e.accelerate(0, 2.0f, 0);
+        e.applyForce(0, 2.0f, 0);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class NodeUpwards extends Node {
     }
 
     @Override
-    public void onEntityWalkOn(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(Map gameMap, Entity e, int x, int y)
     {
         if(e.getDirection() == Entity.Direction.RIGHT)
         {
@@ -46,7 +46,7 @@ public class NodeUpwards extends Node {
         }
 
         e.stop();
-        if(e.getDirection() == Entity.Direction.RIGHT) e.accelerate(1.0f, 2.0f, 0); else e.accelerate(-1.0f, 2.0f, 0);
+        if(e.getDirection() == Entity.Direction.RIGHT) e.applyForce(1.0f, 2.0f, 0); else e.applyForce(-1.0f, 2.0f, 0);
 
 
         /*if(y < gameMap.getHeight()-1)
@@ -54,16 +54,16 @@ public class NodeUpwards extends Node {
             if(gameMap.getNode(x,y+1) == id)
             {
                 e.stop();
-                e.accelerate(0, 2.0f, 0);
+                e.applyForce(0, 2.0f, 0);
             } else
             {
                 e.continueDirection();
-                e.accelerate(0, 0.2f, 0);
+                e.applyForce(0, 0.2f, 0);
             }
         } else
         {
             e.stop();
-            e.accelerate(0, 2.0f, 0);
+            e.applyForce(0, 2.0f, 0);
         }*/
 
     }

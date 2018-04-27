@@ -13,9 +13,11 @@ public class Entity {
 
     private Vector2 position;
     private Vector2 velocity;
+    private Vector2 aimPosition;
 
     private float angle;
     private float angularVelocity;
+    private float aimAngle;
 
     private Vector2[] hitTests;
     private HitLine[] hitLines;
@@ -57,6 +59,8 @@ public class Entity {
         angle = 0.0f;
         angularVelocity = 0.0f;
 
+        aimPosition = new Vector2(0.0f, 0.0f);
+
         hitTests = new Vector2[4];
         hitLines = new HitLine[4];
         hitLines[0] = new HitLine(topRight, bottomRight);
@@ -71,9 +75,8 @@ public class Entity {
         this.entityMan = entityMan;
     }
 
-    public void accelerate(float x, float y, float a)
+    public void applyForce(float x, float y, float a)
     {
-
         velocity.x += x;
         velocity.y += y;
         angularVelocity += a;
@@ -81,6 +84,7 @@ public class Entity {
 
     public void stop()
     {
+        direction = Direction.NONE;
         velocity.x  = 0;
         velocity.y  = 0;
         angularVelocity = 0;
@@ -109,14 +113,12 @@ public class Entity {
     public void setRightDirection()
     {
         direction = Direction.RIGHT;
-        velocity.x = speed;
         angularVelocity = -GameMath.pi*0.02f;
     }
 
     public void setLeftDirection()
     {
         direction = Direction.LEFT;
-        velocity.x = speed;
         angularVelocity = GameMath.pi*0.02f;
     }
 
@@ -144,42 +146,37 @@ public class Entity {
         // Gravitation and fight back
 
         velocity.y -= GameMath.gravitationalConstant;
-        if(direction == Direction.RIGHT)
+
+        switch (direction)
         {
-            if(velocity.x < speed)
-            {
-                velocity.x += fightBack;
-            }
-            if(velocity.x > speed) velocity.x = speed;
-        } else if(direction == Direction.LEFT)
-        {
-            if(velocity.x > -speed)
-            {
-                velocity.x -= fightBack;
-            }
-            if(velocity.x < -speed) velocity.x = -speed;
+            case RIGHT:
+                if(velocity.x < speed) velocity.x += fightBack;
+                break;
+            case LEFT:
+                if(velocity.x > -speed) velocity.x -= fightBack;
+                break;
+            default: break;
         }
 
         // Calculate entity new position
 
-        float nextPositionX = position.x + velocity.x;
-        float nextPositionY = position.y + velocity.y;
+        aimPosition.x = position.x + velocity.x;
+        aimPosition.y = position.y + velocity.y;
+        aimAngle = angle + angularVelocity;
 
-        float nextAngle = angle + angularVelocity;
-
-        while ( nextAngle < 0.0f           ) nextAngle += GameMath.tau;
-        while ( nextAngle >= GameMath.tau  ) nextAngle -= GameMath.tau;
+        while ( aimAngle < 0.0f           ) aimAngle += GameMath.tau;
+        while ( aimAngle >= GameMath.tau  ) aimAngle -= GameMath.tau;
 
         // Recalculate the corners
 
-        topRight.x      = nextPositionX + diagonal * (float)Math.cos(nextAngle - GameMath.pi/4.0);
-        topRight.y      = nextPositionY + diagonal * (float)Math.sin(nextAngle - GameMath.pi/4.0);
-        bottomRight.x   = nextPositionX + diagonal * (float)Math.cos(nextAngle + GameMath.pi/4.0);
-        bottomRight.y   = nextPositionY + diagonal * (float)Math.sin(nextAngle + GameMath.pi/4.0);
-        bottomLeft.x    = nextPositionX + diagonal * (float)Math.cos(nextAngle + GameMath.pi*3.0/4.0);
-        bottomLeft.y    = nextPositionY + diagonal * (float)Math.sin(nextAngle + GameMath.pi*3.0/4.0);
-        topLeft.x       = nextPositionX + diagonal * (float)Math.cos(nextAngle - GameMath.pi*3.0/4.0);
-        topLeft.y       = nextPositionY + diagonal * (float)Math.sin(nextAngle - GameMath.pi*3.0/4.0);
+        topRight.x      = aimPosition.x + diagonal * (float)Math.cos(aimAngle - GameMath.pi/4.0);
+        topRight.y      = aimPosition.y + diagonal * (float)Math.sin(aimAngle - GameMath.pi/4.0);
+        bottomRight.x   = aimPosition.x + diagonal * (float)Math.cos(aimAngle + GameMath.pi/4.0);
+        bottomRight.y   = aimPosition.y + diagonal * (float)Math.sin(aimAngle + GameMath.pi/4.0);
+        bottomLeft.x    = aimPosition.x + diagonal * (float)Math.cos(aimAngle + GameMath.pi*3.0/4.0);
+        bottomLeft.y    = aimPosition.y + diagonal * (float)Math.sin(aimAngle + GameMath.pi*3.0/4.0);
+        topLeft.x       = aimPosition.x + diagonal * (float)Math.cos(aimAngle - GameMath.pi*3.0/4.0);
+        topLeft.y       = aimPosition.y + diagonal * (float)Math.sin(aimAngle - GameMath.pi*3.0/4.0);
 
         // Check the legality of the move
 
@@ -188,24 +185,23 @@ public class Entity {
             hitTests[i] = gameMap.hitTest(hitLines[i]);
         }
 
-        boolean allNull = true;
+        boolean applyAim = true;
 
         for(Vector2 test : hitTests)
         {
             if(test != null)
             {
-                allNull = false;
-
-                velocity.x -= friction*(test.x - position.x);
-                velocity.y -= friction*(test.y - position.y);
+                applyForce(friction*(position.x - test.x), friction*(position.y - test.y), 0);
+                gameMap.sendOnEntityTouch( (int)(test.x - 0.01f) / gameMap.getBlockSize(), (int)(test.y - 0.01f) / gameMap.getBlockSize(), this  );
+                applyAim = false;
             }
         }
 
-        if(allNull)
+        if(applyAim)
         {
-            position.x = nextPositionX;
-            position.y = nextPositionY;
-            angle = nextAngle;
+            position.x = aimPosition.x;
+            position.y = aimPosition.y;
+            angle = aimAngle;
         }
 
     }

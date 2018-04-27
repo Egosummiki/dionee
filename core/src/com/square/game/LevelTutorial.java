@@ -25,7 +25,7 @@ public class LevelTutorial extends Level {
         control.setStartingItems(newitmset);
         control.setMode(ControlMode.NONE);
         control.loadInvGui();
-        control.starting_bl = startingBlock;
+        control.startingBlock = startingBlock;
         return gameMap.loadLevel(gameRender.getLevelTutorialTexture(texture));
     }
 }

@@ -5,33 +5,32 @@ package com.square.game;
  */
 public class GuiGame extends Gui {
 
-    Control game_operations;
+    private Control control;
+    private Map gameMap;
+    private EntityManager entityMan;
+    private int blockDimension;
 
-    Map gameMap;
-    EntityManager entityMan;
-    int block_sz;
-
-    public GuiGame(Control ctrl, Map gm, EntityManager em, int bs)
+    public GuiGame(Control control, Map gameMap, EntityManager entityMan, int blockDimension)
     {
         super();
 
-        game_operations = ctrl;
-        game_operations.setGui(this);
-        gameMap = gm;
-        entityMan = em;
-        block_sz = bs;
+        this.control = control;
+        this.control.setGui(this);
+        this.gameMap = gameMap;
+        this.entityMan = entityMan;
+        this.blockDimension = blockDimension;
     }
 
     @Override
     public void onSet()
     {
-        Game.bgr = new BackgroundClouds();
+        Game.background = new BackgroundClouds();
     }
 
     @Override
     public void onUnset()
     {
-        Game.bgr = new BackgroundMenu();
+        Game.background = new BackgroundMenu();
     }
 
     @Override
@@ -41,13 +40,13 @@ public class GuiGame extends Gui {
         entityMan.draw(ren);
 
         super.draw(ren);
-        game_operations.draw(ren);
+        control.draw(ren);
     }
 
     @Override
     public void update(float time)
     {
         super.update(time);
-        game_operations.update(time, entityMan, gameMap , block_sz);
+        control.update(time, entityMan, gameMap , blockDimension);
     }
 }

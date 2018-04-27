@@ -33,7 +33,7 @@ public class NodeAlternate extends Node {
     }
 
     @Override
-    public void onEntityWalkOn(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(Map gameMap, Entity e, int x, int y)
     {
         if(gameMap.getNodeData(x,y) == 0)
         {

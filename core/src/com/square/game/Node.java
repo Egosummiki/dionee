@@ -75,11 +75,11 @@ public class Node {
         ren.drawScale(texture, (int)x, (int)y, Game.blockDimension, Game.blockDimension);
     }
 
-    public void onEntityEnter(Map gameMap, Entity e, int x, int y)
+    public void onEntityTouch(Map gameMap, Entity e, int x, int y)
     {
     }
 
-    public void onEntityWalkOn(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(Map gameMap, Entity e, int x, int y)
     {
     }
 

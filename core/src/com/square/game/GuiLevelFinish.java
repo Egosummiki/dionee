@@ -87,7 +87,7 @@ public class GuiLevelFinish extends Gui {
     @Override
     public void onSet()
     {
-        Game.bgr = new BackgroundTexture().setTexture(Generate.darkPixmap(Generate.getScreenshot(), 0.5f)/*new Texture(Generate.getScreenshot())*/);
+        Game.background = new BackgroundTexture().setTexture(Generate.darkPixmap(Generate.getScreenshot(), 0.5f)/*new Texture(Generate.getScreenshot())*/);
         resetAll();
         setAnimationForEach(GuiElement.ani_type.SLIDE_FROM_BOTTOM, 300);
     }

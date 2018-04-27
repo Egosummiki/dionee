@@ -14,7 +14,7 @@ public class NodeTurn extends Node {
     }
 
     @Override
-    public void onEntityWalkOn(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(Map gameMap, Entity e, int x, int y)
     {
         if(turnRight)
         {

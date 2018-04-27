@@ -43,7 +43,7 @@ public class NodeWater extends Node {
     public boolean isSolid(float x, float y) { if(y > 24.0f) return false; return true; }
 
     @Override
-    public void onEntityEnter(Map gameMap, Entity e, int x, int y)
+    public void onEntityTouch(Map gameMap, Entity e, int x, int y)
     {
         e.kill();
     }
