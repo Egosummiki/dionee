@@ -172,6 +172,12 @@ public class Entity {
 
         // Recalculate the corners
 
+        double topRightAngle = aimAngle - GameMath.pi/4.0;
+        Vector2 topRightVector = new Vector2(
+                (float)Math.cos(topRightAngle),
+                (float)Math.sin(topRightAngle)
+        );
+
         topRight.x      = aimPosition.x + diagonal * (float)Math.cos(aimAngle - GameMath.pi/4.0);
         topRight.y      = aimPosition.y + diagonal * (float)Math.sin(aimAngle - GameMath.pi/4.0);
         bottomRight.x   = aimPosition.x + diagonal * (float)Math.cos(aimAngle + GameMath.pi/4.0);

@@ -19,10 +19,30 @@ public class GameMath {
         return (float)Math.sqrt(xDiff*xDiff + yDiff*yDiff);
     }
 
+    private static boolean betweenTest(HitLine line, Vector2 point)
+    {
+        if(line.getA().x != line.getB().x)
+        {
+            if(line.getA().x < line.getB().x)
+            {
+                return line.getA().x < point.x && line.getB().x > point.x;
+            }
+            return line.getA().x > point.x && line.getB().x < point.x;
+        }
+        if(line.getA().y < line.getB().y)
+        {
+            return line.getA().y < point.y && line.getB().y > point.y;
+        }
+        return line.getA().y > point.y && line.getB().y < point.y;
+
+    }
+
     public static Vector2 linearTest(HitLine line1, HitLine line2)
     {
         float denominator = (line1.getA().x - line1.getB().x)*(line2.getA().y - line2.getB().y) -
                 (line1.getA().y - line1.getB().y)*(line2.getA().x - line2.getB().x);
+
+        if(denominator == 0) return null;
 
         float mult1 = line1.getA().x * line1.getB().y - line1.getA().y * line1.getB().x;
         float mult2 = line2.getA().x * line2.getB().y - line2.getA().y * line2.getB().x;
@@ -31,14 +51,7 @@ public class GameMath {
                 ((mult1 * (line2.getA().x - line2.getB().x)) - (mult2 * (line1.getA().x - line1.getB().x)))/denominator,
                 ((mult1 * (line2.getA().y - line2.getB().y)) - (mult2 * (line1.getA().y - line1.getB().y)))/denominator);
 
-        float aDiff = distance(line1.getA(), line1.getB()) - distance(line1.getA(), common) - distance(common, line1.getB());
-        float bDiff = distance(line2.getA(), line2.getB()) - distance(line2.getA(), common) - distance(common, line2.getB());
-
-        if(Math.abs(aDiff) < 0.01f && Math.abs(bDiff) < 0.01f)
-        {
-            return common;
-        }
-
+        if (betweenTest(line1, common) && betweenTest(line2, common)) return common;
         return null;
     }
 }
