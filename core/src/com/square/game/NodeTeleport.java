@@ -29,9 +29,7 @@ public class NodeTeleport extends Node {
 
             if(des.x > 0)
             {
-                boolean right = e.getVelocityX() > 0 ? true : false;
-                e.applyPosition(gameMap, des.x * gameMap.getBlockSize(), des.y * gameMap.getBlockSize() + 6.627417f*e.getAngle(), 0);
-                if(right) e.setRightDirection(); else e.setLeftDirection();
+                e.applyPosition(gameMap, des.x * gameMap.getBlockSize(), (des.y + 0.5f) * gameMap.getBlockSize(), 0);
 
                 gameMap.setNodeData(x, y, (byte)1);
                 gameMap.setTimer(x, y, 500);

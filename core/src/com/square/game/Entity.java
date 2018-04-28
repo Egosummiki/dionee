@@ -115,17 +115,16 @@ public class Entity {
     }
 
     private static final float speed = 2.6f;
+    private static final float angularSpeed = GameMath.pi*0.02f;
 
     public void setRightDirection()
     {
         direction = Direction.RIGHT;
-        angularVelocity = -GameMath.pi*0.02f;
     }
 
     public void setLeftDirection()
     {
         direction = Direction.LEFT;
-        angularVelocity = GameMath.pi*0.02f;
     }
 
     public Direction getDirection()
@@ -144,8 +143,9 @@ public class Entity {
         murder = true;
     }
 
-    private static final float friction = 0.1f;
+    private static final float friction = 0.015f;
     private static final float fightBack = 0.25f;
+    private static final float angularFightBack = GameMath.pi*0.005f;
 
 
     public void update(Map gameMap)
@@ -158,9 +158,11 @@ public class Entity {
         {
             case RIGHT:
                 if(velocity.x < speed) velocity.x += fightBack;
+                if(angularVelocity > -angularSpeed) angularVelocity -= angularFightBack;
                 break;
             case LEFT:
                 if(velocity.x > -speed) velocity.x -= fightBack;
+                if(angularVelocity < angularSpeed) angularVelocity += angularFightBack;
                 break;
             default: break;
         }
@@ -202,9 +204,7 @@ public class Entity {
         {
             if(test != null)
             {
-                float velLen = (float)Math.sqrt( Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2) );
-                float norm = (float)Math.sqrt( Math.pow(position.x - test.x, 2) + Math.pow(position.y - test.y, 2) );
-                applyForce(friction*velLen*(position.x - test.x)/norm, friction*velLen*(position.y - test.y)/norm, 0);
+                applyForce(friction*(position.x - test.x), friction*(position.y - test.y), 0);
                 gameMap.sendOnEntityTouch( (int)(test.x - 0.01f) / gameMap.getBlockSize(), (int)(test.y - 0.01f) / gameMap.getBlockSize(), this  );
                 applyAim = false;
             }
