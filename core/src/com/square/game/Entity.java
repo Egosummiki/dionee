@@ -144,7 +144,7 @@ public class Entity {
         murder = true;
     }
 
-    private static final float friction = 0.01f;
+    private static final float friction = 0.1f;
     private static final float fightBack = 0.25f;
 
 
@@ -193,7 +193,7 @@ public class Entity {
 
         for(int i = 0; i < 4; i++)
         {
-            hitTests[i] = gameMap.hitTest(hitLines[i]);
+            hitTests[i] = gameMap.hitTest(hitLines[i]); // hitLines[0-3] contain the corners!
         }
 
         boolean applyAim = true;
@@ -202,7 +202,9 @@ public class Entity {
         {
             if(test != null)
             {
-                applyForce(friction*(position.x - test.x), friction*(position.y - test.y), 0);
+                float velLen = (float)Math.sqrt( Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2) );
+                float norm = (float)Math.sqrt( Math.pow(position.x - test.x, 2) + Math.pow(position.y - test.y, 2) );
+                applyForce(friction*velLen*(position.x - test.x)/norm, friction*velLen*(position.y - test.y)/norm, 0);
                 gameMap.sendOnEntityTouch( (int)(test.x - 0.01f) / gameMap.getBlockSize(), (int)(test.y - 0.01f) / gameMap.getBlockSize(), this  );
                 applyAim = false;
             }

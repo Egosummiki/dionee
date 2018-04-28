@@ -37,6 +37,13 @@ public class GameMath {
 
     }
 
+    private static Vector2 common;
+
+    public static void initCommon()
+    {
+        common = new Vector2(0.0f, 0.0f);
+    }
+
     public static Vector2 linearTest(HitLine line1, HitLine line2)
     {
         float denominator = (line1.getA().x - line1.getB().x)*(line2.getA().y - line2.getB().y) -
@@ -47,11 +54,10 @@ public class GameMath {
         float mult1 = line1.getA().x * line1.getB().y - line1.getA().y * line1.getB().x;
         float mult2 = line2.getA().x * line2.getB().y - line2.getA().y * line2.getB().x;
 
-        Vector2 common = new Vector2(
-                ((mult1 * (line2.getA().x - line2.getB().x)) - (mult2 * (line1.getA().x - line1.getB().x)))/denominator,
-                ((mult1 * (line2.getA().y - line2.getB().y)) - (mult2 * (line1.getA().y - line1.getB().y)))/denominator);
+        common.x = ((mult1 * (line2.getA().x - line2.getB().x)) - (mult2 * (line1.getA().x - line1.getB().x)))/denominator;
+        common.y = ((mult1 * (line2.getA().y - line2.getB().y)) - (mult2 * (line1.getA().y - line1.getB().y)))/denominator;
 
-        if (betweenTest(line1, common) && betweenTest(line2, common)) return common;
+        if (betweenTest(line1, common) && betweenTest(line2, common)) return new Vector2(common.x, common.y);
         return null;
     }
 }

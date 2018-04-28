@@ -65,6 +65,8 @@ public class Game extends ApplicationAdapter {
 		TutorialQueue.prepare(levelMan);
 
 		Gui.setGui(Gui.GUI_MENU);
+
+		GameMath.initCommon();
 	}
 
 
