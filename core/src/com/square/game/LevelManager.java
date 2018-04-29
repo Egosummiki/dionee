@@ -26,7 +26,7 @@ public class LevelManager {
         ctrl = cl;
         entityMan = em;
 
-        createLevel(0, 9).addStartingItem(NodeManager.NODE_JUMP, 1).addStartingItem(NodeManager.NODE_TURN_LEFT, 1).addStartingItem(NodeManager.NODE_TURN_RIGHT, 1);
+        createLevel(0, 9).addStartingItem(NodeManager.NODE_JUMP, 1).addStartingItem(NodeManager.NODE_TURN_LEFT, 1).addStartingItem(NodeManager.NODE_TURN_RIGHT, 1).addStartingItem(NodeManager.NODE_DIRT, 2);
         createLevel(1, 13).addStartingItem(NodeManager.NODE_TURN_LEFT, 1).addStartingItem(NodeManager.NODE_JUMP, 1);
         createLevel(2, 14).addStartingItem(NodeManager.NODE_TURN_LEFT, 1).addStartingItem(NodeManager.NODE_ALTERNATE, 2);
         createLevel(3, 11).addStartingItem(NodeManager.NODE_UPWARDS, 3);

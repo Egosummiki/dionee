@@ -115,7 +115,7 @@ public class Entity {
     }
 
     private static final float speed = 2.6f;
-    private static final float angularSpeed = GameMath.pi*0.02f;
+    private static final float angularSpeed = GameMath.pi*0.015f;
 
     public void setRightDirection()
     {
@@ -143,7 +143,7 @@ public class Entity {
         murder = true;
     }
 
-    private static final float friction = 0.015f;
+    private static final float friction = 0.02f;
     private static final float fightBack = 0.25f;
     private static final float angularFightBack = GameMath.pi*0.005f;
 
@@ -204,7 +204,7 @@ public class Entity {
         {
             if(test != null)
             {
-                applyForce(friction*(position.x - test.x), friction*(position.y - test.y), 0);
+                applyForce(friction*(aimPosition.x - test.x), friction*(aimPosition.y - test.y), 0);
                 gameMap.sendOnEntityTouch( (int)(test.x - 0.01f) / gameMap.getBlockSize(), (int)(test.y - 0.01f) / gameMap.getBlockSize(), this  );
                 applyAim = false;
             }
