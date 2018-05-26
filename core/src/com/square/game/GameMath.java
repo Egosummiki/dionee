@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 public class GameMath {
 
     public final static float pi = 3.14159265359f;
+    public final static float pi_over_4 = 0.7853982f;
     public final static float tau = 6.28318530718f;
 
     public final static float gravitationalConstant = 0.2f;

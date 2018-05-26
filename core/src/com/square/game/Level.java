@@ -27,12 +27,18 @@ public class Level {
         control = c;
     }
 
+   /*
+   * Funkcja addStartingItem pozwala na dodanie przedmiotu startowego podczas definiowania poziomu.
+   * */
     public Level addStartingItem(int type, int amount)
     {
         items.add(new InvItem(type, amount));
         return this;
     }
 
+    /*
+    * Funkcja load jest odpowiedzialna za ładowanie poziomu
+    * */
     public boolean load()
     {
         Vector<InvItem> newitmset = new Vector<InvItem>();

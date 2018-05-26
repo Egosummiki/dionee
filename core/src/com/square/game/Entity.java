@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Mikolaj on 09.10.2015.
+ *
+ * Klasa istota - reprezentuje konkretną istotę.
  */
 public class Entity {
 
@@ -33,7 +35,7 @@ public class Entity {
     private final float diagonal;
     private final int offset;
 
-    public boolean murder = false;
+    boolean murder = false;
 
     private Direction direction = Direction.NONE;
 
@@ -41,7 +43,7 @@ public class Entity {
 
     private Vector2 cornerVector;
 
-    public boolean moveLock = false;
+    boolean moveLock = false;
 
     private int id;
     private EntityManager entityMan;
@@ -75,20 +77,29 @@ public class Entity {
         hitLines[3] = new HitLine(topLeft, topRight);
     }
 
-    public void setSpawned(int id, EntityManager entityMan)
+    /*
+    * Funkcja ustawia paramentry przywołanej istoty.
+    * */
+    void setSpawned(int id, EntityManager entityMan)
     {
         this.id = id;
         this.entityMan = entityMan;
     }
 
-    public void applyForce(float x, float y, float a)
+    /*
+    * Funkcja podaje siłę.
+    * */
+    void applyForce(float x, float y, float a)
     {
         velocity.x += x;
         velocity.y += y;
         angularVelocity += a;
     }
 
-    public void stop()
+    /*
+    * Funkcja całkowicie zatrzumuje istotę.
+    * */
+    void stop()
     {
         direction = Direction.NONE;
         velocity.x  = 0;
@@ -96,6 +107,9 @@ public class Entity {
         angularVelocity = 0;
     }
 
+    /*
+    * Funkcja bezkonfliktowo zmienia pozycję istoty.
+    * */
     public void applyPosition(Map gameMap, float pos_x, float pos_y, float alpha)
     {
         int ox = (int)Math.floor((position.x + 0.5f* dimension)/ dimension);
@@ -150,7 +164,7 @@ public class Entity {
 
     public void update(Map gameMap)
     {
-        // Gravitation and fight back
+        // Obsługa gravitacji i siły ciągnącej istotę w określonym kierunku.
 
         velocity.y -= GameMath.gravitationalConstant;
 
@@ -167,7 +181,7 @@ public class Entity {
             default: break;
         }
 
-        // Calculate entity new position
+        // Wylicz docelową pozycje istoty.
 
         aimPosition.x = position.x + velocity.x;
         aimPosition.y = position.y + velocity.y;
@@ -176,9 +190,9 @@ public class Entity {
         while ( aimAngle < 0.0f           ) aimAngle += GameMath.tau;
         while ( aimAngle >= GameMath.tau  ) aimAngle -= GameMath.tau;
 
-        // Recalculate the corners
+        // Wylicz wszystkie krawędzie istoty.
 
-        double cornerAngle = aimAngle - GameMath.pi/4.0;
+        double cornerAngle = aimAngle - GameMath.pi_over_4;
         cornerVector.x = diagonal*(float)Math.cos(cornerAngle);
         cornerVector.y = diagonal*(float)Math.sin(cornerAngle);
 
@@ -191,7 +205,7 @@ public class Entity {
         topLeft.x       = aimPosition.x - cornerVector.y;
         topLeft.y       = aimPosition.y + cornerVector.x;
 
-        // Check the legality of the move
+        // Sprawdź czy ruch jest legalny. (Czy postać nie będzie zawadzać o mapę uderzeń.)
 
         for(int i = 0; i < 4; i++)
         {
@@ -204,11 +218,14 @@ public class Entity {
         {
             if(test != null)
             {
-                applyForce(friction*(aimPosition.x - test.x), friction*(aimPosition.y - test.y), 0);
+                //applyForce(friction*(aimPosition.x - test.x), friction*(aimPosition.y - test.y), 0);
+                applyForce(0.0f, 0.5f, 0.0f);
                 gameMap.sendOnEntityTouch( (int)(test.x - 0.01f) / gameMap.getBlockSize(), (int)(test.y - 0.01f) / gameMap.getBlockSize(), this  );
                 applyAim = false;
             }
         }
+
+        // Jeśli ruch był legalny zastosuj go.
 
         if(applyAim)
         {
