@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -25,11 +27,15 @@ public class Map {
         }
     }
 
+    private class HitLineVector extends Vector<HitLine> {
+    }
+
     private short[] nodes;
     private byte[] nodesData;
     private byte[] nodesBack;
 
-    private Vector<HitLine> hitMap;
+    private Vector<HitLine>[] hitMapVertical;
+    private Vector<HitLine>[] hitMapHorizontal;
 
     private Vector<TimerData> timers;
 
@@ -48,7 +54,8 @@ public class Map {
         blockDimension = b_s;
 
         timers = new Vector<TimerData>();
-        hitMap = new Vector<HitLine>();
+        hitMapVertical = new HitLineVector[width];
+        hitMapHorizontal = new HitLineVector[height];
 
         nodes = new short[width * height];
         nodesData = new byte[width * height];
@@ -86,19 +93,20 @@ public class Map {
 
     public void generateHitMap()
     {
-        hitMap.clear();
+        Arrays.fill(hitMapVertical, null);
+        Arrays.fill(hitMapHorizontal, null);
 
         for(int x = 0; x < width; x++)
         {
             if(nodeMan.getNode(getNode(x,0)).getStructure() == Node.Structure.custom)
             {
-                nodeMan.getNode(getNode(x,0)).applyCustomHitMap(this, hitMap, x, 0);
+                nodeMan.getNode(getNode(x,0)).applyCustomHitMap(this, null, x, 0);
             }
         }
 
         for(int y = 1; y < height; y++)
         {
-            int startx = -1;
+            int xStart = -1;
             for(int x = 0; x < width; x++)
             {
                 Node.Structure up       = nodeMan.getNode(getNode(x,y)).getStructure();
@@ -106,7 +114,7 @@ public class Map {
 
                 if(up == Node.Structure.custom)
                 {
-                    nodeMan.getNode(getNode(x,y)).applyCustomHitMap(this, hitMap, x, y);
+                    nodeMan.getNode(getNode(x,y)).applyCustomHitMap(this, null, x, y);
                     up = Node.Structure.blank;
                 }
 
@@ -114,25 +122,31 @@ public class Map {
 
                 if(up != bottom)
                 {
-                    if(startx == -1) startx = (x == 0 ? -10 : x);
-                } else if(startx != -1)
+                    if(xStart == -1) xStart = (x == 0 ? -10 : x);
+                } else if(xStart != -1)
                 {
-                    hitMap.add(new HitLine( new Vector2(blockDimension*startx, blockDimension*y),
+                    if(hitMapHorizontal[y] == null)
+                    {
+                        hitMapHorizontal[y] = new HitLineVector();
+                    }
+
+                    hitMapHorizontal[y].add(new HitLine( new Vector2(blockDimension*xStart, blockDimension*y),
                                             new Vector2(blockDimension*x,blockDimension*y)));
-                    startx = -1;
+                    xStart = -1;
                 }
             }
 
-            if(startx != -1)
+            if(xStart != -1)
             {
-                hitMap.add(new HitLine( new Vector2(blockDimension*startx, blockDimension*y),
+                if(hitMapHorizontal[y] == null) hitMapHorizontal[y] = new Vector<HitLine>();
+                hitMapHorizontal[y].add(new HitLine( new Vector2(blockDimension*xStart, blockDimension*y),
                         new Vector2(blockDimension*(width+10),blockDimension*y)));
             }
         }
 
         for(int x = 1; x < width; x++)
         {
-            int starty = -1;
+            int yStart = -1;
             for(int y = 0; y < height; y++)
             {
                 Node.Structure right  = nodeMan.getNode(getNode(x,y)).getStructure();
@@ -143,32 +157,76 @@ public class Map {
 
                 if(right != left)
                 {
-                    if(starty == -1) starty = y;
-                } else if(starty != -1)
+                    if(yStart == -1) yStart = y;
+                } else if(yStart != -1)
                 {
-                    hitMap.add(new HitLine(new Vector2(blockDimension*x, blockDimension*starty),
+                    if(hitMapVertical[x] == null) hitMapVertical[x] = new HitLineVector();
+
+                    hitMapVertical[x].add(new HitLine(new Vector2(blockDimension*x, blockDimension*yStart),
                                             new Vector2(blockDimension*x,blockDimension*y)));
-                    starty = -1;
+                    yStart = -1;
                 }
             }
 
-            if(starty != -1)
+            if(yStart != -1)
             {
-                hitMap.add(new HitLine(new Vector2(blockDimension*x, blockDimension*starty),
+                if(hitMapVertical[x] == null) hitMapVertical[x] = new Vector<HitLine>();
+                hitMapVertical[x].add(new HitLine(new Vector2(blockDimension*x, blockDimension*yStart),
                         new Vector2(blockDimension*x,blockDimension*height)));
             }
         }
 
     }
 
-    public Vector2 hitTest(HitLine line)
+    Vector2 hitTest(HitLine line)
     {
-        for(HitLine compare : hitMap)
+        // Horizontal test
+
+        float min_y = Math.min(line.getA().y, line.getB().y) / blockDimension;
+        float max_y = Math.max(line.getA().y, line.getB().y) / blockDimension;
+
+        if(min_y < 0) min_y = 0;
+        if(min_y > height-1) min_y = height-1;
+        if(max_y < 0) max_y = 0;
+        if(max_y > height-1) max_y = height-1;
+
+        for(float whole = (float)Math.ceil(min_y); whole < max_y; whole++)
         {
-            Vector2 result = GameMath.linearTest(compare, line);
-            if(result != null)
+            Vector<HitLine> currentHitMap = hitMapHorizontal[(int)whole];
+            if(currentHitMap == null) continue;
+
+            for(HitLine compare : currentHitMap)
             {
-               return result;
+                Vector2 result = GameMath.linearTest(compare, line);
+                if(result != null)
+                {
+                    return result;
+                }
+            }
+        }
+
+        // Vertical test
+
+        float min_x = Math.min(line.getA().x, line.getB().x) / blockDimension;
+        float max_x = Math.max(line.getA().x, line.getB().x) / blockDimension;
+
+        if(min_x < 0) min_x = 0;
+        if(min_x > width-1) min_x = width-1;
+        if(max_x < 0) max_x = 0;
+        if(max_x > width-1) max_x = width-1;
+
+        for(float whole = (float)Math.ceil(min_x); whole < max_x; whole++)
+        {
+            Vector<HitLine> currentHitMap = hitMapVertical[(int)whole];
+            if(currentHitMap == null) continue;
+
+            for(HitLine compare : currentHitMap)
+            {
+                Vector2 result = GameMath.linearTest(compare, line);
+                if(result != null)
+                {
+                    return result;
+                }
             }
         }
 

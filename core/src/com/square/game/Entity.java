@@ -263,6 +263,9 @@ public class Entity {
         return angle;
     }
 
+    /*
+    * Funkcja wykonuje rysowanie istoty.
+    * */
     public void draw(Render render)
     {
         render.drawCenterScale(texture, (int)position.x - offset, (int)position.y - offset, (int) dimension, (int) dimension, (float)Math.toDegrees(angle));
