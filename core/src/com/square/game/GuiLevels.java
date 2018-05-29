@@ -72,7 +72,7 @@ public class GuiLevels extends Gui {
 
         addElement(new GuiImage(Render.TEXTURE_GUI_LEVELMENU_BACK, sx, sy, 352, 288));
 
-        addElement(new Button(Render.TEXTURE_GOBACK, 16, Gdx.graphics.getHeight() - 80, 64, 64).setAction(new ButtonAction() {
+        addElement(new Button(Render.TEXTURE_GOBACK, 16, Gdx.graphics.getHeight() - 128, 96, 96).setAction(new ButtonAction() {
             @Override
             public void onPress(Button but, float time) {
 

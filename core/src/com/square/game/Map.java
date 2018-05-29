@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -14,6 +12,9 @@ import java.util.Vector;
  */
 public class Map {
 
+    /*
+    * Klasa jest podtrzebna blokom, które wyliczają czas.
+    * */
     private class TimerData {
         int x;
         int y;
@@ -27,6 +28,56 @@ public class Map {
         }
     }
 
+    /*
+    * Rodzaj zderzenia.
+    * */
+    public enum HitType
+    {
+        Vertical, Horizonal
+    }
+
+    /*
+    * Wynik testu zderzenia.
+    * */
+    public class HitTestResult
+    {
+        HitType type;
+        Vector2 hitPoint;
+
+
+        float start, end;
+
+        public HitTestResult(HitType type, Vector2 hitPoint, float start, float end) {
+            this.type = type;
+            this.hitPoint = hitPoint;
+            this.start = start;
+            this.end = end;
+        }
+
+
+        public HitType getType() {
+            return type;
+        }
+
+        public Vector2 getHitPoint() {
+            return hitPoint;
+        }
+
+        public float getStart() {
+            return start;
+        }
+
+        public float getEnd() {
+            return end;
+        }
+
+
+
+    }
+
+    /*
+    * Klasa potrzebna, w celu stworzenia tablicy wektorów.
+    * */
     private class HitLineVector extends Vector<HitLine> {
     }
 
@@ -91,7 +142,10 @@ public class Map {
         }
     }
 
-    public void generateHitMap()
+    /*
+    * Zadaniem funkcji jest wyliczenie mapy zderzeń poziomu.
+    * */
+    void generateHitMap()
     {
         Arrays.fill(hitMapVertical, null);
         Arrays.fill(hitMapHorizontal, null);
@@ -125,10 +179,7 @@ public class Map {
                     if(xStart == -1) xStart = (x == 0 ? -10 : x);
                 } else if(xStart != -1)
                 {
-                    if(hitMapHorizontal[y] == null)
-                    {
-                        hitMapHorizontal[y] = new HitLineVector();
-                    }
+                    if(hitMapHorizontal[y] == null) hitMapHorizontal[y] = new HitLineVector();
 
                     hitMapHorizontal[y].add(new HitLine( new Vector2(blockDimension*xStart, blockDimension*y),
                                             new Vector2(blockDimension*x,blockDimension*y)));
@@ -138,7 +189,7 @@ public class Map {
 
             if(xStart != -1)
             {
-                if(hitMapHorizontal[y] == null) hitMapHorizontal[y] = new Vector<HitLine>();
+                if(hitMapHorizontal[y] == null) hitMapHorizontal[y] = new HitLineVector();
                 hitMapHorizontal[y].add(new HitLine( new Vector2(blockDimension*xStart, blockDimension*y),
                         new Vector2(blockDimension*(width+10),blockDimension*y)));
             }
@@ -170,7 +221,7 @@ public class Map {
 
             if(yStart != -1)
             {
-                if(hitMapVertical[x] == null) hitMapVertical[x] = new Vector<HitLine>();
+                if(hitMapVertical[x] == null) hitMapVertical[x] = new HitLineVector();
                 hitMapVertical[x].add(new HitLine(new Vector2(blockDimension*x, blockDimension*yStart),
                         new Vector2(blockDimension*x,blockDimension*height)));
             }
@@ -178,7 +229,10 @@ public class Map {
 
     }
 
-    Vector2 hitTest(HitLine line)
+    /*
+    * Funkcja testuje czy konkretna linia przechodzi przez mapę zderzeń.
+    * */
+    HitTestResult hitTest(HitLine line)
     {
         // Horizontal test
 
@@ -200,7 +254,7 @@ public class Map {
                 Vector2 result = GameMath.linearTest(compare, line);
                 if(result != null)
                 {
-                    return result;
+                    return new HitTestResult(HitType.Horizonal, result, compare.getA().x, compare.getB().x);
                 }
             }
         }
@@ -225,7 +279,7 @@ public class Map {
                 Vector2 result = GameMath.linearTest(compare, line);
                 if(result != null)
                 {
-                    return result;
+                    return new HitTestResult(HitType.Vertical, result, compare.getA().y, compare.getB().y);
                 }
             }
         }
@@ -233,7 +287,10 @@ public class Map {
         return null;
     }
 
-    public void sendReset()
+    /*
+    * Funkcja informuje bloki o tym, że mapa jest resetowana.
+    * */
+    void sendReset()
     {
         for(int y = 0; y < height; y++)
         {
@@ -245,30 +302,44 @@ public class Map {
 
     }
 
-    public void setTimer(int x, int y, int milisecs)
+    /*
+    * Ustaw timer.
+    * */
+    void setTimer(int x, int y, int milisecs)
     {
         timers.add(new TimerData(x, y, System.currentTimeMillis() + milisecs));
     }
 
-    public short getNode(int x, int y)
+    /*
+    * Podaj wartość bloku.
+    * */
+    short getNode(int x, int y)
     {
         if(x > -1 && x < 30 && y > -1 && y < 17) return nodes[x + y * width];
 
         return 0;
     }
 
-    public void setNode(int x, int y, short n)
+    /*
+    * Ustaw wartość bloku na konkretnej pozycji.
+    * */
+    void setNode(int x, int y, short n)
     {
         nodeMan.getNode(n).onSet(this, x, y);
         if(x > -1 && x < 30 && y > -1 && y < 17) nodes[x + y * width] = n;
-        //generateHitMap();
     }
 
+    /*
+    * Ustaw block tła.
+    * */
     public void setBackNode(int x, int y, byte n)
     {
         if(x > -1 && x < 30 && y > -1 && y < 17) nodesBack[x + y * width] = n;
     }
 
+    /*
+    * Podaj wartość bloku tła.
+    * */
     public byte getBackNode(int x, int y)
     {
         if(x > -1 && x < 30 && y > -1 && y < 17) return nodesBack[x + y * width];
@@ -276,6 +347,9 @@ public class Map {
         return 0;
     }
 
+    /*
+    * Podaj informację o bloku.
+    * */
     public byte getNodeData(int x, int y)
     {
         if(x > -1 && x < 30 && y > -1 && y < 17) return nodesData[x + y * width];
@@ -283,32 +357,33 @@ public class Map {
         return 0;
     }
 
+    /*
+    * Ustaw informację o bloku.
+    * */
     public void setNodeData(int x, int y, byte n)
     {
         if(x > -1 && x < 30 && y > -1 && y < 17) nodesData[x + y * width] = n;
     }
 
+    /*
+    * Czy blok jest blokiem stałym?
+    * */
     public boolean isSolid(int x, int y, float i_x, float i_y)
     {
         return nodeMan.getNode(getNode(x, y)).isSolid(i_x, i_y);
     }
 
-    public boolean isRemoveable(int x, int y)
+    /*
+    * Czy blok można usunąć?
+    * */
+    public boolean isRemovable(int x, int y)
     {
-        return nodeMan.getNode(getNode(x, y)).isRemoveable();
+        return nodeMan.getNode(getNode(x, y)).isRemovable();
     }
 
-    public float getMaxDistanceToBlockX(float x_bot, float x_up, float mov) //Works only if mov < blockDimension
-    {
-        if(mov > 0)
-        {
-            return (float)Math.floor((x_up+mov)/ blockDimension)* blockDimension - x_up + 1;
-        } else
-        {
-            return ((float)Math.floor((x_bot+mov)/ blockDimension)+1)* blockDimension - x_bot - 1;
-        }
-    }
-
+    /*
+    * Znajdź blok o id.
+    * */
     public Vector2 findBlockByID(int id)
     {
         for(int y = 0; y < height; y++)
@@ -325,27 +400,25 @@ public class Map {
         return new Vector2(-1, -1);
     }
 
-    public float getMaxDistanceToBlockY(float y_bot, float y_up, float mov) //Works only if mov < blockDimension
-    {
-        if(mov > 0)
-        {
-            return (float)Math.floor((y_up+mov)/ blockDimension)* blockDimension - y_up - 1;
-        } else
-        {
-            return ((float)Math.floor((y_bot+mov)/ blockDimension)+1)* blockDimension - y_bot + 1;
-        }
-    }
-
+    /*
+    * Informuj o zdarzeniu, kiedy istota doktnie bloku.
+    * */
     public void sendOnEntityTouch(int x, int y, Entity e)
     {
         nodeMan.getNode(getNode(x, y)).onEntityTouch(this, e, x, y);
     }
 
+    /*
+    * Informuj o zdarzeniu, kiedy istota jest wewnątrz bloku.
+    * */
     public void sendOnEntityInside(int x, int y, Entity e)
     {
         nodeMan.getNode(getNode(x, y)).onEntityInside(this, e, x, y);
     }
 
+    /*
+    * Informuj o zdarzeniu, kiedy istota opuści blok.
+    * */
     public void sendOnLostInfluence(Entity e, int old_x, int old_y, int new_x, int new_y)
     {
         nodeMan.getNode(getNode(old_x, old_y)).onLostInfluence(this, e, old_x, old_y, new_x, new_y);
@@ -364,6 +437,9 @@ public class Map {
         return blockDimension;
     }
 
+    /*
+    * Załaduj poziom!
+    * */
     public Boolean loadLevel(Texture tex)
     {
         if(tex.getWidth() != 30 && tex.getHeight() != 17) return false;

@@ -77,7 +77,7 @@ public class Control {
 
         Button buttonPlay;
 
-        buttonPlay = new Button(Render.TEXTURE_BUTTON_PLAY, 16, Gdx.graphics.getHeight()-64, 48, 48);
+        buttonPlay = new Button(Render.TEXTURE_BUTTON_PLAY, 16, Gdx.graphics.getHeight()-16-96, 96, 96);
         buttonPlay.setAction(new ButtonAction() {
             @Override
             public void onPress(Button but, float time) {
@@ -96,7 +96,7 @@ public class Control {
 
         Button button_remove;
 
-        button_remove = new Button(Render.TEXTURE_BUTTON_REMOVE, 89, Gdx.graphics.getHeight()-16-48, 48, 48);
+        button_remove = new Button(Render.TEXTURE_BUTTON_REMOVE, 16 + 96 + 16, Gdx.graphics.getHeight()-16-96, 96, 96);
         button_remove.setAction(new ButtonAction() {
             @Override
             public void onPress(Button but, float time) {
@@ -115,7 +115,7 @@ public class Control {
         currentGui.addElement(buttonPlay);
         currentGui.addElement(button_remove);
 
-        currentGui.addElement(new Button(Render.TEXTURE_BUTTON_EXIT, Gdx.graphics.getWidth() - 16 - 48, Gdx.graphics.getHeight() - 16 - 48, 48, 48).setAction(new ButtonAction() {
+        currentGui.addElement(new Button(Render.TEXTURE_BUTTON_EXIT, Gdx.graphics.getWidth() - 16 - 96, Gdx.graphics.getHeight() - 16 - 96, 96, 96).setAction(new ButtonAction() {
             @Override
             public void onPress(Button but, float time) {
 
@@ -136,7 +136,7 @@ public class Control {
         {
             Button button_node;
 
-            button_node = new Button(nodeMan.getNode(items.get(i).type).getTexture(), 89 + (i+1)*(48+8), Gdx.graphics.getHeight()-16-48, 48, 48);
+            button_node = new Button(nodeMan.getNode(items.get(i).type).getTexture(), 32 + 96 + (i+1)*(96+16), Gdx.graphics.getHeight()-16-96, 96, 96);
             button_node.setAction(new buttonAction_node(i));
 
             currentGui.addElement(button_node);
@@ -144,7 +144,7 @@ public class Control {
 
         if(editMode)
         {
-            currentGui.addElement(new Button(Render.TEXTURE_PLUS, 16, 16, 48, 48).setAction(new ButtonAction() {
+            currentGui.addElement(new Button(Render.TEXTURE_PLUS, 16, 16, 96, 96).setAction(new ButtonAction() {
                 @Override
                 public void onPress(Button but, float time) {
 
@@ -161,7 +161,7 @@ public class Control {
                 }
             }));
 
-            currentGui.addElement(new Button(nodeMan.getNode(editItem).getTexture(), 32 + 48, 16, 48, 48).setAction(new ButtonAction() {
+            currentGui.addElement(new Button(nodeMan.getNode(editItem).getTexture(), 32 + 96, 16, 96, 96).setAction(new ButtonAction() {
                 @Override
                 public void onPress(Button but, float time) {
 
@@ -204,7 +204,7 @@ public class Control {
 
             Button button_refresh;
 
-            button_refresh = new Button(Render.TEXTURE_BUTTON_REFRESH, 16, Gdx.graphics.getHeight()-16-48, 48, 48);
+            button_refresh = new Button(Render.TEXTURE_BUTTON_REFRESH, 16, Gdx.graphics.getHeight()-16-96, 96, 96);
             button_refresh.setAction(new ButtonAction() {
                 @Override
                 public void onPress(Button but, float time) {
@@ -298,10 +298,10 @@ public class Control {
     {
         if(mode == ControlMode.REMOVE)
         {
-            ren.draw(Render.TEXTURE_HIGHLIGHT, 89, Gdx.graphics.getHeight()-16-48-12);
+            ren.drawScale(Render.TEXTURE_HIGHLIGHT, 32+96, Gdx.graphics.getHeight()-16-96-24, 96, 16);
         } else if(mode == ControlMode.ADD)
         {
-            ren.draw(Render.TEXTURE_HIGHLIGHT, 145 + selectedItem *56, Gdx.graphics.getHeight()-16-48-12);
+            ren.drawScale(Render.TEXTURE_HIGHLIGHT, 48+96+96 + selectedItem *(96+16), Gdx.graphics.getHeight()-16-96-24, 96, 16);
         }
 
 
@@ -309,7 +309,7 @@ public class Control {
         {
             for(int i = 0; i < items.size(); i++)
             {
-                ren.drawText(Integer.toString(items.get(i).amount), 191 + i*56-16*((int)Math.floor(Math.log10(items.get(i).amount))+1), Gdx.graphics.getHeight()-16-48+30);
+                ren.drawText(Integer.toString(items.get(i).amount),  80 + 2*(32 + 96) + i*(96+16)-16*((int)Math.floor(Math.log10(items.get(i).amount))+1), Gdx.graphics.getHeight()-16-96+30);
             }
         }
 
@@ -371,7 +371,7 @@ public class Control {
                     int block_x = (int)Math.floor(Gdx.input.getX() / block_sz);
                     int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / block_sz);
 
-                    if(((gameMap.isRemoveable(block_x, block_y) && (gameMap.getNode(block_x-1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y-1) == 0 ||
+                    if(((gameMap.isRemovable(block_x, block_y) && (gameMap.getNode(block_x-1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y-1) == 0 ||
                             gameMap.getNode(block_x+1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y+1) == 0)) || editMode) &&  (!editMode || block_x > 3 || block_y > 1))
                     {
                         if(!editMode) addItem(gameMap.getNode(block_x,block_y), 1);

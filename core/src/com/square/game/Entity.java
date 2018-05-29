@@ -24,8 +24,9 @@ public class Entity {
     private int previousBlockX = -1;
     private int previousBlockY = -1;
 
-    private Vector2[] hitTests;
+    private Map.HitTestResult[] hitTests;
     private HitLine[] hitLines;
+    private Vector2[] corners;
     private Vector2 topLeft;
     private Vector2 topRight;
     private Vector2 bottomLeft;
@@ -54,10 +55,11 @@ public class Entity {
         position = new Vector2(position_x, position_y);
         velocity = new Vector2(0.0f, 0.0f);
 
-        topLeft = new Vector2(0,0);
-        topRight = new Vector2(0,0);
-        bottomLeft = new Vector2(0,0);
-        bottomRight = new Vector2(0,0);
+        corners = new Vector2[4];
+        corners[0] = topLeft = new Vector2(0,0);
+        corners[1] = topRight = new Vector2(0,0);
+        corners[2] = bottomLeft = new Vector2(0,0);
+        corners[3] = bottomRight = new Vector2(0,0);
 
         this.dimension = dimension;
         diagonal = dimension / (float)Math.sqrt(2);
@@ -69,7 +71,7 @@ public class Entity {
         aimPosition = new Vector2(0.0f, 0.0f);
         cornerVector = new Vector2(0.0f, 0.0f);
 
-        hitTests = new Vector2[4];
+        hitTests = new Map.HitTestResult[4];
         hitLines = new HitLine[4];
         hitLines[0] = new HitLine(topRight, bottomRight);
         hitLines[1] = new HitLine(bottomRight, bottomLeft);
@@ -157,14 +159,39 @@ public class Entity {
         murder = true;
     }
 
-    private static final float friction = 0.02f;
+    private static final float bounce = 0.05f;
     private static final float fightBack = 0.25f;
     private static final float angularFightBack = GameMath.pi*0.005f;
+
+    Vector2 getCorner(boolean lowest, boolean axis_x)
+    {
+        Vector2 result = corners[0];
+
+        for(int i = 1; i < 4; i++)
+        {
+            if(lowest && axis_x) {
+                if (corners[i].x < result.x)
+                    result = corners[i];
+            } else if(lowest) {
+                if(corners[i].y < result.y)
+                    result = corners[i];
+            } else if(axis_x) {
+                if (corners[i].x > result.x)
+                    result = corners[i];
+            } else {
+                if (corners[i].y > result.y)
+                    result = corners[i];
+            }
+        }
+
+        return result;
+    }
+
 
 
     public void update(Map gameMap)
     {
-        // Obsługa gravitacji i siły ciągnącej istotę w określonym kierunku.
+        // Obsługa grawitacji i siły ciągnącej istotę w określonym kierunku.
 
         velocity.y -= GameMath.gravitationalConstant;
 
@@ -205,43 +232,72 @@ public class Entity {
         topLeft.x       = aimPosition.x - cornerVector.y;
         topLeft.y       = aimPosition.y + cornerVector.x;
 
-        // Sprawdź czy ruch jest legalny. (Czy postać nie będzie zawadzać o mapę uderzeń.)
+        /*
+        * Sprawdź czy docelowa pozycja nie powoduje kolizji, jak tak to podaj siłę, która nie pozwoli
+        * istocie przejść.
+        * */
+
+        boolean horizontalLock = false;
+        boolean verticalLock = false;
 
         for(int i = 0; i < 4; i++)
         {
-            hitTests[i] = gameMap.hitTest(hitLines[i]); // hitLines[0-3] contain the corners!
-        }
+            Map.HitTestResult test = gameMap.hitTest(hitLines[i]);
 
-        boolean applyAim = true;
-
-        for(Vector2 test : hitTests)
-        {
             if(test != null)
             {
-                //applyForce(friction*(aimPosition.x - test.x), friction*(aimPosition.y - test.y), 0);
-                applyForce(0.0f, 0.5f, 0.0f);
-                gameMap.sendOnEntityTouch( (int)(test.x - 0.01f) / gameMap.getBlockSize(), (int)(test.y - 0.01f) / gameMap.getBlockSize(), this  );
-                applyAim = false;
+                Vector2 hitPoint = test.getHitPoint();
+
+                if(test.getType() == Map.HitType.Vertical && !verticalLock)
+                {
+                    verticalLock = true;
+                    if(position.x > hitPoint.x && velocity.x < 0.0f)
+                    {
+                        Vector2 extremal = getCorner(true, true);
+                        if(extremal.y > test.getStart() && extremal.y < test.getEnd())
+                            applyForce(hitPoint.x - extremal.x + bounce, 0.0f, 0.0f);
+                    } else if(position.x < hitPoint.x && velocity.x > 0.0f)
+                    {
+                        Vector2 extremal = getCorner(false, true);
+                        if(extremal.y > test.getStart() && extremal.y < test.getEnd())
+                            applyForce(hitPoint.x - extremal.x - bounce, 0.0f, 0.0f);
+                    }
+                } else if(test.getType() == Map.HitType.Horizonal && !horizontalLock)
+                {
+                    horizontalLock = true;
+                    if(position.y > hitPoint.y && velocity.y < 0.0f)
+                    {
+                        Vector2 extremal = getCorner(true, false);
+                        if(extremal.x > test.getStart() && extremal.x < test.getEnd())
+                            applyForce(0.0f, hitPoint.y - extremal.y + bounce, 0.0f);
+                    } else if(position.y < hitPoint.y && velocity.y > 0.0f)
+                    {
+                        Vector2 extremal = getCorner(false, false);
+                        if(extremal.x > test.getStart() && extremal.x < test.getEnd())
+                            applyForce(0.0f, hitPoint.y - extremal.y - bounce, 0.0f);
+                    }
+                }
+
+                gameMap.sendOnEntityTouch(
+                        (int)(hitPoint.x - 0.01f) / gameMap.getBlockSize(),
+                        (int)(hitPoint.y - 0.01f) / gameMap.getBlockSize(),
+                        this  );
+
             }
         }
 
-        // Jeśli ruch był legalny zastosuj go.
+        position.x += velocity.x;
+        position.y += velocity.y;
+        angle = aimAngle;
 
-        if(applyAim)
+        int blockX = (int)position.x / gameMap.getBlockSize();
+        int blockY = (int)position.y / gameMap.getBlockSize();
+
+        if(blockX != previousBlockX || blockY != previousBlockY)
         {
-            position.x = aimPosition.x;
-            position.y = aimPosition.y;
-            angle = aimAngle;
-
-            int blockX = (int)position.x / gameMap.getBlockSize();
-            int blockY = (int)position.y / gameMap.getBlockSize();
-
-            if(blockX != previousBlockX || blockY != previousBlockY)
-            {
-                gameMap.sendOnEntityInside(blockX, blockY, this);
-                previousBlockX = blockX;
-                previousBlockY = blockY;
-            }
+            gameMap.sendOnEntityInside(blockX, blockY, this);
+            previousBlockX = blockX;
+            previousBlockY = blockY;
         }
 
     }

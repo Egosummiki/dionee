@@ -61,7 +61,7 @@ public class Node {
 
     public boolean isSolid(float x, float y) { return solid; }
 
-    public boolean isRemoveable() { return removeable; }
+    public boolean isRemovable() { return removeable; }
 
     public int getTexture() {return texture;}
 
