@@ -159,7 +159,7 @@ public class Entity {
         murder = true;
     }
 
-    private static final float bounce = 0.05f;
+    private static final float bounce = 0.1f;
     private static final float fightBack = 0.25f;
     private static final float angularFightBack = GameMath.pi*0.005f;
 
@@ -267,21 +267,42 @@ public class Entity {
                     horizontalLock = true;
                     if(position.y > hitPoint.y && velocity.y < 0.0f)
                     {
-                        Vector2 extremal = getCorner(true, false);
-                        if(extremal.x > test.getStart() && extremal.x < test.getEnd())
-                            applyForce(0.0f, hitPoint.y - extremal.y + bounce, 0.0f);
+                        Vector2 extremalCorner = getCorner(true, false);
+                        Vector2 displacement = extremalCorner;
+
+                        if(displacement.x < test.getStart())
+                        {
+                            float start = test.getStart();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(start, hitPoint.y),
+                                            new Vector2(start, hitPoint.y - gameMap.getBlockSize())));
+                        } else if (displacement.x > test.getEnd())
+                        {
+                            float end = test.getEnd();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(end, hitPoint.y),
+                                            new Vector2(end, hitPoint.y - gameMap.getBlockSize())));
+                        }
+
+                        if(displacement == null)
+                            displacement = extremalCorner;
+
+                        applyForce(0.0f, hitPoint.y - displacement.y + bounce, 0.0f);
+
                     } else if(position.y < hitPoint.y && velocity.y > 0.0f)
                     {
                         Vector2 extremal = getCorner(false, false);
-                        if(extremal.x > test.getStart() && extremal.x < test.getEnd())
+                        if(extremal.x > test.getStart() && extremal.x < test.getEnd() || velocity.x < 0.0f)
                             applyForce(0.0f, hitPoint.y - extremal.y - bounce, 0.0f);
                     }
-                }
 
-                gameMap.sendOnEntityTouch(
-                        (int)(hitPoint.x - 0.01f) / gameMap.getBlockSize(),
-                        (int)(hitPoint.y - 0.01f) / gameMap.getBlockSize(),
-                        this  );
+                    gameMap.sendOnEntityTouch(
+                            (int)(hitPoint.x - 0.01f) / gameMap.getBlockSize(),
+                            (int)(hitPoint.y - 0.01f) / gameMap.getBlockSize(),
+                            this  );
+                }
 
             }
         }
