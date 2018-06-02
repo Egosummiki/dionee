@@ -18,7 +18,7 @@ public class NodeMultiColor extends Node {
     }
 
     @Override
-    public boolean onSet(Map gameMap, int x, int y)
+    public boolean onSet(LevelMap gameMap, int x, int y)
     {
         gameMap.setNodeData(x, y, (byte)rand.nextInt(versions));
         return true;

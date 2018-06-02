@@ -6,6 +6,8 @@ import java.util.Vector;
 
 /**
  * Created by Mikolaj on 10.10.2015.
+ *
+ * Klasa obsługująca polecenia gracza podczas gry.
  */
 
 public class Control {
@@ -317,7 +319,7 @@ public class Control {
 
     private long time_offset = 0;
 
-    public void update(float time, EntityManager entityMan, Map gameMap, int block_sz)
+    public void update(float time, EntityManager entityMan, LevelMap gameMap, int block_sz)
     {
         if(refreshGame)
         {
@@ -333,7 +335,7 @@ public class Control {
                 hitMapGenerated = true;
                 gameMap.generateHitMap();
             }
-            if(System.currentTimeMillis() - time_offset > 1000 && entityMan.getRealsedEntities() < 5)
+            if(System.currentTimeMillis() - time_offset > 1000 && entityMan.getReleasedEntities() < 5)
             {
                 time_offset = System.currentTimeMillis();
                 Entity en = new Entity(Render.TEXTURE_ENTITY_TEST, -2*block_sz, (startingBlock+1)*block_sz, block_sz);
@@ -342,7 +344,7 @@ public class Control {
             }
         } else
         {
-            entityMan.resetRealsedEntites();
+            entityMan.resetReleasedEntities();
 
             if(mode == ControlMode.ADD)
             {

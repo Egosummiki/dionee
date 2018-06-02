@@ -14,7 +14,7 @@ public class NodeTurn extends Node {
     }
 
     @Override
-    public void onEntityInside(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(LevelMap gameMap, Entity e, int x, int y)
     {
         if(turnRight)
         {
@@ -26,7 +26,7 @@ public class NodeTurn extends Node {
     }
 
     @Override
-    public boolean canBePlacedOn(Map gameMap, int x, int y)
+    public boolean canBePlacedOn(LevelMap gameMap, int x, int y)
     {
         return super.canBePlacedOn(gameMap, x, y) && gameMap.getNode(x, y-1) != NodeManager.NODE_WATER && gameMap.isSolid(x, y-1, 0, 0);
     }

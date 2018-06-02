@@ -39,7 +39,7 @@ public class Node {
         removeable = _removeable;
     }
 
-    public boolean onSet(Map gameMap, int x, int y)
+    public boolean onSet(LevelMap gameMap, int x, int y)
     {
         return false;
     }
@@ -54,7 +54,7 @@ public class Node {
         return structure;
     }
 
-    public void applyCustomHitMap(Map gameMap, Vector<HitLine> hitMap, int x, int y)
+    public void applyCustomHitMap(LevelMap gameMap, Vector<HitLine> hitMap, int x, int y)
     {
 
     }
@@ -75,28 +75,28 @@ public class Node {
         ren.drawScale(texture, (int)x, (int)y, Game.blockDimension, Game.blockDimension);
     }
 
-    public void onEntityTouch(Map gameMap, Entity e, int x, int y)
+    public void onEntityTouch(LevelMap gameMap, Entity e, int x, int y)
     {
     }
 
-    public void onEntityInside(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(LevelMap gameMap, Entity e, int x, int y)
     {
     }
 
-    public void onReset(Map gameMap, int x, int y)
+    public void onReset(LevelMap gameMap, int x, int y)
     {
     }
 
-    public void onTimer(Map gameMap, int x, int y)
+    public void onTimer(LevelMap gameMap, int x, int y)
     {
     }
 
-    public void onLostInfluence(Map gameMap, Entity e, int old_x, int old_y, int new_x, int new_y)
+    public void onLostInfluence(LevelMap gameMap, Entity e, int old_x, int old_y, int new_x, int new_y)
     {
 
     }
 
-    public boolean canBePlacedOn(Map gameMap, int x, int y)
+    public boolean canBePlacedOn(LevelMap gameMap, int x, int y)
     {
         return (gameMap.getNode(x+1,y) != 0 || gameMap.getNode(x,y-1) != 0 || gameMap.getNode(x-1,y) != 0  || gameMap.getNode(x,y+1) != 0) || gameMap.getBackNode(x,y) != 0;
     }

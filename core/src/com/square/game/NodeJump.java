@@ -11,7 +11,7 @@ public class NodeJump extends Node {
     }
 
     @Override
-    public void onEntityTouch(Map gameMap, Entity e, int x, int y)
+    public void onEntityTouch(LevelMap gameMap, Entity e, int x, int y)
     {
         gameMap.setNodeData(x, y, (byte)1);
         gameMap.setTimer(x, y, 600);
@@ -19,7 +19,7 @@ public class NodeJump extends Node {
     }
 
     @Override
-    public void onTimer(Map gameMap, int x, int y)
+    public void onTimer(LevelMap gameMap, int x, int y)
     {
         gameMap.setNodeData(x, y, (byte) 0);
     }

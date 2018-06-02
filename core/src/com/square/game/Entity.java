@@ -9,45 +9,47 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Entity {
 
+    /**
+    * Enumeracja kierunków.
+    */
     public enum Direction {
         NONE, RIGHT, LEFT
     }
 
-    private Vector2 position;
-    private Vector2 velocity;
-    private Vector2 aimPosition;
+    private Vector2 position; // Pozycja istoty
+    private Vector2 velocity; // Pęd istoty.
+    private Vector2 aimPosition; // Docelowa pozycja.
 
-    private float angle;
-    private float angularVelocity;
-    private float aimAngle;
+    private float angle; // Kąt istoty.
+    private float angularVelocity; // Moment pędu istoty.
+    private float aimAngle; // Docelowy kąt.
 
+    /**
+    * Poprzedni blok odwiedzony przez istotę.
+    * */
     private int previousBlockX = -1;
     private int previousBlockY = -1;
 
-    private Map.HitTestResult[] hitTests;
-    private HitLine[] hitLines;
-    private Vector2[] corners;
+    private HitLine[] hitLines; // Linie zderzeń.
+    private Vector2[] corners; // Kąty istoty.
     private Vector2 topLeft;
     private Vector2 topRight;
     private Vector2 bottomLeft;
     private Vector2 bottomRight;
 
-    private final float dimension;
-    private final float diagonal;
-    private final int offset;
+    private final float dimension; // Rozmiar istoty.
+    private final float diagonal; // Połowa przekątnej.
+    private final int offset; // Różnica na ekranie.
 
-    boolean murder = false;
+    boolean murder = false; // Czy istota ma być usunięta przez EntityManager.
 
-    private Direction direction = Direction.NONE;
+    private Direction direction = Direction.NONE; // Kierunek istoty.
 
-    private int texture;
+    private int texture; // Tekstura istoty.
 
-    private Vector2 cornerVector;
+    private Vector2 cornerVector; // Wektor wyliczania kątów.
 
-    boolean moveLock = false;
-
-    private int id;
-    private EntityManager entityMan;
+    boolean moveLock = false; // Blokada przemieszczania (DEPRECATED)
 
     public Entity(int texture, float position_x, float position_y, float dimension) {
         this.texture = texture;
@@ -71,25 +73,19 @@ public class Entity {
         aimPosition = new Vector2(0.0f, 0.0f);
         cornerVector = new Vector2(0.0f, 0.0f);
 
-        hitTests = new Map.HitTestResult[4];
         hitLines = new HitLine[4];
-        hitLines[0] = new HitLine(topRight, bottomRight);
-        hitLines[1] = new HitLine(bottomRight, bottomLeft);
-        hitLines[2] = new HitLine(bottomLeft, topLeft);
-        hitLines[3] = new HitLine(topLeft, topRight);
+        hitLines[0] = new HitLine(topRight, bottomRight, false);
+        hitLines[1] = new HitLine(bottomRight, bottomLeft, false);
+        hitLines[2] = new HitLine(bottomLeft, topLeft, false);
+        hitLines[3] = new HitLine(topLeft, topRight, false);
     }
 
-    /*
-    * Funkcja ustawia paramentry przywołanej istoty.
-    * */
-    void setSpawned(int id, EntityManager entityMan)
-    {
-        this.id = id;
-        this.entityMan = entityMan;
-    }
-
-    /*
-    * Funkcja podaje siłę.
+    /**
+    * Metoda podaje siłę.
+    *
+    * @param x Współczynnik x
+    * @param y Współczynnik y
+    * @param a Kąt
     * */
     void applyForce(float x, float y, float a)
     {
@@ -98,8 +94,8 @@ public class Entity {
         angularVelocity += a;
     }
 
-    /*
-    * Funkcja całkowicie zatrzumuje istotę.
+    /**
+    * Metoda całkowicie zatrzumuje istotę.
     * */
     void stop()
     {
@@ -109,73 +105,97 @@ public class Entity {
         angularVelocity = 0;
     }
 
-    /*
-    * Funkcja bezkonfliktowo zmienia pozycję istoty.
+    /**
+    * Metoda bezkonfliktowo zmienia pozycję istoty.
+    *
+    * @param gameMap    Mapa poziomu gry.
+    * @param positionX  Docelowa pozycja X
+    * @param positionY  Docelowa pozycja Y
+    * @param angle      Docelowy kąt
     * */
-    public void applyPosition(Map gameMap, float pos_x, float pos_y, float alpha)
+    void applyPosition(LevelMap gameMap, float positionX, float positionY, float angle)
     {
         int ox = (int)Math.floor((position.x + 0.5f* dimension)/ dimension);
         int oy = (int)Math.floor((position.y + 0.5f* dimension)/ dimension);
 
-        int nx = (int)Math.floor((pos_x + 0.5f* dimension)/ dimension);
-        int ny = (int)Math.floor((pos_y + 0.5f* dimension)/ dimension);
+        int nx = (int)Math.floor((positionX + 0.5f* dimension)/ dimension);
+        int ny = (int)Math.floor((positionY + 0.5f* dimension)/ dimension);
 
         if(ox != nx || oy != ny)
         {
             gameMap.sendOnLostInfluence(this, ox, oy, nx, ny);
         }
 
-        position.x = pos_x;
-        position.y = pos_y;
-        angle = alpha;
+        position.x = positionX;
+        position.y = positionY;
+        this.angle = angle;
     }
 
-    private static final float speed = 2.6f;
-    private static final float angularSpeed = GameMath.pi*0.015f;
+    private static final float speed = 2.6f; // Prędkość istoty
+    private static final float angularSpeed = GameMath.pi*0.015f; // Prędkość obrotowa istoty
 
-    public void setRightDirection()
+    /**
+    * Metoda zmusza istotę do podążania w prawo!
+    * */
+    void setRightDirection()
     {
         direction = Direction.RIGHT;
     }
 
-    public void setLeftDirection()
+    /**
+    * Metoda zmusza istotę do podążania w lewo!
+    * */
+    void setLeftDirection()
     {
         direction = Direction.LEFT;
     }
 
-    public Direction getDirection()
+    /**
+    * @return Metoda zwraca kierunek podążania istoty.
+    * */
+    Direction getDirection()
     {
         return direction;
     }
 
-    public void continueDirection()
+    void continueDirection()
     {
         if(direction == Direction.RIGHT) setRightDirection(); else
             if(direction == Direction.LEFT) setLeftDirection();
     }
 
-    public void kill()
+    /**
+    * Metoda zabija jednostkę.
+    * */
+    void kill()
     {
         murder = true;
     }
 
     private static final float bounce = 0.1f;
     private static final float fightBack = 0.25f;
+    private static final float maxPush = 2.5f;
     private static final float angularFightBack = GameMath.pi*0.005f;
 
-    Vector2 getCorner(boolean lowest, boolean axis_x)
+    /**
+    * Metoda oblicza ekstremum kątów.
+    *
+    * @param lowest Jeśli true wylicza najniższy kąt, Jak false najwyższy
+    * @param xAxis  Jak true po osi x, jak false po osi y.
+    * */
+    private Vector2 getCorner(boolean lowest, boolean xAxis)
     {
         Vector2 result = corners[0];
 
         for(int i = 1; i < 4; i++)
         {
-            if(lowest && axis_x) {
+            if(lowest && xAxis) {
                 if (corners[i].x < result.x)
                     result = corners[i];
             } else if(lowest) {
                 if(corners[i].y < result.y)
                     result = corners[i];
-            } else if(axis_x) {
+            } else if(xAxis) {
                 if (corners[i].x > result.x)
                     result = corners[i];
             } else {
@@ -187,9 +207,12 @@ public class Entity {
         return result;
     }
 
-
-
-    public void update(Map gameMap)
+    /**
+    * Metoda update. Jest odpowiedzialna za ruch postaci i kolizje z obiektami mapy.
+    *
+    * @param gameMap Mapa poziomy gry.
+    * */
+    public void update(LevelMap gameMap)
     {
         // Obsługa grawitacji i siły ciągnącej istotę w określonym kierunku.
 
@@ -208,7 +231,7 @@ public class Entity {
             default: break;
         }
 
-        // Wylicz docelową pozycje istoty.
+        // Wylicz docelową pozycję istoty.
 
         aimPosition.x = position.x + velocity.x;
         aimPosition.y = position.y + velocity.y;
@@ -219,18 +242,7 @@ public class Entity {
 
         // Wylicz wszystkie krawędzie istoty.
 
-        double cornerAngle = aimAngle - GameMath.pi_over_4;
-        cornerVector.x = diagonal*(float)Math.cos(cornerAngle);
-        cornerVector.y = diagonal*(float)Math.sin(cornerAngle);
-
-        topRight.x      = aimPosition.x + cornerVector.x;
-        topRight.y      = aimPosition.y + cornerVector.y;
-        bottomRight.x   = aimPosition.x + cornerVector.y;
-        bottomRight.y   = aimPosition.y - cornerVector.x;
-        bottomLeft.x    = aimPosition.x - cornerVector.x;
-        bottomLeft.y    = aimPosition.y - cornerVector.y;
-        topLeft.x       = aimPosition.x - cornerVector.y;
-        topLeft.y       = aimPosition.y + cornerVector.x;
+        calculateCorners();
 
         /*
         * Sprawdź czy docelowa pozycja nie powoduje kolizji, jak tak to podaj siłę, która nie pozwoli
@@ -242,30 +254,75 @@ public class Entity {
 
         for(int i = 0; i < 4; i++)
         {
-            Map.HitTestResult test = gameMap.hitTest(hitLines[i]);
+            LevelMap.HitTestResult test = gameMap.hitTest(hitLines[i]);
 
             if(test != null)
             {
                 Vector2 hitPoint = test.getHitPoint();
 
-                if(test.getType() == Map.HitType.Vertical && !verticalLock)
+                if(test.getType() == LevelMap.HitType.Vertical && !verticalLock)
                 {
                     verticalLock = true;
-                    if(position.x > hitPoint.x && velocity.x < 0.0f)
+                    if(position.x > hitPoint.x && velocity.x < 0.0f && test.getSide())
                     {
-                        Vector2 extremal = getCorner(true, true);
-                        if(extremal.y > test.getStart() && extremal.y < test.getEnd())
-                            applyForce(hitPoint.x - extremal.x + bounce, 0.0f, 0.0f);
-                    } else if(position.x < hitPoint.x && velocity.x > 0.0f)
+                        Vector2 extremalCorner = getCorner(true, true);
+                        Vector2 displacement = extremalCorner;
+
+                        if(displacement.y < test.getStart())
+                        {
+                            float start = test.getStart();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(hitPoint.x, start),
+                                            new Vector2(hitPoint.x - gameMap.getBlockSize(), start), false));
+                        } else if (displacement.y > test.getEnd())
+                        {
+                            float end = test.getEnd();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(hitPoint.x, end),
+                                            new Vector2(hitPoint.x - gameMap.getBlockSize(), end), false));
+                        }
+
+                        if(displacement == null)
+                            displacement = extremalCorner;
+
+                        applyForce(hitPoint.x - displacement.x + bounce, 0.0f, 0.0f);
+                        if(velocity.x > maxPush) velocity.x = maxPush;
+
+
+                    } else if(position.x < hitPoint.x && velocity.x > 0.0f && !test.getSide())
                     {
-                        Vector2 extremal = getCorner(false, true);
-                        if(extremal.y > test.getStart() && extremal.y < test.getEnd())
-                            applyForce(hitPoint.x - extremal.x - bounce, 0.0f, 0.0f);
+                        Vector2 extremalCorner = getCorner(false, true);
+                        Vector2 displacement = extremalCorner;
+
+                        if(displacement.y < test.getStart())
+                        {
+                            float start = test.getStart();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(hitPoint.x, start),
+                                            new Vector2(hitPoint.x + gameMap.getBlockSize(), start), false));
+                        } else if (displacement.y > test.getEnd())
+                        {
+                            float end = test.getEnd();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(hitPoint.x, end),
+                                            new Vector2(hitPoint.x + gameMap.getBlockSize(), end), false));
+                        }
+
+                        if(displacement == null)
+                            displacement = extremalCorner;
+
+                        applyForce(hitPoint.x - displacement.x - bounce, 0.0f, 0.0f);
+                        if(velocity.x < -maxPush) velocity.x = -maxPush;
+
                     }
-                } else if(test.getType() == Map.HitType.Horizonal && !horizontalLock)
+                } else if(test.getType() == LevelMap.HitType.Horizonal && !horizontalLock)
                 {
                     horizontalLock = true;
-                    if(position.y > hitPoint.y && velocity.y < 0.0f)
+                    if(position.y > hitPoint.y && velocity.y < 0.0f && test.getSide())
                     {
                         Vector2 extremalCorner = getCorner(true, false);
                         Vector2 displacement = extremalCorner;
@@ -276,26 +333,49 @@ public class Entity {
                             displacement = GameMath.linearTest(hitLines[i],
                                     new HitLine(
                                             new Vector2(start, hitPoint.y),
-                                            new Vector2(start, hitPoint.y - gameMap.getBlockSize())));
+                                            new Vector2(start, hitPoint.y - gameMap.getBlockSize()), false));
                         } else if (displacement.x > test.getEnd())
                         {
                             float end = test.getEnd();
                             displacement = GameMath.linearTest(hitLines[i],
                                     new HitLine(
                                             new Vector2(end, hitPoint.y),
-                                            new Vector2(end, hitPoint.y - gameMap.getBlockSize())));
+                                            new Vector2(end, hitPoint.y - gameMap.getBlockSize()), false));
                         }
 
                         if(displacement == null)
                             displacement = extremalCorner;
 
-                        applyForce(0.0f, hitPoint.y - displacement.y + bounce, 0.0f);
 
-                    } else if(position.y < hitPoint.y && velocity.y > 0.0f)
+                        applyForce(0.0f, hitPoint.y - displacement.y + bounce, 0.0f);
+                        if(velocity.y > maxPush) velocity.y = maxPush;
+
+                    } else if(position.y < hitPoint.y && velocity.y > 0.0f && !test.getSide())
                     {
-                        Vector2 extremal = getCorner(false, false);
-                        if(extremal.x > test.getStart() && extremal.x < test.getEnd() || velocity.x < 0.0f)
-                            applyForce(0.0f, hitPoint.y - extremal.y - bounce, 0.0f);
+                        Vector2 extremalCorner = getCorner(false, false);
+                        Vector2 displacement = extremalCorner;
+
+                        if(displacement.x < test.getStart())
+                        {
+                            float start = test.getStart();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(start, hitPoint.y),
+                                            new Vector2(start, hitPoint.y + gameMap.getBlockSize()), false));
+                        } else if (displacement.x > test.getEnd())
+                        {
+                            float end = test.getEnd();
+                            displacement = GameMath.linearTest(hitLines[i],
+                                    new HitLine(
+                                            new Vector2(end, hitPoint.y),
+                                            new Vector2(end, hitPoint.y + gameMap.getBlockSize()), false));
+                        }
+
+                        if(displacement == null)
+                            displacement = extremalCorner;
+
+                        applyForce(0.0f, hitPoint.y - displacement.y - bounce, 0.0f);
+                        if(velocity.y < -maxPush) velocity.y = -maxPush;
                     }
 
                     gameMap.sendOnEntityTouch(
@@ -306,6 +386,8 @@ public class Entity {
 
             }
         }
+
+        // Ustaw wyliczoną pozycję.
 
         position.x += velocity.x;
         position.y += velocity.y;
@@ -323,25 +405,44 @@ public class Entity {
 
     }
 
-    public float getVelocityX()
-    {
-        return velocity.x;
+    /**
+    * Metoda jest używana przez update, służy do wyliczenia pozycji kątów istoty.
+    * */
+    private void calculateCorners() {
+        double cornerAngle = aimAngle - GameMath.pi_over_4;
+        cornerVector.x = diagonal*(float)Math.cos(cornerAngle);
+        cornerVector.y = diagonal*(float)Math.sin(cornerAngle);
+
+        topRight.x      = aimPosition.x + cornerVector.x;
+        topRight.y      = aimPosition.y + cornerVector.y;
+        bottomRight.x   = aimPosition.x + cornerVector.y;
+        bottomRight.y   = aimPosition.y - cornerVector.x;
+        bottomLeft.x    = aimPosition.x - cornerVector.x;
+        bottomLeft.y    = aimPosition.y - cornerVector.y;
+        topLeft.x       = aimPosition.x - cornerVector.y;
+        topLeft.y       = aimPosition.y + cornerVector.x;
     }
-    public float getPositionX()
+
+    /**
+    * @return Metoda zwraca pozycję x istoty.
+    * */
+    float getPositionX()
     {
         return position.x;
     }
-    public float getPositionY()
+
+    /**
+    * @return Metoda zwraca pozycję y istoty.
+    * */
+    float getPositionY()
     {
         return position.y;
     }
-    public float getAngle()
-    {
-        return angle;
-    }
 
-    /*
-    * Funkcja wykonuje rysowanie istoty.
+    /**
+    * Metoda wykonuje rysowanie istoty.
+    *
+    * @param render Klasa render.
     * */
     public void draw(Render render)
     {

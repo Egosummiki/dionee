@@ -14,14 +14,14 @@ public class NodeAlternate extends Node {
     }
 
     @Override
-    public boolean onSet(Map gameMap, int x, int y)
+    public boolean onSet(LevelMap gameMap, int x, int y)
     {
         gameMap.setNodeData(x, y, turnRight ? (byte) 0 : (byte) 2);
         return true;
     }
 
     @Override
-    public void onTimer(Map gameMap, int x, int y)
+    public void onTimer(LevelMap gameMap, int x, int y)
     {
         if(gameMap.getNodeData(x, y) == 3)
         {
@@ -33,7 +33,7 @@ public class NodeAlternate extends Node {
     }
 
     @Override
-    public void onEntityInside(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(LevelMap gameMap, Entity e, int x, int y)
     {
         if(gameMap.getNodeData(x,y) == 0)
         {
@@ -55,13 +55,13 @@ public class NodeAlternate extends Node {
     }
 
     @Override
-    public boolean canBePlacedOn(Map gameMap, int x, int y)
+    public boolean canBePlacedOn(LevelMap gameMap, int x, int y)
     {
         return super.canBePlacedOn(gameMap, x, y) && gameMap.getNode(x, y-1) != NodeManager.NODE_WATER && gameMap.isSolid(x, y-1, 0, 0);
     }
 
     @Override
-    public void onReset(Map gameMap, int x, int y)
+    public void onReset(LevelMap gameMap, int x, int y)
     {
         gameMap.setNodeData(x, y, turnRight ? (byte) 0 : (byte) 2);
     }

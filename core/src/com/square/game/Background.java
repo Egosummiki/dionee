@@ -1,19 +1,22 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 11.10.2015.
+ * Interfejs odpowiada za wyświetlania tła gry, lub menu.
  */
-public class Background {
+public interface Background {
 
-    public Background()
-    {
-    }
+    /**
+     * Metoda update, wywoływana co cykl logiki gry.
+     *
+     * @param time Do usunięcia.
+     */
+    void update(float time);
 
-    public void update(float time)
-    {
-    }
+    /**
+     * Metoda render, wywoływana co cylk rysowania gry.
+     *
+     * @param ren Obiekt klasy render.
+     */
+    void draw(Render ren);
 
-    public void draw(Render ren)
-    {
-    }
 }

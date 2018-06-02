@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 
 /**
  * Created by Mikolaj on 23.10.2015.
+ *
+ * Gui pozwalające na wybór poziomu.
  */
 public class GuiLevels extends Gui {
 

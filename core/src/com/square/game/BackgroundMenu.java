@@ -1,11 +1,11 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 27.10.2015.
+ * Klasa wyświetlająca tło podczas obecności menu gry.
  */
-public class BackgroundMenu extends Background {
+public class BackgroundMenu implements Background {
 
-    public BackgroundMenu()
+    BackgroundMenu()
     {
     }
 

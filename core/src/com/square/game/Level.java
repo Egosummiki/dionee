@@ -7,7 +7,7 @@ import java.util.Vector;
  */
 public class Level {
 
-    Map gameMap;
+    LevelMap gameMap;
     Render gameRender;
     Control control;
 
@@ -17,7 +17,7 @@ public class Level {
     protected Vector<InvItem> items;
 
 
-    public Level(Map gm, Render tr, Control c, int tex, int sb)
+    public Level(LevelMap gm, Render tr, Control c, int tex, int sb)
     {
         items = new Vector<InvItem>();
         gameMap = gm;

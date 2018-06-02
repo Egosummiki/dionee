@@ -6,59 +6,76 @@ import java.util.Random;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 27.10.2015.
+ * Klasa jest odpowiedzialna za wyświetlanie tła chmur.
  */
-public class BackgroundClouds extends Background {
+public class BackgroundClouds implements Background {
 
-    private class cloud {
+    /**
+     * Klasa wewnętrzna odpowiadająca pojedynczej chmurze.
+     */
+    private class Cloud {
         float x;
         float y;
         int type;
 
-        public cloud(float _x, float _y, int t)
+        /**
+         * Konstruktor klasy Cloud
+         *
+         * @param x     Położenie x chmury.
+         * @param y     Położenie y chmury.
+         * @param type  Wariant chmury.
+         */
+        Cloud(float x, float y, int type)
         {
-            x = _x;
-            y = _y;
-            type = t;
+            this.x = x;
+            this.y = y;
+            this.type = type;
         }
     }
 
-    private Vector<cloud> clouds;
+    private Vector<Cloud> clouds;
     private Random rand;
 
-    public BackgroundClouds()
+    BackgroundClouds()
     {
-        clouds = new Vector<cloud>();
+        clouds = new Vector<Cloud>();
         rand = new Random();
 
         for(int i = 0; i < rand.nextInt(24); i++)
         {
-            clouds.add(new cloud(rand.nextInt(Gdx.graphics.getWidth())-256.0f, rand.nextInt(Gdx.graphics.getHeight()/2 - 127) + (Gdx.graphics.getHeight()/2), rand.nextInt(2)));
+            clouds.add(new Cloud(rand.nextInt(Gdx.graphics.getWidth())-256.0f, rand.nextInt(Gdx.graphics.getHeight()/2 - 127) + (Gdx.graphics.getHeight()/2), rand.nextInt(2)));
         }
     }
 
-
+    /**
+     * Metoda wykonywana co cykl logiki gry.
+     *
+     * @param time Do usunięcia.
+     */
     @Override
     public void update(float time)
     {
-        for(int i = 0; i < clouds.size(); i++)
-        {
-            clouds.get(i).x += 0.3f*time;
+        for (Cloud cloud : clouds) {
+            cloud.x += 0.3f * time;
         }
 
         if(rand.nextInt(512) == 0)
         {
-           clouds.add(new cloud(-256.0f, rand.nextInt(Gdx.graphics.getHeight()/2 - 127) + (Gdx.graphics.getHeight()/2), rand.nextInt(2)));
+           clouds.add(new Cloud(-256.0f, rand.nextInt(Gdx.graphics.getHeight()/2 - 127) + (Gdx.graphics.getHeight()/2), rand.nextInt(2)));
         }
     }
 
+    /**
+     * Metoda wywoływana co cylk rysowania gry.
+     *
+     * @param ren Obiekt klasy render.
+     */
     @Override
     public void draw(Render ren)
     {
         ren.draw(Render.TEXTURE_BACKGROUND, 0, 0);
-        for(int i = 0; i < clouds.size(); i++)
-        {
-            ren.draw(Render.TEXTURE_CLOUD + clouds.get(i).type, (int)clouds.get(i).x, (int)clouds.get(i).y);
+        for (Cloud Cloud : clouds) {
+            ren.draw(Render.TEXTURE_CLOUD + Cloud.type, (int) Cloud.x, (int) Cloud.y);
         }
     }
 }

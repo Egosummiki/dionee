@@ -1,7 +1,5 @@
 package com.square.game;
 
-import com.badlogic.gdx.math.Vector2;
-
 import java.util.Random;
 import java.util.Vector;
 
@@ -10,15 +8,15 @@ import java.util.Vector;
  */
 public class NodeWater extends Node {
 
-    Random rand;
-    int varriation;
+    private Random rand;
+    private int variation;
 
-    public NodeWater(int type_id, int t, int v, String node_name, int _color)
+    NodeWater(int type_id, int t, int v, String node_name, int _color)
     {
-        super(type_id, t, node_name, _color, false, false);
+        super(type_id, t, node_name, _color, true, false);
 
         rand = new Random();
-        varriation = v;
+        variation = v;
     }
 
     @Override
@@ -28,31 +26,31 @@ public class NodeWater extends Node {
     }
 
     @Override
-    public void onTimer(Map gameMap, int x, int y)
+    public void onTimer(LevelMap gameMap, int x, int y)
     {
-        gameMap.setNodeData(x, y, (byte)rand.nextInt(varriation));
+        gameMap.setNodeData(x, y, (byte)rand.nextInt(variation));
         gameMap.setTimer(x, y, 1000 + rand.nextInt(1000));
     }
 
     @Override
-    public boolean onSet(Map gameMap, int x, int y)
+    public boolean onSet(LevelMap gameMap, int x, int y)
     {
-        gameMap.setNodeData(x, y, (byte)rand.nextInt(varriation));
+        gameMap.setNodeData(x, y, (byte)rand.nextInt(variation));
         gameMap.setTimer(x, y, 500 + rand.nextInt(500));
         return true;
     }
 
     @Override
-    public void applyCustomHitMap(Map gameMap, Vector<HitLine> hitMap, int x, int y) {
-        hitMap.add(new HitLine(new Vector2(x*gameMap.getBlockSize(), y*gameMap.getBlockSize() + 3*gameMap.getBlockSize()/4),
-                new Vector2((x+1)*gameMap.getBlockSize(), y*gameMap.getBlockSize() + 3*gameMap.getBlockSize()/4)));
+    public void applyCustomHitMap(LevelMap gameMap, Vector<HitLine> hitMap, int x, int y) {
     }
 
     @Override
-    public boolean isSolid(float x, float y) { if(y > 24.0f) return false; return true; }
+    public boolean isSolid(float x, float y) {
+        return !(y > 24.0f);
+    }
 
     @Override
-    public void onEntityTouch(Map gameMap, Entity e, int x, int y)
+    public void onEntityTouch(LevelMap gameMap, Entity e, int x, int y)
     {
         e.kill();
     }

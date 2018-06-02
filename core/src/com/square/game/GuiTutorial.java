@@ -66,7 +66,7 @@ public class GuiTutorial extends Gui {
     @Override
     public void onSet()
     {
-        Game.background = new Background();
+        Game.background = new BackgroundVoid();
     }
 
     public GuiTutorial(LevelManager lvlMan)

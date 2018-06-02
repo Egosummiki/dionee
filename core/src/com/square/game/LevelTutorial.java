@@ -7,7 +7,7 @@ import java.util.Vector;
  */
 public class LevelTutorial extends Level {
 
-    public LevelTutorial(Map gm, Render tr, Control c, int tex, int sb)
+    public LevelTutorial(LevelMap gm, Render tr, Control c, int tex, int sb)
     {
         super(gm, tr, c, tex, sb);
     }

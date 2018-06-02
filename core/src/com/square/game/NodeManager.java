@@ -4,6 +4,8 @@ import java.util.Vector;
 
 /**
  * Created by Mikolaj on 07.10.2015.
+ *
+ * Node Manager - Klasa sprawuje kontrolę nad blokami.
  */
 public class NodeManager {
 

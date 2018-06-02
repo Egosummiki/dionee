@@ -10,14 +10,14 @@ public class LevelManager {
 
     private Vector<Level> Levels;
     private Vector<LevelTutorial> tutorial_levels;
-    private Map gameMap;
+    private LevelMap gameMap;
     private Render textureRender;
     private Control ctrl;
     private int current_lvl = -1;
     private boolean tutorial = false;
     private EntityManager entityMan;
 
-    public LevelManager(Map gm, Render ren, EntityManager em, Control cl)
+    public LevelManager(LevelMap gm, Render ren, EntityManager em, Control cl)
     {
         Levels = new Vector<Level>();
         tutorial_levels = new Vector<LevelTutorial>();
@@ -117,7 +117,7 @@ public class LevelManager {
 		{
             tutorial = false;
 			current_lvl = i;
-            entityMan.resetRealsedEntites();
+            entityMan.resetReleasedEntities();
 			return Levels.get(i).load();
 		}
 
@@ -133,7 +133,7 @@ public class LevelManager {
         {
             tutorial = true;
             current_lvl = i;
-            entityMan.resetRealsedEntites();
+            entityMan.resetReleasedEntities();
             return tutorial_levels.get(i).load();
         }
 
@@ -148,7 +148,7 @@ public class LevelManager {
         if(current_lvl+1 <= SaveData.getMaxLevel())
         {
             current_lvl++;
-            entityMan.resetRealsedEntites();
+            entityMan.resetReleasedEntities();
             return Levels.get(current_lvl).load();
         }
 
@@ -166,7 +166,7 @@ public class LevelManager {
     * */
     public boolean reload()
     {
-        entityMan.resetRealsedEntites();
+        entityMan.resetReleasedEntities();
         return Levels.get(current_lvl).load();
     }
 }

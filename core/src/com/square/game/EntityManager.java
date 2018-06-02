@@ -6,77 +6,100 @@ import java.util.Vector;
 
 /**
  * Created by Mikolaj on 09.10.2015.
- */
+ *
+ * EntityManager - Klasa odpowiada za kontrolowanie istot.
+ * */
 public class EntityManager {
 
-    Vector<Entity> entity_list;
+    private Vector<Entity> entityList;
 
-    int entity_finished;
-    private int realsed_entities = 0;
-    public final static int num_entites = 5;
+    private int entitiesFinished;
+    private int releasedEntities = 0;
+    private final static int numberOfEntities = 5;
 
-    public EntityManager()
+    EntityManager()
     {
-        entity_list = new Vector();
+        entityList = new Vector<Entity>();
     }
 
-    public void spawn(Entity entity)
+    /**
+    * Powołuje jednostkę do życia
+    *
+    * @param entity Jednostka, która ma być powołana.
+    * */
+    void spawn(Entity entity)
     {
-        realsed_entities++;
-        entity.setSpawned(entity_list.size(), this);
-        entity_list.add(entity);
+        releasedEntities++;
+        entityList.add(entity);
     }
 
-    public int getRealsedEntities()
+    /**
+    * Metoda podaje liczbę wypuszczonych istot.
+    *
+    * @return Liczba wypuszcznoych jednostek.
+    * */
+    int getReleasedEntities()
     {
-        return realsed_entities;
+        return releasedEntities;
     }
 
-    public void resetRealsedEntites()
+    /**
+    * Ustaw liczbę wypuszczonych jednostek na zero.
+    * */
+    void resetReleasedEntities()
     {
-        realsed_entities = 0;
+        releasedEntities = 0;
     }
 
-    public void killAll()
+    /**
+    * Zabij wszystkie jednostki.
+    * */
+    void killAll()
     {
-        entity_list.clear();
+        entityList.clear();
     }
 
-    public int getNumEntities()
-    {
-        return entity_list.size();
-    }
-
+    /**
+    * Narysuj jednostki
+    * @param ren Klasa render.
+    * */
     public void draw(Render ren)
     {
-        for(int i = 0; i < entity_list.size(); i++)
+        for(int i = 0; i < entityList.size(); i++)
         {
-            entity_list.get(i).draw(ren);
+            entityList.get(i).draw(ren);
         }
     }
 
-    public boolean finished()
+    /**
+    * @return Czy wszystkie jednostki przeszły.
+    * */
+    boolean finished()
     {
-        return entity_finished == num_entites;
+        return entitiesFinished == numberOfEntities;
     }
 
 
-    public void update(Map gameMap)
+    /**
+    * Metoda update wywołuje update u wszystkich jednostek.
+    * @param gameMap Mapa poziomu.
+    * */
+    public void update(LevelMap gameMap)
     {
-        entity_finished = 0;
-        for(int i = 0; i < entity_list.size(); i++)
+        entitiesFinished = 0;
+        for(int i = 0; i < entityList.size(); i++)
         {
-            if(!entity_list.get(i).murder)
+            if(!entityList.get(i).murder)
             {
-                entity_list.get(i).update(gameMap);
+                entityList.get(i).update(gameMap);
 
-                if(entity_list.get(i).getPositionX() > Gdx.graphics.getWidth() && entity_list.get(i).getPositionY() > 0)
+                if(entityList.get(i).getPositionX() > Gdx.graphics.getWidth() && entityList.get(i).getPositionY() > 0)
                 {
-                    entity_finished++;
+                    entitiesFinished++;
                 }
             } else
             {
-                entity_list.remove(i);
+                entityList.remove(i);
                 i--;
             }
         }

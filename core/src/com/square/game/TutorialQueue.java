@@ -92,9 +92,9 @@ public class TutorialQueue {
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "Although they're on a tough quest."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "And your job is to help them!"));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "In the up left corner you have menu, use it..."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "to choose a tile and place it on the Map."));
+        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "to choose a tile and place it on the LevelMap."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "Then press a play Button to let the "+ Game.game_name+"..."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "pass the Map."));
+        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "pass the LevelMap."));
         queue.add(new queue_elm_game(lvlMan, 0));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, "There are also some special blocks..."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, "Jump block for example..."));

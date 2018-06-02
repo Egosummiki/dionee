@@ -17,7 +17,7 @@ public class NodeUpwards extends Node {
     }
 
     @Override
-    public void onLostInfluence(Map gameMap, Entity e, int old_x, int old_y, int new_x, int new_y)
+    public void onLostInfluence(LevelMap gameMap, Entity e, int old_x, int old_y, int new_x, int new_y)
     {
         e.continueDirection();
         e.applyForce(0, 2.0f, 0);
@@ -35,7 +35,7 @@ public class NodeUpwards extends Node {
     }
 
     @Override
-    public void onEntityInside(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(LevelMap gameMap, Entity e, int x, int y)
     {
         if(e.getDirection() == Entity.Direction.RIGHT)
         {

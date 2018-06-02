@@ -3,56 +3,101 @@ package com.square.game;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Mikolaj on 11.10.2015.
+ * Klasa odpowiada przyciskowi jako elementowi interfejsu użytkownika.
  */
 public class Button extends GuiElement {
 
     int texture;
-    int texture_normal;
-    int texture_press;
+    private int textureNormal;
+    private int texturePress;
 
-    ButtonAction action;
+    private ButtonAction action;
 
-    boolean lock = false;
+    private boolean lock = false;
 
-    public Button(int _texture, int _texture_press, int _x, int _y, int _width, int _height)
+    /**
+     * Konstruktor klasy Button.
+     *
+     * @param texture       Tekstura wyświetlana bez akcji.
+     * @param texturePress  Tekstura wyświetlana przy naciśnięciu.
+     * @param x             Pozycja x przycisku.
+     * @param y             Pozycja y przycisku.
+     * @param width         Szerokość przycisku.
+     * @param height        Wysokość przycisku.
+     */
+    public Button(int texture, int texturePress, int x, int y, int width, int height)
     {
-        super(_x, _y, _width, _height);
-        texture = _texture;
-        texture_normal = _texture;
-        texture_press = _texture_press;
+        super(x, y, width, height);
+        this.texture = texture;
+        textureNormal = texture;
+        this.texturePress = texturePress;
     }
 
 
-    public Button(int _texture, int _x, int _y, int _width, int _height)
+    /**
+     * Konstruktor klasy Button.
+     *
+     * @param texture       Tekstura wyświetlana bez akcji.
+     * @param x             Pozycja x przycisku.
+     * @param y             Pozycja y przycisku.
+     * @param width         Szerokość przycisku.
+     * @param height        Wysokość przycisku.
+     */
+    public Button(int texture, int x, int y, int width, int height)
     {
-        super(_x, _y, _width, _height);
-        texture = _texture;
-        texture_normal = _texture;
-        texture_press = _texture;
+        super(x, y, width, height);
+        this.texture = texture;
+        textureNormal = texture;
+        texturePress = texture;
     }
 
-    public Button setAction(ButtonAction a)
+    /**
+     * Ustaw reagowanie na zdarzenie przycisku.
+     *
+     * @param a Akcja przycisku.
+     * @return Zwracanie tego obiektu.
+     */
+    Button setAction(ButtonAction a)
     {
         action = a;
         return this;
     }
 
-    public void setTextureNormal(int tex)
+    /**
+     * Ustaw zwykłą teksturę
+     *
+     * @param tex Tekstura.
+     */
+    void setTextureNormal(int tex)
     {
-        texture_normal = tex;
+        textureNormal = tex;
     }
 
-    public void setTexturePressed(int tex)
+    /**
+     * Ustaw teksturę przy przyciśnięciu.
+     *
+     * @param tex Tekstura.
+     */
+    void setTexturePressed(int tex)
     {
-        texture_press = tex;
+        texturePress = tex;
     }
 
+    /**
+     * Ustaw teksturę.
+     *
+     * @param tex tekstura.
+     */
     public void setTexture(int tex)
     {
         texture = tex;
     }
 
+    /**
+     * Metoda wykonywana co cylk logiki gry.
+     *
+     * @param time Do usunięcia.
+     */
     @Override
     public void update(float time)
     {
@@ -70,7 +115,7 @@ public class Button extends GuiElement {
                 {
                     lock = true;
                     action.onTap(this, time);
-                    texture = texture_press;
+                    texture = texturePress;
                 }
             }
         } else
@@ -79,12 +124,17 @@ public class Button extends GuiElement {
             {
                 lock = false;
                 action.onTapRelease(this, time);
-                texture = texture_normal;
+                texture = textureNormal;
             }
 
         }
     }
 
+    /**
+     * Metoda wykonywana co cylk rysowania gry.
+     *
+     * @param ren Obiekt klasy Render.
+     */
     @Override
     public void draw(Render ren)
     {

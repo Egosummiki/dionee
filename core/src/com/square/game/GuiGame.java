@@ -6,11 +6,11 @@ package com.square.game;
 public class GuiGame extends Gui {
 
     private Control control;
-    private Map gameMap;
+    private LevelMap gameMap;
     private EntityManager entityMan;
     private int blockDimension;
 
-    public GuiGame(Control control, Map gameMap, EntityManager entityMan, int blockDimension)
+    public GuiGame(Control control, LevelMap gameMap, EntityManager entityMan, int blockDimension)
     {
         super();
 

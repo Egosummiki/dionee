@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Logger;
 public class Game extends ApplicationAdapter {
 
 	NodeManager nodeMan;
-	Map gameMap;
+	LevelMap gameMap;
 	Random rand;
 	Control ctrl;
 	public static Background background;
@@ -50,7 +50,7 @@ public class Game extends ApplicationAdapter {
 		background = new BackgroundMenu();
 		ctrl = new Control(textureRender, nodeMan);
 
-		gameMap = new Map(30, 17, nodeMan, blockDimension); // 30x17 blocks
+		gameMap = new LevelMap(30, 17, nodeMan, blockDimension); // 30x17 blocks
 
 		levelMan = new LevelManager(gameMap, textureRender, entityMan, ctrl);
 

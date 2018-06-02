@@ -1,12 +1,12 @@
 package com.square.game;
 
-/**
- * Created by Mikolaj on 29.10.2015.
- */
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class BackgroundTexture extends Background {
+/**
+ * Klasa odpowiedzialna za wyświetlanie konkretnego tła.
+ */
+public class BackgroundTexture implements Background {
 
     Texture tex;
 
@@ -22,10 +22,17 @@ public class BackgroundTexture extends Background {
     }
 
     @Override
+    public void update(float time) {
+
+    }
+
+    @Override
     public void draw(Render ren)
     {
         ren.getBatch().draw(tex, 0, 0);
     }
+
+
 
 
 }

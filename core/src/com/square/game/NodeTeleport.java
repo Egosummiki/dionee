@@ -20,7 +20,7 @@ public class NodeTeleport extends Node {
     }
 
     @Override
-    public void onEntityInside(Map gameMap, Entity e, int x, int y)
+    public void onEntityInside(LevelMap gameMap, Entity e, int x, int y)
     {
         if(!(e.moveLock))
         {
@@ -53,7 +53,7 @@ public class NodeTeleport extends Node {
     }
 
     @Override
-    public void onTimer(Map gameMap, int x, int y)
+    public void onTimer(LevelMap gameMap, int x, int y)
     {
         gameMap.setNodeData(x, y, (byte)0);
     }
