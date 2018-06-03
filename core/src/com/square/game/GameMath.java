@@ -3,23 +3,23 @@ package com.square.game;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by Mikolaj on 09.10.2015.
+ * Klasa zawierająca jedynie zmienne i metody statycznie, które wspomagają grę matematycznie.
  */
 public class GameMath {
 
-    public final static float pi = 3.14159265359f;
-    public final static float pi_over_4 = 0.7853982f;
-    public final static float tau = 6.28318530718f;
+    final static float pi = 3.14159265359f;
+    final static float pi_over_4 = 0.7853982f;
+    final static float tau = 6.28318530718f;
 
-    public final static float gravitationalConstant = 0.2f;
+    final static float gravitationalConstant = 0.2f;
 
-    public static float distance(Vector2 vec1, Vector2 vec2)
-    {
-        float xDiff = vec2.x - vec1.x;
-        float yDiff = vec2.y - vec1.y;
-        return (float)Math.sqrt(xDiff*xDiff + yDiff*yDiff);
-    }
-
+    /**
+     * Metoda sprawdza czy punkt znajduje się na linii.
+     *
+     * @param line  Linia
+     * @param point Punkt
+     * @return Wynik testu.
+     */
     private static boolean betweenTest(HitLine line, Vector2 point)
     {
         if(line.getA().x != line.getB().x)
@@ -38,15 +38,17 @@ public class GameMath {
 
     }
 
-    private static Vector2 common;
-
-    public static void initCommon()
+    /**
+     * Test liniowy. Czy dwie linie się przecinają, a jak tak, to gdzie?
+     *
+     * @param line1     Pierwsza linia.
+     * @param line2     Druga linia.
+     * @return          Punkt przecięcia.
+     */
+    static Vector2 linearTest(HitLine line1, HitLine line2)
     {
-        common = new Vector2(0.0f, 0.0f);
-    }
+        Vector2 common = new Vector2();
 
-    public static Vector2 linearTest(HitLine line1, HitLine line2)
-    {
         if(line1.getA().x == line1.getB().x)
         {
             common.x = line1.getA().x;

@@ -5,30 +5,32 @@ import com.badlogic.gdx.Gdx;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 10.10.2015.
- *
- * Klasa obsługująca polecenia gracza podczas gry.
+ * Klasa obsługująca polecenia gracza.
  */
-
 public class Control {
 
     private ControlMode mode;
     private int selectedItem;
-    public Gui currentGui;
+    private Gui currentGui;
     private boolean refreshGame = false;
-    private boolean loadButtons = true;
 
     private int editItem = 1;
 
-    public boolean editMode = false;
+    boolean editMode = false;
 
-    public int startingBlock= 9;
+    int startingBlock= 9;
 
     Render render;
-    NodeManager nodeMan;
+    private NodeManager nodeMan;
 
     private Vector<InvItem> items;
 
+    /**
+     * Konstruktor klasy Control.
+     *
+     * @param render    Obiekt odpowiedzialny za render.
+     * @param nodeMan   Menadżer bloków.
+     */
     public Control(Render render, NodeManager nodeMan)
     {
         selectedItem = 0;
@@ -37,24 +39,43 @@ public class Control {
         this.nodeMan = nodeMan;
     }
 
-    public void setGui(Gui g)
+    /**
+     * Ustaw konkretny interfejs użytkownika.
+     *
+     * @param gui interfejs użytkownika.
+     */
+    public void setGui(Gui gui)
     {
-        currentGui = g;
+        currentGui = gui;
     }
 
-    public void setStartingItems(Vector<InvItem> its)
+    /**
+     * Ustaw wektor przedmiotów.
+     *
+     * @param its Przedmioty.
+     */
+    void setStartingItems(Vector<InvItem> its)
     {
         items = its;
     }
 
 
-    public class buttonAction_node implements ButtonAction {
+    /**
+     * Klasa wewnętrzna zawierająca reakcje na wydarzenie przedmiotów ekwipunku.
+     *
+     */
+    public class ButtonActionNode implements ButtonAction {
 
         int index;
 
-        public buttonAction_node(int _i)
+        /**
+         * Konstruktor klasy ButtonActionNode.
+         *
+         * @param index Indeks przedmiotu ekwipunktu.
+         */
+        ButtonActionNode(int index)
         {
-            index = _i;
+            this.index = index;
         }
 
 
@@ -66,6 +87,12 @@ public class Control {
         public void onTap(Button but, float time) {
         }
 
+        /**
+         * Wybierz ten przedmiot ekwipunku po puszczeniu przycisku.
+         *
+         * @param but Przycisk.
+         * @param time Do usunięcia.
+         */
         @Override
         public void onTapRelease(Button but, float time) {
             selectedItem = index;
@@ -73,7 +100,10 @@ public class Control {
         }
     }
 
-    public void loadInvGui()
+    /**
+     * Załaduj intefejs użytkownika do ekwipunku.
+     */
+    void loadInventoryGui()
     {
         currentGui.clear();
 
@@ -139,7 +169,7 @@ public class Control {
             Button button_node;
 
             button_node = new Button(nodeMan.getNode(items.get(i).type).getTexture(), 32 + 96 + (i+1)*(96+16), Gdx.graphics.getHeight()-16-96, 96, 96);
-            button_node.setAction(new buttonAction_node(i));
+            button_node.setAction(new ButtonActionNode(i));
 
             currentGui.addElement(button_node);
         }
@@ -188,13 +218,18 @@ public class Control {
 
     private boolean hitMapGenerated = false;
 
-    public void setMode(ControlMode newMode)
+    /**
+     * Ustaw tryb gry (Modyfikacja mapy, przejście jednostek)
+     *
+     * @param newMode Nowy tryb gry.
+     */
+    void setMode(ControlMode newMode)
     {
         if(newMode != ControlMode.RUN)
         {
             if(mode == ControlMode.RUN)
             {
-                loadInvGui();
+                loadInventoryGui();
             }
 
             mode = newMode;
@@ -229,7 +264,13 @@ public class Control {
         }
     }
 
-    public void addItem(int t, int a)
+    /**
+     * Dodaj przedmiot do ekwipunku.
+     *
+     * @param t Id przedmiotu
+     * @param a Ilość
+     */
+    private void addItem(int t, int a)
     {
         if (a < 1) return;
 
@@ -243,9 +284,16 @@ public class Control {
         }
 
         items.add(new InvItem(t, a));
-        loadInvGui();
+        loadInventoryGui();
     }
 
+    /**
+     * Zabierz przedmiot
+     *
+     * @param t
+     * @param a
+     * @return
+     */
     public boolean takeItem(int t, int a)
     {
         if(a<1) return false;
@@ -265,7 +313,7 @@ public class Control {
                         items.remove(i);
 
                         setMode(ControlMode.NONE);
-                        loadInvGui();
+                        loadInventoryGui();
                     }
 
                     return true;
@@ -277,7 +325,14 @@ public class Control {
         return false;
     }
 
-    public boolean takeItemId(int i, int a)
+    /**
+     * Zabierz przedmiot z ekwipunktu..
+     *
+     * @param i Pozycja przedmiotu w ekwipunku.
+     * @param a Ilość.
+     * @return
+     */
+    private boolean takeItemId(int i, int a)
     {
         if(a<1) return false;
 
@@ -290,12 +345,17 @@ public class Control {
             items.remove(i);
 
             setMode(ControlMode.NONE);
-            loadInvGui();
+            loadInventoryGui();
         }
 
         return true;
     }
 
+    /**
+     * Metoda wywoływana co cylk rysowania.
+     *
+     * @param ren Obiekt klasy render.
+     */
     public void draw(Render ren)
     {
         if(mode == ControlMode.REMOVE)
@@ -319,7 +379,15 @@ public class Control {
 
     private long time_offset = 0;
 
-    public void update(float time, EntityManager entityMan, LevelMap gameMap, int block_sz)
+    /**
+     * Metoda wywoływana co cylk logiki gry.
+     *
+     * @param time              Do usunięcia.
+     * @param entityMan         Menadżer jednostek.
+     * @param gameMap           Mapa gry.
+     * @param blockDimension    Wymiar pojedynczego bloku.
+     */
+    public void update(float time, EntityManager entityMan, LevelMap gameMap, int blockDimension)
     {
         if(refreshGame)
         {
@@ -338,7 +406,7 @@ public class Control {
             if(System.currentTimeMillis() - time_offset > 1000 && entityMan.getReleasedEntities() < 5)
             {
                 time_offset = System.currentTimeMillis();
-                Entity en = new Entity(Render.TEXTURE_ENTITY_TEST, -2*block_sz, (startingBlock+1)*block_sz, block_sz);
+                Entity en = new Entity(Render.TEXTURE_ENTITY_TEST, -2*blockDimension, (startingBlock+1)*blockDimension, blockDimension);
                 en.setRightDirection();
                 entityMan.spawn(en);
             }
@@ -351,8 +419,8 @@ public class Control {
 
                 if(Gdx.input.isTouched())
                 {
-                    int block_x = (int)Math.floor(Gdx.input.getX() / block_sz);
-                    int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / block_sz);
+                    int block_x = (int)Math.floor(Gdx.input.getX() / blockDimension);
+                    int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / blockDimension);
 
                     if((gameMap.getNode(block_x, block_y) == 0 || editMode) && block_y < gameMap.getHeight()-3 && (!editMode || block_x > 3 || block_y > 1))
                     {
@@ -370,8 +438,8 @@ public class Control {
             {
                 if(Gdx.input.isTouched())
                 {
-                    int block_x = (int)Math.floor(Gdx.input.getX() / block_sz);
-                    int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / block_sz);
+                    int block_x = (int)Math.floor(Gdx.input.getX() / blockDimension);
+                    int block_y = (int)Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY()) / blockDimension);
 
                     if(((gameMap.isRemovable(block_x, block_y) && (gameMap.getNode(block_x-1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y-1) == 0 ||
                             gameMap.getNode(block_x+1 ,block_y) == 0 || gameMap.getNode(block_x ,block_y+1) == 0)) || editMode) &&  (!editMode || block_x > 3 || block_y > 1))

@@ -3,8 +3,6 @@ package com.square.game;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by Mikolaj on 09.10.2015.
- *
  * Klasa istota - reprezentuje konkretną istotę.
  */
 public class Entity {
@@ -263,7 +261,7 @@ public class Entity {
                 if(test.getType() == LevelMap.HitType.Vertical && !verticalLock)
                 {
                     verticalLock = true;
-                    if(position.x > hitPoint.x && velocity.x < 0.0f && test.getSide())
+                    if(velocity.x < 0.0f && test.getSide())
                     {
                         Vector2 extremalCorner = getCorner(true, true);
                         Vector2 displacement = extremalCorner;
@@ -291,7 +289,7 @@ public class Entity {
                         if(velocity.x > maxPush) velocity.x = maxPush;
 
 
-                    } else if(position.x < hitPoint.x && velocity.x > 0.0f && !test.getSide())
+                    } else if(velocity.x > 0.0f && !test.getSide())
                     {
                         Vector2 extremalCorner = getCorner(false, true);
                         Vector2 displacement = extremalCorner;
@@ -322,7 +320,7 @@ public class Entity {
                 } else if(test.getType() == LevelMap.HitType.Horizonal && !horizontalLock)
                 {
                     horizontalLock = true;
-                    if(position.y > hitPoint.y && velocity.y < 0.0f && test.getSide())
+                    if(velocity.y < 0.0f && test.getSide())
                     {
                         Vector2 extremalCorner = getCorner(true, false);
                         Vector2 displacement = extremalCorner;
@@ -350,7 +348,7 @@ public class Entity {
                         applyForce(0.0f, hitPoint.y - displacement.y + bounce, 0.0f);
                         if(velocity.y > maxPush) velocity.y = maxPush;
 
-                    } else if(position.y < hitPoint.y && velocity.y > 0.0f && !test.getSide())
+                    } else if(velocity.y > 0.0f && !test.getSide())
                     {
                         Vector2 extremalCorner = getCorner(false, false);
                         Vector2 displacement = extremalCorner;
@@ -399,6 +397,7 @@ public class Entity {
         if(blockX != previousBlockX || blockY != previousBlockY)
         {
             gameMap.sendOnEntityInside(blockX, blockY, this);
+            gameMap.sendOnLostInfluence(this, previousBlockX, previousBlockY, blockX, blockY);
             previousBlockX = blockX;
             previousBlockY = blockY;
         }

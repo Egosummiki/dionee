@@ -179,7 +179,7 @@ public class Render {
     }
 
 
-    public Render(int block_sz)
+    public Render(int blockDimension)
     {
         level_registry = new Texture[LEVEL_NUMBER];
         level_tut_registry = new Texture[LEVEL_TUT_NUMBER];
@@ -187,15 +187,15 @@ public class Render {
         assetMan = new AssetManager();
 
         load[] load_queue = {
-                new load(Generate.squareBorder(block_sz, .7f, .7f, 1.0f, .3f, .3f, .3f)),
-                new load(Generate.square(block_sz, .0f, .5f, .0f)),
-                new load(Generate.square(block_sz, .0f, .48f, .0f)),
-                new load(Generate.square(block_sz, .0f, .46f, .0f)),
-                new load(Generate.square(block_sz, .0f, .52f, .0f)),
-                new load(Generate.square(block_sz, .48f, .0f, .0f)),
-                new load(Generate.square(block_sz, .47f, .0f, .0f)),
-                new load(Generate.square(block_sz, .46f, .0f, .0f)),
-                new load(Generate.square(block_sz, .42f, .0f, .0f)),
+                new load(Generate.squareBorder(blockDimension, 1f, 1f, 1f, 0.42f, 0f, 0f)),
+                new load(Generate.square(blockDimension, .0f, .5f, .0f)),
+                new load(Generate.square(blockDimension, .0f, .48f, .0f)),
+                new load(Generate.square(blockDimension, .0f, .46f, .0f)),
+                new load(Generate.square(blockDimension, .0f, .52f, .0f)),
+                new load(Generate.square(blockDimension, .48f, .0f, .0f)),
+                new load(Generate.square(blockDimension, .47f, .0f, .0f)),
+                new load(Generate.square(blockDimension, .46f, .0f, .0f)),
+                new load(Generate.square(blockDimension, .42f, .0f, .0f)),
                 new load("buttons/destroy.png"),
                 new load(Generate.gradientBackground(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 120.0f / 255.0f, 147.0f / 255.0f, 255.0f / 255.0f, 49.0f / 255.0f, 92.0f / 255.0f, 162.0f / 255.0f)),
                 new load("buttons/start.png"),
@@ -205,10 +205,10 @@ public class Render {
 
                 new load("buttons/refresh.png"),
 
-                new load(Generate.square(block_sz, .63f, .4f, .0f)),
-                new load(Generate.square(block_sz, .64f, .4f, .0f)),
-                new load(Generate.square(block_sz, .64f, .42f, .0f)),
-                new load(Generate.square(block_sz, .6f, .392f, .0f)),
+                new load(Generate.square(blockDimension, .63f, .4f, .0f)),
+                new load(Generate.square(blockDimension, .64f, .4f, .0f)),
+                new load(Generate.square(blockDimension, .64f, .42f, .0f)),
+                new load(Generate.square(blockDimension, .6f, .392f, .0f)),
 
                 new load("buttons/highlight.png"), // 20
 
@@ -222,10 +222,10 @@ public class Render {
                 new load("nodes/teleporta.png"),
                 new load("nodes/teleportb.png"),
 
-                new load(Generate.square(block_sz, .26f, .0f, .0f)),
-                new load(Generate.square(block_sz, .27f, .0f, .0f)),
-                new load(Generate.square(block_sz, .24f, .0f, .0f)),
-                new load(Generate.square(block_sz, .25f, .0f, .0f)),
+                new load(Generate.square(blockDimension, .26f, .0f, .0f)),
+                new load(Generate.square(blockDimension, .27f, .0f, .0f)),
+                new load(Generate.square(blockDimension, .24f, .0f, .0f)),
+                new load(Generate.square(blockDimension, .25f, .0f, .0f)),
 
                 new load("nodes/jumpuse.png"),
 
@@ -240,10 +240,10 @@ public class Render {
                 new load("menu/level.png"),
                 new load("menu/levelpress.png"),
 
-                new load(Generate.downfill(block_sz, (block_sz / 4) * 3, .106f, .227f, .51f)),
-                new load(Generate.downfill(block_sz, (block_sz / 4) * 3, .192f, .314f, .592f)),
-                new load(Generate.downfill(block_sz, (block_sz / 4) * 3, .055f, .165f, .42f)),
-                new load(Generate.downfill(block_sz, (block_sz / 4) * 3, .035f, .161f, .447f)),
+                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .106f, .227f, .51f)),
+                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .192f, .314f, .592f)),
+                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .055f, .165f, .42f)),
+                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .035f, .161f, .447f)),
 
                 new load("nodes/changeright.png"),
                 new load("nodes/changerightlight.png"),

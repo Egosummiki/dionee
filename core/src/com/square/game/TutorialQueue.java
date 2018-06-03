@@ -87,18 +87,18 @@ public class TutorialQueue {
         current = -1;
         queue = new Vector<queue_elm>();
 
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_BACK, "Welcome to the "+ Game.game_name+"!"));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, Game.game_name+" are those square little creatures."));
+        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_BACK, "Welcome to the "+ Game.gameName +"!"));
+        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, Game.gameName +" are those square little creatures."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "Although they're on a tough quest."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "And your job is to help them!"));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "In the up left corner you have menu, use it..."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "to choose a tile and place it on the LevelMap."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "Then press a play Button to let the "+ Game.game_name+"..."));
+        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "Then press a play Button to let the "+ Game.gameName +"..."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "pass the LevelMap."));
         queue.add(new queue_elm_game(lvlMan, 0));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, "There are also some special blocks..."));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, "Jump block for example..."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, Game.game_name_singular+" jump when it steps on the block."));
+        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, Game.gameNameSingular +" jump when it steps on the block."));
         queue.add(new queue_elm_game(lvlMan, 1));
         queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_BACK, "Have a nice play!"));
         queue.add(new queue_elm_finish(lvlMan));

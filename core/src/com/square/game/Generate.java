@@ -1,8 +1,5 @@
 package com.square.game;
 
-/**
- * Created by Mikolaj on 10.10.2015.
- */
 
 
 import com.badlogic.gdx.Gdx;
@@ -12,58 +9,33 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import java.nio.ByteBuffer;
 import java.util.Random;
 
+/**
+ * Klasa zawiera statyczne metody służące do generowania tekstur.
+ */
 public class Generate {
 
+    /**
+     * Metoda służy do wygenerowania kwadratu o jednolitym kolorze.
+     *
+     * @param size
+     * @param r
+     * @param g
+     * @param b
+     * @return
+     */
     public static Texture square(int size, float r, float g, float b)
     {
         Pixmap px_map = new Pixmap(size, size, Pixmap.Format.RGBA8888);
         px_map.setColor(r, g, b, 1.0f);
         px_map.fill();
 
-        Random rand = new Random();
-
-        /*for(int i = 0; i < rand.nextInt(16); i++)
-        {
-            // 8x8
-
-            int w = rand.nextInt(10)+8;
-            int h = w + rand.nextInt(4)-2;
-
-            float nr = r + 0.16f*rand.nextFloat() - 0.08f;
-            float ng = g + 0.16f*rand.nextFloat() - 0.08f;
-            float nb = b + 0.16f*rand.nextFloat() - 0.08f;
-
-            px_map.setColor(nr > 0 ? nr < 1 ? nr : r : r, ng > 0 ? ng < 1 ? ng : g : g, nb > 0 ? nb < 1 ? nb : b : b, 1.0f);
-            px_map.fillRectangle(rand.nextInt(32-w), rand.nextInt(32-h), w, h);
-        }*/
-
-        /*Random rand = new Random();
-
-        for(int y = 0; y < size; y++)
-        {
-            for(int x = 0; x < size; x++)
-            {
-                float nr = r + ((rand.nextFloat() - .5f) / 16.0f);
-                float ng = g + ((rand.nextFloat() - .5f) / 16.0f);
-                float nb = b + ((rand.nextFloat() - .5f) / 16.0f);
-
-                if(nr < .0f) nr = .0f;
-                if(nr > 1.0f) nr = 1.0f;
-                if(ng < .0f) ng = .0f;
-                if(ng > 1.0f) ng = 1.0f;
-                if(nb < .0f) nb = .0f;
-                if(nb > 1.0f) nb = 1.0f;
-
-                px_map.setColor(nr, ng, nb, 1.0f);
-
-                px_map.drawPixel(x, y);
-            }
-        }*/
-
         return new Texture(px_map);
     }
 
-    public static Texture downfill(int size, int fill, float r, float g, float b)
+    /**
+     * Wypełń kolorem od.
+     * */
+    static Texture downfill(int size, int fill, float r, float g, float b)
     {
         Pixmap px_map = new Pixmap(size, size, Pixmap.Format.RGBA8888);
         px_map.setColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -76,41 +48,31 @@ public class Generate {
         return new Texture(px_map);
     }
 
-    public static Texture squareBorder(int size, float r, float g, float b, float r2, float g2, float b2)
+    /**
+     * Wygeneruj kwadrat i obwódką.
+     *
+     * @param size  Wielkość.
+     * @param r     Kolor obwódki.
+     * @param g
+     * @param b
+     * @param r2    Kolor wewnętrzny.
+     * @param g2
+     * @param b2
+     * @return      Tekstura.
+     */
+    static Texture squareBorder(int size, float r, float g, float b, float r2, float g2, float b2)
     {
         Pixmap px_map = new Pixmap(size, size, Pixmap.Format.RGBA8888);
         px_map.setColor(r, g, b, 1.0f);
         px_map.fill();
         px_map.setColor(r2, g2, b2, 1.0f);
         px_map.drawRectangle(0, 0, size, size);
+        px_map.drawRectangle(1, 1, size-1, size-1);
 
         return new Texture(px_map);
     }
 
-    public static Texture inverseX(Texture t)
-    {
-        if(!t.getTextureData().isPrepared())
-        {
-            t.getTextureData().prepare();
-        }
-
-        Pixmap oldpx_map = t.getTextureData().consumePixmap();
-
-        Pixmap px_map = new Pixmap(oldpx_map.getWidth(), oldpx_map.getHeight(), Pixmap.Format.RGBA8888);
-
-        for(int y = 0; y < px_map.getHeight(); y++)
-        {
-            for(int x = 0; x < px_map.getWidth(); x++)
-            {
-                px_map.setColor(oldpx_map.getPixel(px_map.getWidth()-x-1, y));
-                px_map.drawPixel(x, y);
-            }
-        }
-
-        return new Texture(px_map);
-    }
-
-    public static Texture gradientBackground(int width, int height, float r, float g, float b, float r2, float g2, float b2)
+    static Texture gradientBackground(int width, int height, float r, float g, float b, float r2, float g2, float b2)
     {
         Pixmap px_map = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
@@ -126,12 +88,7 @@ public class Generate {
         return new Texture(px_map);
     }
 
-    public static float toUnsignedByte(byte b)
-    {
-        return b & 0xFF;
-    }
-
-    public static Texture darkPixmap(Pixmap px_map, float am)
+    static Texture darkPixmap(Pixmap px_map, float am)
     {
         px_map.setColor(0.0f, 0.0f, 0.0f, am);
         px_map.fillRectangle(0, 0, px_map.getWidth(), px_map.getHeight());
@@ -158,7 +115,7 @@ public class Generate {
         return new Texture(px_map);
     }
 
-    public static Pixmap getScreenshot(int x, int y, int w, int h, boolean yDown){
+    private static Pixmap getScreenshot(int x, int y, int w, int h, boolean yDown){
         final Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(x, y, w, h);
 
         if (yDown) {
@@ -178,7 +135,7 @@ public class Generate {
         return pixmap;
     }
 
-    public static Pixmap getScreenshot(){
+    static Pixmap getScreenshot(){
         return getScreenshot(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
     }
 }

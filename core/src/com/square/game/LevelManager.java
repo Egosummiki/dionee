@@ -5,7 +5,6 @@ import java.util.Vector;
 /**
  * Created by Mikolaj on 18.10.2015.
  */
-
 public class LevelManager {
 
     private Vector<Level> Levels;
@@ -17,7 +16,15 @@ public class LevelManager {
     private boolean tutorial = false;
     private EntityManager entityMan;
 
-    public LevelManager(LevelMap gm, Render ren, EntityManager em, Control cl)
+    /**
+     * Konstruktor klasy LevelManager.
+     *
+     * @param gm    Mapa gry.
+     * @param ren   Obiekt klasy Render.
+     * @param em    Menadżer jednostek.
+     * @param cl    Obiekt klasy Control.
+     */
+    LevelManager(LevelMap gm, Render ren, EntityManager em, Control cl)
     {
         Levels = new Vector<Level>();
         tutorial_levels = new Vector<LevelTutorial>();
@@ -64,7 +71,7 @@ public class LevelManager {
                 .addStartingItem(NodeManager.NODE_JUMP, 1);
     }
 
-    /*
+    /**
     * Funkcja zwraca aktualny poziom
     * */
     public int getCurrentLevel()
@@ -72,7 +79,7 @@ public class LevelManager {
         return current_lvl;
     }
 
-     /*
+     /**
      * Funkcja zwraca liczbę dostępnych poziomów
      * */
     public int getNumLevels()
@@ -80,7 +87,7 @@ public class LevelManager {
         return Levels.size();
     }
 
-    /*
+    /**
     * Funkcja dodaje poziom.
     * */
     public Level createLevel(int lvl_tex, int starting_block)
@@ -90,7 +97,7 @@ public class LevelManager {
         return lvl;
     }
 
-    /*
+    /**
     * Funkcja ustawia tryb edytowania.
     * */
     public void setEditMode(boolean e)
@@ -98,7 +105,7 @@ public class LevelManager {
         ctrl.editMode = e;
     }
 
-    /*
+    /**
     * Funkcja dodaje poziom samouczkowy.
     * */
     public Level createTutorialLevel(int lvl_tex, int starting_block)
@@ -108,7 +115,7 @@ public class LevelManager {
         return lvl;
     }
 
-    /*
+    /**
     * Funkcja ładuje wybrany poziom
     * */
     public boolean loadLevel(int i)
@@ -124,7 +131,7 @@ public class LevelManager {
 		return false;
     }
 
-    /*
+    /**
     * Funkcja ładuje poziom samouczkowy.
     * */
     public boolean loadTutorialLevel(int i)
@@ -140,7 +147,7 @@ public class LevelManager {
         return false;
     }
 
-    /*
+    /**
     * Funkcja ładuje następny poziom.
     * */
     public boolean loadNextLevel()
@@ -161,7 +168,7 @@ public class LevelManager {
         return tutorial;
     }
 
-    /*
+    /**
     * Załaduj poziom ponownie.
     * */
     public boolean reload()

@@ -50,7 +50,7 @@ public class Level {
 
         control.setStartingItems(newitmset);
         control.setMode(ControlMode.NONE);
-        control.loadInvGui();
+        control.loadInventoryGui();
         control.startingBlock = startingBlock;
         return gameMap.loadLevel(gameRender.getLevelTexture(texture));
     }

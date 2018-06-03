@@ -1,18 +1,31 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 18.10.2015.
+ * Klasa odpowiada przyciskowi z tekstem.
  */
 public class ButtonText extends Button {
 
     String text;
 
-    public ButtonText(String _text, int _x, int _y, Render ren)
+    /**
+     * Konstruktor klasy ButtonText.
+     *
+     * @param text  Tekst przycisku.
+     * @param x     Położenie x przycisku.
+     * @param y     Położenie y przycisku.
+     * @param ren   Obiekt odpowiedzialny za render.
+     */
+    public ButtonText(String text, int x, int y, Render ren)
     {
-        super(0, _x, _y, (int)ren.getTextSize(_text).x, (int)ren.getTextSize(_text).y);
-        text = _text;
+        super(0, x, y, (int)ren.getTextSize(text).x, (int)ren.getTextSize(text).y);
+        this.text = text;
     }
 
+    /**
+     * Metoda wywoływana co cylk rysowania.
+     *
+     * @param ren Obiekt klasy Render.
+     */
     @Override
     public void draw(Render ren)
     {

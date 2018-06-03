@@ -1,7 +1,7 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 10.10.2015.
+ * Enumeracja trybu gry.
  */
 public enum ControlMode {
     NONE, ADD, REMOVE, RUN

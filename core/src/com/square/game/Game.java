@@ -3,58 +3,43 @@ package com.square.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import java.util.Random;
-import com.badlogic.gdx.utils.Logger;
 
+/**
+ * Klasa klasa gry.
+ */
 public class Game extends ApplicationAdapter {
 
-	NodeManager nodeMan;
-	LevelMap gameMap;
-	Random rand;
-	Control ctrl;
-	public static Background background;
-	public static final String game_name = "Dionees";
-	public static final String game_name_singular = "Dionee";
+    public static Background background;
+	static final String gameName = "Dionees";
+	static final String gameNameSingular = "Dionee";
 
-	LevelManager levelMan;
+    LevelMap gameMap;
+	private LevelManager levelMan;
+    private Render textureRender;
+	private EntityManager entityMan;
 
-	//Gui currentGui;
+	static int blockDimension = 0;
 
-	Logger logger;
-
-	Render textureRender;
-
-	EntityManager entityMan;
-
-	long timer = 0;
-	float n_fps = 0.06f;
-	float l_fps = 0.06f;
-
-	public static int blockDimension = 0;
-
-
-	
+    /**
+     * Metoda wywoływana podczas tworzenia gry.
+     */
 	@Override
 	public void create () {
 
-		logger = new Logger("GAME LOG", Logger.DEBUG);
-
-		blockDimension = Gdx.graphics.getWidth() / 30;
+        blockDimension = Gdx.graphics.getWidth() / 30;
 
 		if(Gdx.graphics.getWidth() % 30 > 0) blockDimension++;
 
-		rand = new Random();
-		entityMan = new EntityManager();
+        entityMan = new EntityManager();
 		textureRender = new Render(blockDimension);
-		nodeMan = new NodeManager();
+        NodeManager nodeMan = new NodeManager();
 		background = new BackgroundMenu();
-		ctrl = new Control(textureRender, nodeMan);
+        Control ctrl = new Control(textureRender, nodeMan);
 
 		gameMap = new LevelMap(30, 17, nodeMan, blockDimension); // 30x17 blocks
 
 		levelMan = new LevelManager(gameMap, textureRender, entityMan, ctrl);
 
-		//currentGui = new GuiGame(control, gameMap, entityMan, blockDimension);
 		Gui.menu = new GuiMenu(textureRender, levelMan);
 		Gui.game = new GuiGame(ctrl, gameMap, entityMan, blockDimension);
 		Gui.levels = new GuiLevels(textureRender, levelMan);
@@ -65,11 +50,14 @@ public class Game extends ApplicationAdapter {
 		TutorialQueue.prepare(levelMan);
 
 		Gui.setGui(Gui.GUI_MENU);
-
-		GameMath.initCommon();
 	}
 
 
+    /**
+     * Metoda wywoływana co cylk logiki gry.
+     *
+     * @param time Atrybut nie jest, już więcej potrzebny.
+     */
 	public void update(float time)
 	{
 		entityMan.update(gameMap);
@@ -101,29 +89,32 @@ public class Game extends ApplicationAdapter {
 		}
 	}
 
-	int done_frames = 0;
-	long start_time = 0;
+	private int doneFrames = 0;
+	private long startTime = 0;
 
+    /**
+     * Metoda wywoływana co cylk rysowania gry.
+     */
 	@Override
 	public void render () {
 
-		//Simple time counter
+		// Realizacja FIXED TIME STEP.
 
-		if(start_time == 0)
+		if(startTime == 0)
 		{
-			start_time = System.currentTimeMillis();
+			startTime = System.currentTimeMillis();
 		}
 
-		int should_frames = (int)Math.floor((System.currentTimeMillis() - start_time) * 0.06f);
+		int shouldFrames = (int)Math.floor((System.currentTimeMillis() - startTime) * 0.06f); // Liczba cylki do zrealizowania.
 
-		while(should_frames > done_frames)
+		while(shouldFrames > doneFrames) // Tak długo jak, nie została wykonania właściwa liczba cylki.
 		{
-			done_frames++;
-			update(1);
+			doneFrames++;
+			update(1); // Time jest 1, bo już nie jest używany.
 		}
 
 
-		//Rendering the scene
+		// Rysowanie sceny.
 
 		Gdx.gl.glColorMask(true, true, true, true);
 		Gdx.gl.glClearColor(.0f, .0f, .0f, 1);
@@ -137,6 +128,9 @@ public class Game extends ApplicationAdapter {
 		textureRender.end();
 	}
 
+    /**
+     * Po skończeniu gry.
+     */
 	@Override
 	public void dispose() {
 		super.dispose();

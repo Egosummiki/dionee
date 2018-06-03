@@ -1,7 +1,7 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 08.11.2015.
+ * Klasa odpowiada za tło muzyczne gry.
  */
 
 import com.badlogic.gdx.assets.AssetManager;

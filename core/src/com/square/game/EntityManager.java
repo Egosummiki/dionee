@@ -17,6 +17,9 @@ public class EntityManager {
     private int releasedEntities = 0;
     private final static int numberOfEntities = 5;
 
+    /**
+     * Konstruktor klasy EntityManager.
+     */
     EntityManager()
     {
         entityList = new Vector<Entity>();

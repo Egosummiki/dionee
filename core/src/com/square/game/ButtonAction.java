@@ -1,11 +1,17 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 11.10.2015.
+ * Interfejs zdarzenia przycisku.
  */
 public interface ButtonAction {
 
 
+    /**
+     * Kiedy przycisk zostanie przyciśnięty.
+     *
+     * @param but Pzycisk.
+     * @param time Do usunięcia.
+     */
     void onPress(Button but, float time);
     void onTap(Button but, float time);
     void onTapRelease(Button but, float time);

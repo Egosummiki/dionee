@@ -52,8 +52,8 @@ public class NodeManager {
         register(new NodeTurn(6, Render.TEXTURE_TURN_LEFT, "Turn Left Block", 0x800001FF, true, false));
         register(new NodeTurn(7, Render.TEXTURE_TURN_RIGHT, "Turn Right Block", 0x490001FF, true, true));
 
-        register(new NodeTeleport(8, Render.TEXTURE_TELEPORT_A, Render.TEXTURE_TELEPORT_A_USE, "Teleport Block", 0xFFD800FF, 9));
-        register(new NodeTeleport(9, Render.TEXTURE_TELEPORT_B, Render.TEXTURE_TELEPORT_B_USE, "Teleport Block", 0x267F00FF, 8));
+        register(new NodeTeleportation(8, Render.TEXTURE_TELEPORT_A, Render.TEXTURE_TELEPORT_A_USE, "Teleport Block", 0xFFD800FF, 9));
+        register(new NodeTeleportation(9, Render.TEXTURE_TELEPORT_B, Render.TEXTURE_TELEPORT_B_USE, "Teleport Block", 0x267F00FF, 8));
 
         register(new NodeMultiColor(10, Render.TEXTURE_BACK_DIRT_01, "Dirt Background", 0x420001FF, false, 4, false));
 
