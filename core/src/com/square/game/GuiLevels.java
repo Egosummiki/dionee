@@ -27,8 +27,8 @@ public class GuiLevels extends Gui {
             if(press_time != 0 && System.currentTimeMillis() - press_time >= 3000)
             {
                 press_time = 0;
-                elements.get(1).setAnimation(GuiElement.ani_type.SLIDE_TO_LEFT, 300);
-                setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.ani_callback() {
+                elements.get(1).setAnimation(GuiElement.AnimationType.SLIDE_TO_LEFT, 300);
+                setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.AnimationCallback() {
                     @Override
                     public void onAnimationEnd() {
                         levelMan.setEditMode(true);
@@ -48,8 +48,8 @@ public class GuiLevels extends Gui {
         public void onTapRelease(Button but, float time) {
             press_time = 0;
 
-            elements.get(1).setAnimation(GuiElement.ani_type.SLIDE_TO_LEFT, 300);
-            setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.ani_callback() {
+            elements.get(1).setAnimation(GuiElement.AnimationType.SLIDE_TO_LEFT, 300);
+            setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.AnimationCallback() {
                 @Override
                 public void onAnimationEnd() {
                     levelMan.setEditMode(false);
@@ -87,8 +87,8 @@ public class GuiLevels extends Gui {
 
             @Override
             public void onTapRelease(Button but, float time) {
-                elements.get(1).setAnimation(GuiElement.ani_type.SLIDE_TO_LEFT, 300);
-                setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.ani_callback() {
+                elements.get(1).setAnimation(GuiElement.AnimationType.SLIDE_TO_LEFT, 300);
+                setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.AnimationCallback() {
                     @Override
                     public void onAnimationEnd() {
                         Gui.setGui(Gui.GUI_MENU);
@@ -114,8 +114,8 @@ public class GuiLevels extends Gui {
     public void onSet()
     {
         resetAll();
-        setAnimationExcluding(GuiElement.ani_type.SLIDE_FROM_BOTTOM, 300, new int[]{1});
-        elements.get(1).setAnimation(GuiElement.ani_type.SLIDE_FROM_LEFT, 300);
+        setAnimationExcluding(GuiElement.AnimationType.SLIDE_FROM_BOTTOM, 300, new int[]{1});
+        elements.get(1).setAnimation(GuiElement.AnimationType.SLIDE_FROM_LEFT, 300);
     }
 
     @Override

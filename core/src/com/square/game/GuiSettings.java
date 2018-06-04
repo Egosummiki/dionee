@@ -29,8 +29,8 @@ public class GuiSettings extends Gui {
 
             @Override
             public void onTapRelease(Button but, float time) {
-                elements.get(1).setAnimation(GuiElement.ani_type.SLIDE_TO_LEFT, 300);
-                setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.ani_callback() {
+                elements.get(1).setAnimation(GuiElement.AnimationType.SLIDE_TO_LEFT, 300);
+                setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_BOTTOM, 300, new int[]{1}, new GuiElement.AnimationCallback() {
                     @Override
                     public void onAnimationEnd() {
                         Gui.setGui(Gui.GUI_MENU);
@@ -102,8 +102,8 @@ public class GuiSettings extends Gui {
         egg_counter = 0;
 
         resetAll();
-        setAnimationExcluding(GuiElement.ani_type.SLIDE_FROM_BOTTOM, 300, new int[]{1});
-        elements.get(1).setAnimation(GuiElement.ani_type.SLIDE_FROM_LEFT, 300);
+        setAnimationExcluding(GuiElement.AnimationType.SLIDE_FROM_BOTTOM, 300, new int[]{1});
+        elements.get(1).setAnimation(GuiElement.AnimationType.SLIDE_FROM_LEFT, 300);
 
         ((Slidebar)elements.get(2)).setProcessFloat(SaveData.getMusicVol());
 

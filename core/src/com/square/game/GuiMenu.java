@@ -28,11 +28,11 @@ public class GuiMenu extends Gui {
         @Override
         public void onTapRelease(Button but, float time) {
 
-            elements.get(4).setAnimation(GuiElement.ani_type.SLIDE_TO_RIGHT, 300);
+            elements.get(4).setAnimation(GuiElement.AnimationType.SLIDE_TO_RIGHT, 300);
 
             if(levelMan.getCurrentLevel() > -1)
             {
-                setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.ani_callback() {
+                setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.AnimationCallback() {
                     @Override
                     public void onAnimationEnd() {
                         Gui.setGui(Gui.GUI_GAME);
@@ -42,7 +42,7 @@ public class GuiMenu extends Gui {
             {
                 if(!SaveData.tutorialPassed())
                 {
-                    setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.ani_callback() {
+                    setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.AnimationCallback() {
                         @Override
                         public void onAnimationEnd() {
                             levelMan.setEditMode(false);
@@ -51,7 +51,7 @@ public class GuiMenu extends Gui {
                     });
                 } else
                 {
-                    setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.ani_callback() {
+                    setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.AnimationCallback() {
                         @Override
                         public void onAnimationEnd() {
                             levelMan.setEditMode(false);
@@ -81,14 +81,14 @@ public class GuiMenu extends Gui {
         @Override
         public void onTapRelease(Button but, float time) {
 
-            setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.ani_callback() {
+            setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.AnimationCallback() {
                 @Override
                 public void onAnimationEnd() {
                     Gui.setGui(Gui.GUI_SETTINGS);
                 }
             });
 
-            elements.get(4).setAnimation(GuiElement.ani_type.SLIDE_TO_RIGHT, 300);
+            elements.get(4).setAnimation(GuiElement.AnimationType.SLIDE_TO_RIGHT, 300);
         }
     }
 
@@ -109,14 +109,14 @@ public class GuiMenu extends Gui {
         public void onTapRelease(Button but, float time) {
             if(!TutorialQueue.isRunning())
             {
-                setAnimationExcluding(GuiElement.ani_type.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.ani_callback() {
+                setAnimationExcluding(GuiElement.AnimationType.SLIDE_TO_LEFT, 300, new int[] {4}, new GuiElement.AnimationCallback() {
                     @Override
                     public void onAnimationEnd() {
                         Gui.setGui(Gui.GUI_LEVELS);
                     }
                 });
 
-                elements.get(4).setAnimation(GuiElement.ani_type.SLIDE_TO_RIGHT, 300);
+                elements.get(4).setAnimation(GuiElement.AnimationType.SLIDE_TO_RIGHT, 300);
             }
         }
     }
@@ -138,9 +138,9 @@ public class GuiMenu extends Gui {
     public void onSet()
     {
         resetAll();
-        //setAnimationForEach(GuiElement.ani_type.SLIDE_FROM_LEFT, 300);
-        setAnimationExcluding(GuiElement.ani_type.SLIDE_FROM_LEFT, 300, new int[] {4});
-        elements.get(4).setAnimation(GuiElement.ani_type.SLIDE_FROM_RIGHT, 300);
+        //setAnimationForEach(GuiElement.AnimationType.SLIDE_FROM_LEFT, 300);
+        setAnimationExcluding(GuiElement.AnimationType.SLIDE_FROM_LEFT, 300, new int[] {4});
+        elements.get(4).setAnimation(GuiElement.AnimationType.SLIDE_FROM_RIGHT, 300);
 
         GameMusic.onMenu();
 

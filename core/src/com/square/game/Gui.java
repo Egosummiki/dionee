@@ -58,12 +58,12 @@ public class Gui {
         }
     }
 
-    protected void setAnimationForEach(GuiElement.ani_type type, int time)
+    protected void setAnimationForEach(GuiElement.AnimationType type, int time)
     {
         int most = 0;
         int cur_val = 0;
 
-        if(type == GuiElement.ani_type.SLIDE_FROM_LEFT || type == GuiElement.ani_type.SLIDE_TO_LEFT)
+        if(type == GuiElement.AnimationType.SLIDE_FROM_LEFT || type == GuiElement.AnimationType.SLIDE_TO_LEFT)
         {
             for(int i = 0; i < elements.size(); i++)
             {
@@ -78,7 +78,7 @@ public class Gui {
             {
                 elements.get(i).setAnimation(type, elements.get(i).getX() - cur_val, time);
             }
-        } else if(type == GuiElement.ani_type.SLIDE_FROM_BOTTOM || type == GuiElement.ani_type.SLIDE_TO_BOTTOM)
+        } else if(type == GuiElement.AnimationType.SLIDE_FROM_BOTTOM || type == GuiElement.AnimationType.SLIDE_TO_BOTTOM)
         {
             for(int i = 0; i < elements.size(); i++)
             {
@@ -95,11 +95,11 @@ public class Gui {
         }
     }
 
-    protected void setAnimationExcluding(GuiElement.ani_type type, int time, int[] excluding)
+    protected void setAnimationExcluding(GuiElement.AnimationType type, int time, int[] excluding)
     {
         int cur_val = 0;
 
-        if(type == GuiElement.ani_type.SLIDE_FROM_LEFT || type == GuiElement.ani_type.SLIDE_TO_LEFT)
+        if(type == GuiElement.AnimationType.SLIDE_FROM_LEFT || type == GuiElement.AnimationType.SLIDE_TO_LEFT)
         {
             for(int i = 0; i < elements.size(); i++)
             {
@@ -136,7 +136,7 @@ public class Gui {
 
                 if(cont) elements.get(i).setAnimation(type, elements.get(i).getX() - cur_val, time);
             }
-        } else if(type == GuiElement.ani_type.SLIDE_FROM_BOTTOM || type == GuiElement.ani_type.SLIDE_TO_BOTTOM)
+        } else if(type == GuiElement.AnimationType.SLIDE_FROM_BOTTOM || type == GuiElement.AnimationType.SLIDE_TO_BOTTOM)
         {
             for(int i = 0; i < elements.size(); i++)
             {
@@ -181,11 +181,11 @@ public class Gui {
         }
     }
 
-    protected void setAnimationForEach(GuiElement.ani_type type, int time, GuiElement.ani_callback callback)
+    protected void setAnimationForEach(GuiElement.AnimationType type, int time, GuiElement.AnimationCallback callback)
     {
         int cur_val = 0;
 
-        if(type == GuiElement.ani_type.SLIDE_FROM_LEFT || type == GuiElement.ani_type.SLIDE_TO_LEFT)
+        if(type == GuiElement.AnimationType.SLIDE_FROM_LEFT || type == GuiElement.AnimationType.SLIDE_TO_LEFT)
         {
             for(int i = 0; i < elements.size(); i++)
             {
@@ -201,7 +201,7 @@ public class Gui {
             {
                 elements.get(i).setAnimation(type, elements.get(i).getX() - cur_val, time);
             }
-        } else if(type == GuiElement.ani_type.SLIDE_FROM_BOTTOM || type == GuiElement.ani_type.SLIDE_TO_BOTTOM)
+        } else if(type == GuiElement.AnimationType.SLIDE_FROM_BOTTOM || type == GuiElement.AnimationType.SLIDE_TO_BOTTOM)
         {
             for(int i = 0; i < elements.size(); i++)
             {
@@ -222,11 +222,11 @@ public class Gui {
 
     }
 
-    protected void setAnimationExcluding(GuiElement.ani_type type, int time, int[] excluding, GuiElement.ani_callback callback)
+    protected void setAnimationExcluding(GuiElement.AnimationType type, int time, int[] excluding, GuiElement.AnimationCallback callback)
     {
         int cur_val = 0;
 
-        if(type == GuiElement.ani_type.SLIDE_FROM_LEFT || type == GuiElement.ani_type.SLIDE_TO_LEFT)
+        if(type == GuiElement.AnimationType.SLIDE_FROM_LEFT || type == GuiElement.AnimationType.SLIDE_TO_LEFT)
         {
             for(int i = 0; i < elements.size(); i++)
             {
@@ -272,7 +272,7 @@ public class Gui {
                     }
                 }
             }
-        } else if(type == GuiElement.ani_type.SLIDE_FROM_BOTTOM || type == GuiElement.ani_type.SLIDE_TO_BOTTOM)
+        } else if(type == GuiElement.AnimationType.SLIDE_FROM_BOTTOM || type == GuiElement.AnimationType.SLIDE_TO_BOTTOM)
         {
             for(int i = 0; i < elements.size(); i++)
             {

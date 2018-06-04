@@ -30,7 +30,7 @@ public class GuiLevelFinish extends Gui {
         public void onTapRelease(Button but, float time) {
             but.setTexture(Render.TEXTURE_PLAY_SMALL);
 
-            setAnimationForEach(GuiElement.ani_type.SLIDE_TO_BOTTOM, 300, new GuiElement.ani_callback() {
+            setAnimationForEach(GuiElement.AnimationType.SLIDE_TO_BOTTOM, 300, new GuiElement.AnimationCallback() {
                 @Override
                 public void onAnimationEnd() {
                     Gui.setGui(Gui.GUI_GAME);
@@ -63,7 +63,7 @@ public class GuiLevelFinish extends Gui {
         public void onTapRelease(Button but, float time) {
             but.setTexture(Render.TEXTURE_BUTTON_REPLAY_PRESS);
 
-            setAnimationForEach(GuiElement.ani_type.SLIDE_TO_BOTTOM, 300, new GuiElement.ani_callback() {
+            setAnimationForEach(GuiElement.AnimationType.SLIDE_TO_BOTTOM, 300, new GuiElement.AnimationCallback() {
                 @Override
                 public void onAnimationEnd() {
                     Gui.setGui(Gui.GUI_GAME);
@@ -89,6 +89,6 @@ public class GuiLevelFinish extends Gui {
     {
         Game.background = new BackgroundTexture().setTexture(Generate.darkPixmap(Generate.getScreenshot(), 0.5f)/*new Texture(Generate.getScreenshot())*/);
         resetAll();
-        setAnimationForEach(GuiElement.ani_type.SLIDE_FROM_BOTTOM, 300);
+        setAnimationForEach(GuiElement.AnimationType.SLIDE_FROM_BOTTOM, 300);
     }
 }

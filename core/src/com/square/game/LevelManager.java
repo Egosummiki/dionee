@@ -36,11 +36,9 @@ public class LevelManager {
        /*-- Rejestrowanie kolejnych poziomów --*/
 
         // Poziom zero
-        createLevel(0, 9)
+        createLevel(0, 11)
                 .addStartingItem(NodeManager.NODE_JUMP, 1)
-                .addStartingItem(NodeManager.NODE_TURN_LEFT, 1)
-                .addStartingItem(NodeManager.NODE_TURN_RIGHT, 1)
-                .addStartingItem(NodeManager.NODE_DIRT, 2);
+                .addStartingItem(NodeManager.NODE_TURN_RIGHT, 1);
 
         // Poziom jeden
         createLevel(1, 13)
