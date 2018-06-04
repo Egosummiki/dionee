@@ -56,12 +56,12 @@ public class BackgroundClouds implements Background {
     public void update(float time)
     {
         for (Cloud cloud : clouds) {
-            cloud.x += 0.3f * time;
+            cloud.x += 0.3f;
         }
 
         if(rand.nextInt(512) == 0)
         {
-           clouds.add(new Cloud(-256.0f, rand.nextInt(Gdx.graphics.getHeight()/2 - 127) + (Gdx.graphics.getHeight()/2), rand.nextInt(2)));
+           clouds.add(new Cloud(-512.0f, rand.nextInt(Gdx.graphics.getHeight()/2 - 127) + (Gdx.graphics.getHeight()/2), rand.nextInt(2)));
         }
     }
 

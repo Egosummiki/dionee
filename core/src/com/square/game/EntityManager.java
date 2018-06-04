@@ -5,9 +5,7 @@ import com.badlogic.gdx.Gdx;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 09.10.2015.
- *
- * EntityManager - Klasa odpowiada za kontrolowanie istot.
+ * Klasa odpowiada za kontrolowanie jednostek.
  * */
 public class EntityManager {
 

@@ -54,7 +54,7 @@ public class GuiSettings extends Gui {
                 if(egg_counter >= 13)
                 {
                     egg_counter = 0;
-                    GameMusic.setCurrentSong(GameMusic.song.satan);
+                    GameMusic.setCurrentSong(GameMusic.Song.easter_egg);
                 }
             }
 

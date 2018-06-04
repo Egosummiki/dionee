@@ -23,6 +23,9 @@ public class GuiElement {
         NONE, SLIDE_FROM_LEFT, SLIDE_FROM_BOTTOM, SLIDE_TO_LEFT, SLIDE_TO_BOTTOM, SLIDE_FROM_RIGHT, SLIDE_TO_RIGHT
     }
 
+    /**
+     * Interfejs reakcji na wydarzenie zakończenia animacji.
+     */
     public interface AnimationCallback {
         void onAnimationEnd();
     }
@@ -36,27 +39,46 @@ public class GuiElement {
     private int animation_length;
     private AnimationCallback animation_callback;
 
-    public GuiElement(int _x, int _y, int _w, int _h)
+    /**
+     * Konstruktor klasy GuiElement.
+     *
+     * @param x         Pozycja x elementu.
+     * @param y         Pozycja y elementu.
+     * @param width     Szerokość elementu.
+     * @param height    Wysokość elementu.
+     */
+    public GuiElement(int x, int y, int width, int height)
     {
-        x = _x;
-        y = _y;
-        original_x = _x;
-        original_y = _y;
-        width = _w;
-        height = _h;
+        this.x = x;
+        this.y = y;
+        original_x = x;
+        original_y = y;
+        this.width = width;
+        this.height = height;
     }
 
-    public void resetPosition()
+    /**
+     * Ustaw pozycję domyślną
+     */
+    void resetPosition()
     {
         x = original_x;
         y = original_y;
     }
 
-    public void setAnimation(AnimationType t, int time, int ani_beg, AnimationCallback ani_call)
+    /**
+     * Ustaw animację elementowi interfejsu.
+     *
+     * @param type      Typ animacji.
+     * @param time      Długość trwania animacji.
+     * @param ani_beg   Pozycja początkowa.
+     * @param ani_call  Obsługa wydarzenia przy skończeniu animacji.
+     */
+    void setAnimation(AnimationType type, int time, int ani_beg, AnimationCallback ani_call)
     {
         if(time <= 0) return;
         animation = true;
-        animation_type = t;
+        animation_type = type;
         animation_start_time = System.currentTimeMillis();
         animation_duration = time;
         animation_callback = ani_call;
@@ -102,7 +124,14 @@ public class GuiElement {
 
     }
 
-    public void setAnimation(AnimationType t, int time, AnimationCallback ani_call)
+    /**
+     * Ustaw animację.
+     *
+     * @param t         Rodzaj animacji.
+     * @param time      Długość trwania.
+     * @param ani_call  Obsługa zdarzenia.
+     */
+    private void setAnimation(AnimationType t, int time, AnimationCallback ani_call)
     {
         if(t == AnimationType.SLIDE_FROM_LEFT || t == AnimationType.SLIDE_TO_LEFT)
         {
@@ -116,17 +145,33 @@ public class GuiElement {
         }
     }
 
-    public void setAnimation(AnimationType t, int time)
+    /**
+     * Ustaw animację elementu interfejsu.
+     *
+     * @param t     Rodzaj animacji.
+     * @param time  Czas trwania.
+     */
+    void setAnimation(AnimationType t, int time)
     {
         setAnimation(t, time, null);
     }
 
-    public void setAnimation(AnimationType t, int ani_beg, int time)
+    /**
+     * Ustaw animację elementowi interfejsu.
+     *
+     * @param t         Rodzaj animacji.
+     * @param ani_beg   Pozycja początkowa.
+     * @param time      Czas trwania animacji.
+     */
+    void setAnimation(AnimationType t, int ani_beg, int time)
     {
         setAnimation(t, time, ani_beg, null);
     }
 
-    public void stopAnimation()
+    /**
+     * Zatrzymaj animację.
+     */
+    private void stopAnimation()
     {
         animation = false;
         animation_type = AnimationType.NONE;
@@ -136,37 +181,51 @@ public class GuiElement {
         animation_end = 0;
     }
 
+    /**
+     * Podaj pozycję X.
+     *
+     * @return pozycja x.
+     */
     public int getX()
     {
         return x;
     }
 
+    /**
+     * Podaj pozycję Y.
+     *
+     * @return pozycja Y.
+     */
     public int getY()
     {
         return y;
     }
 
+    /**
+     * Podaj szerokość.
+     *
+     * @return Szerokość.
+     */
     public int getWidth()
     {
         return width;
     }
 
+    /**
+     * Podaj wysokość.
+     *
+     * @return Wysokość.
+     */
     public int getHeight()
     {
         return height;
     }
 
-    public void setPosition(int _x, int _y)
-    {
-        x = _x;
-        y = _y;
-    }
-
-    public void setPositionX(int _x)
-    {
-        x = _x;
-    }
-
+    /**
+     * Metoda wywoływana co cylk logiki gry.
+     *
+     * @param time Do usunięcia.
+     */
     public void update(float time)
     {
         if(animation)
@@ -211,6 +270,11 @@ public class GuiElement {
         }
     }
 
+    /**
+     * Metoda wywoływana co cylk rysowania gry.
+     *
+     * @param ren
+     */
     public void draw(Render ren)
     {
     }

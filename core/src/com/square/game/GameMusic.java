@@ -1,87 +1,120 @@
 package com.square.game;
 
-/**
- * Klasa odpowiada za tło muzyczne gry.
- */
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 
+/**
+ * Klasa odpowiada za tło muzyczne gry. Klasa zawiera zmienne i metody statyczne.
+ */
 public class GameMusic
 {
 
-    public enum song {
-        main_theme, satan
+    public enum Song {
+        main_theme, easter_egg
     }
 
-    public static Music gameTheme;
-    public static Music egg_satan;
+    private static Music gameTheme;
+    private static Music easterEggSong;
 
-    private static song current = song.main_theme;
+    private static Song current = Song.main_theme;
 
-    public static Music getCurrentSong()
+    /**
+     * Zwróć aktualne tło muzyczne.
+     *
+     * @return Tło muzyczne.
+     */
+    private static Music getCurrentSong()
     {
         switch (current)
         {
             case main_theme: return gameTheme;
-            case satan: return egg_satan;
+            case easter_egg: return easterEggSong;
         }
 
         return null;
     }
 
-    public static void setCurrentSong(song s)
+    /**
+     * Ustaw tło muzyczne.
+     *
+     * @param s     Tło muzyczne.
+     */
+    static void setCurrentSong(Song s)
     {
+        assert getCurrentSong() != null;
         getCurrentSong().stop();
         getCurrentSong().setPosition(0);
         current = s;
         playCurrentSong();
     }
 
-    public static void playCurrentSong()
+    /**
+     *  Puść aktualne tło muzyczne.
+     */
+    private static void playCurrentSong()
     {
+        assert getCurrentSong() != null;
         getCurrentSong().play();
         setMusicLoudness(SaveData.getMusicVol());
     }
 
-    public static void load(AssetManager assetMan)
+    /**
+     * Metoda ładująca zasoby tła.
+     *
+     * @param assetMan  Menadżer zasobów.
+     */
+    static void load(AssetManager assetMan)
     {
         assetMan.load("music/theme.mp3", Music.class);
-        assetMan.load("music/satan.mp3", Music.class);
+        assetMan.load("music/easter_egg.mp3", Music.class);
     }
 
-    public static void onLoaded(AssetManager assetMan)
+    /**
+     * Kiedy zasoby zostaną załadowane.
+     *
+     * @param assetMan Menadżer zasobów.
+     */
+    static void onLoaded(AssetManager assetMan)
     {
         gameTheme = assetMan.get("music/theme.mp3", Music.class);
         gameTheme.setLooping(true);
-        egg_satan = assetMan.get("music/satan.mp3", Music.class);
-        egg_satan.setLooping(false);
+        easterEggSong = assetMan.get("music/easter_egg.mp3", Music.class);
+        easterEggSong.setLooping(false);
 
     }
 
-    public static void onMenu()
+    /**
+     * Kiedy zostanie załadowane menu gry.
+     */
+    static void onMenu()
     {
         playCurrentSong();
     }
 
+    /**
+     * Metoda wywoływana co cylk logiki gry.
+     */
     public static void update()
     {
+        assert getCurrentSong() != null;
         if(!getCurrentSong().isPlaying())
         {
-            if(current == song.satan)
+            if(current == Song.easter_egg)
             {
-                setCurrentSong(song.main_theme);
+                setCurrentSong(Song.main_theme);
             }
         }
     }
 
-    public static void setMusicLoudness(float vol)
+    /**
+     * Ustaw poziom głośności muzyki.
+     *
+     * @param vol   Głośność.
+     */
+    static void setMusicLoudness(float vol)
     {
         getCurrentSong().setVolume(vol);
     }
 
-    public static void onGame()
-    {
-
-    }
 }
