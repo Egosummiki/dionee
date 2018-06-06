@@ -37,7 +37,7 @@ public class Level {
     }
 
    /*
-   * Funkcja addStartingItem pozwala na dodanie przedmiotu startowego podczas definiowania poziomu.
+   * Metoda addStartingItem pozwala na dodanie przedmiotu startowego podczas definiowania poziomu.
    * */
     public Level addStartingItem(int type, int amount)
     {
@@ -46,7 +46,7 @@ public class Level {
     }
 
     /*
-    * Funkcja Load jest odpowiedzialna za ładowanie poziomu
+    * Metoda Load jest odpowiedzialna za ładowanie poziomu
     * */
     public boolean load()
     {

@@ -81,7 +81,7 @@ public class Node {
     }
 
     /**
-     * Funkcja do ponownego napisania.
+     * Metoda do ponownego napisania.
      *
      * @param gameMap
      * @param hitMap
@@ -126,7 +126,7 @@ public class Node {
     }
 
     /**
-     * Funkcja wywoływana co cylk rysowania gry.
+     * Metoda wywoływana co cylk rysowania gry.
      *
      * @param ren   Obiekt klasy render.
      * @param x     Pozycja x bloku.

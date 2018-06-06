@@ -159,7 +159,7 @@ public class LevelMap {
     }
 
     /**
-    * Zadaniem funkcji jest wyliczenie mapy zderzeń poziomu.
+    * Zadaniem metody jest wyliczenie mapy zderzeń poziomu.
     * */
     void generateHitMap()
     {

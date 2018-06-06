@@ -70,7 +70,7 @@ public class LevelManager {
     }
 
     /**
-    * Funkcja zwraca aktualny poziom
+    * Metoda zwraca aktualny poziom
     * */
     public int getCurrentLevel()
     {
@@ -78,7 +78,7 @@ public class LevelManager {
     }
 
      /**
-     * Funkcja zwraca liczbę dostępnych poziomów
+     * Metoda zwraca liczbę dostępnych poziomów
      * */
     public int getNumLevels()
     {
@@ -86,7 +86,7 @@ public class LevelManager {
     }
 
     /**
-    * Funkcja dodaje poziom.
+    * Metoda dodaje poziom.
     * */
     public Level createLevel(int lvl_tex, int starting_block)
     {
@@ -96,7 +96,7 @@ public class LevelManager {
     }
 
     /**
-    * Funkcja ustawia tryb edytowania.
+    * Metoda ustawia tryb edytowania.
     * */
     public void setEditMode(boolean e)
     {
@@ -104,7 +104,7 @@ public class LevelManager {
     }
 
     /**
-    * Funkcja dodaje poziom samouczkowy.
+    * Metoda dodaje poziom samouczkowy.
     * */
     public Level createTutorialLevel(int lvl_tex, int starting_block)
     {
@@ -114,7 +114,7 @@ public class LevelManager {
     }
 
     /**
-    * Funkcja ładuje wybrany poziom
+    * Metoda ładuje wybrany poziom
     * */
     public boolean loadLevel(int i)
     {
@@ -130,7 +130,7 @@ public class LevelManager {
     }
 
     /**
-    * Funkcja ładuje poziom samouczkowy.
+    * Metoda ładuje poziom samouczkowy.
     * */
     public boolean loadTutorialLevel(int i)
     {
@@ -146,7 +146,7 @@ public class LevelManager {
     }
 
     /**
-    * Funkcja ładuje następny poziom.
+    * Metoda ładuje następny poziom.
     * */
     public boolean loadNextLevel()
     {
