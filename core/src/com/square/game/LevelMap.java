@@ -446,9 +446,19 @@ public class LevelMap {
     /**
     * Informuj o zdarzeniu, kiedy istota opuści blok.
     * */
-    public void sendOnLostInfluence(Entity e, int old_x, int old_y, int new_x, int new_y)
+    void sendOnLostInfluence(Entity e, int old_x, int old_y, int new_x, int new_y)
     {
         nodeManager.getNode(getNode(old_x, old_y)).onLostInfluence(this, e, old_x, old_y, new_x, new_y);
+    }
+
+    /**
+     * Informuj o zdarzeniu, że istota opuściła blok.
+     * Od OnLostInfluence różni się tym, że jest wykonywana po poinformowaniu bloku,
+     * w którego zasięg jednostka weszła.
+     */
+    void sendOnEntityLeavesBlock(Entity e, int oldX, int oldY, int newX, int newY)
+    {
+        nodeManager.getNode(getNode(oldX, oldY)).onEntityLeavesBlock(this, e, oldX, oldY, newX, newY);
     }
 
     public int getWidth()

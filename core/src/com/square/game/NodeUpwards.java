@@ -38,16 +38,7 @@ public class NodeUpwards extends Node {
     @Override
     public void onEntityInside(LevelMap gameMap, Entity e, int x, int y)
     {
-        if(e.getDirection() == Entity.Direction.RIGHT)
-        {
-            if(e.getPositionX() + 0.5f*gameMap.getBlockSize() - (x*gameMap.getBlockSize()) < 0.5f*gameMap.getBlockSize()) return;
-        } else
-        {
-            if(e.getPositionX() + 0.5f*gameMap.getBlockSize() - (x*gameMap.getBlockSize()) > 0.5f*gameMap.getBlockSize()) return;
-        }
-
         e.stop();
-        if(e.getDirection() == Entity.Direction.RIGHT) e.applyForce(1.0f, 2.0f, 0); else e.applyForce(-1.0f, 2.0f, 0);
-
+        e.applyForce(e.getRememberedDirection() == Entity.Direction.RIGHT ? 1.0f : -1.0f, 2.0f, 0.0f);
     }
 }

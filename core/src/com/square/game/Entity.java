@@ -43,6 +43,9 @@ public class Entity {
 
     private Direction direction = Direction.NONE; // Kierunek istoty.
 
+
+    private Direction rememberedDirection = Direction.NONE; // Zapamiętany kierunek istoty.
+
     private int texture; // Tekstura istoty.
 
     private Vector2 cornerVector; // Wektor wyliczania kątów.
@@ -97,6 +100,7 @@ public class Entity {
     * */
     void stop()
     {
+        rememberedDirection = direction;
         direction = Direction.NONE;
         velocity.x  = 0;
         velocity.y  = 0;
@@ -149,17 +153,30 @@ public class Entity {
     }
 
     /**
-    * @return Metoda zwraca kierunek podążania istoty.
-    * */
+     * Metoda zwraca kierunek podążania istoty.
+     *
+     * @return Kierunek
+     * */
     Direction getDirection()
     {
         return direction;
     }
 
+    /**
+     * Metoda zwraca kierunek, który wcześniej został zapamiętany.
+     *
+     * @return Kierunek
+     */
+    Direction getRememberedDirection() {
+        return rememberedDirection;
+    }
+
+    /**
+     * Metoda przywraca poprzedni kierunek.
+     */
     void continueDirection()
     {
-        if(direction == Direction.RIGHT) setRightDirection(); else
-            if(direction == Direction.LEFT) setLeftDirection();
+        direction = rememberedDirection;
     }
 
     /**
@@ -214,7 +231,7 @@ public class Entity {
     {
         // Obsługa grawitacji i siły ciągnącej istotę w określonym kierunku.
 
-        velocity.y -= GameMath.gravitationalConstant;
+        if(direction != Direction.NONE) velocity.y -= GameMath.gravitationalConstant;
 
         switch (direction)
         {
@@ -396,8 +413,9 @@ public class Entity {
 
         if(blockX != previousBlockX || blockY != previousBlockY)
         {
-            gameMap.sendOnEntityInside(blockX, blockY, this);
             gameMap.sendOnLostInfluence(this, previousBlockX, previousBlockY, blockX, blockY);
+            gameMap.sendOnEntityInside(blockX, blockY, this);
+            gameMap.sendOnEntityLeavesBlock(this, previousBlockX, previousBlockY, blockX, blockY);
             previousBlockX = blockX;
             previousBlockY = blockY;
         }

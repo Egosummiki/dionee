@@ -12,7 +12,7 @@ public class NodeTeleportation extends Node {
 
     int texture_in_use;
 
-    public NodeTeleportation(int type_id, int t, int tu, String node_name, int _color, int tel_node)
+    NodeTeleportation(int type_id, int t, int tu, String node_name, int _color, int tel_node)
     {
         super(type_id, t, node_name, _color, false, false);
         teleport_to = tel_node;
@@ -41,7 +41,7 @@ public class NodeTeleportation extends Node {
     }
 
     @Override
-    public void onLostInfluence(LevelMap gameMap, Entity e, int old_x, int old_y, int new_x, int new_y) {
+    public void onEntityLeavesBlock(LevelMap gameMap, Entity e, int old_x, int old_y, int new_x, int new_y) {
         e.moveLock = false;
     }
 

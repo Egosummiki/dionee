@@ -200,6 +200,21 @@ public class Node {
     }
 
     /**
+     * Kiedy jednostka wyjdzie poza blok.
+     *
+     * @param gameMap   Mapa gry.
+     * @param e         Jednostka.
+     * @param old_x     Poprzednia pozycja X.
+     * @param old_y     Poprzednia pozycja Y.
+     * @param new_x     Nowa pozycja X.
+     * @param new_y     Nowa pozycja Y.
+     */
+    public void onEntityLeavesBlock(LevelMap gameMap, Entity e, int old_x, int old_y, int new_x, int new_y)
+    {
+
+    }
+
+    /**
      * Czy blok może być postawiony na?
      *
      * @param gameMap   Mapa gry.
