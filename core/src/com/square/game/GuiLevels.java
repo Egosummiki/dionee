@@ -3,9 +3,7 @@ package com.square.game;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Mikolaj on 23.10.2015.
- *
- * Gui pozwalające na wybór poziomu.
+ * Gui pozwalające na wybór poziomu gry.
  */
 public class GuiLevels extends Gui {
 
@@ -16,7 +14,7 @@ public class GuiLevels extends Gui {
         LevelManager levelMan;
         long press_time = 0;
 
-        public buttonAction_load_level(int l, LevelManager lman)
+        buttonAction_load_level(int l, LevelManager lman)
         {
             level = l;
             levelMan = lman;
@@ -63,7 +61,7 @@ public class GuiLevels extends Gui {
         }
     }
 
-    public GuiLevels(Render ren, LevelManager lman)
+    GuiLevels(Render ren, LevelManager lman)
     {
         super();
 

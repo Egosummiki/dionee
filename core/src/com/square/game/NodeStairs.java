@@ -1,7 +1,7 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 14.10.2015.
+ * Blok schodów aktualnie nie występujący na żadnym z poziomów.
  */
 public class NodeStairs extends Node {
 

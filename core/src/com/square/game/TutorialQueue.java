@@ -1,30 +1,29 @@
 package com.square.game;
 
-/**
- * Created by Mikolaj on 04.11.2015.
- */
 
 import java.util.Vector;
 
+/**
+ * Klasa stanowiąca "kolejkę" informacji samouczkowej dla gracza.
+ */
 public class TutorialQueue {
 
-    public static class queue_elm{
-
-        public queue_elm()
-        {
-        }
-
-        public void apply()
-        {
-        }
+    /**
+     * Interfejs stanowi pojedynczy element kolejki samouczkowej.
+     */
+    public interface QueueElement {
+        void apply();
     }
 
-    public static class queue_elm_gui extends queue_elm{
+    /**
+     * Klasa wewnętrzna stanowiąca element kolejki będący graficznym interfejsem użytkownika.
+     */
+    public static class QueueElementGui implements QueueElement {
 
         int texture;
         String info;
 
-        public queue_elm_gui(int tex, String text)
+        QueueElementGui(int tex, String text)
         {
             super();
             texture = tex;
@@ -41,12 +40,15 @@ public class TutorialQueue {
 
     }
 
-    public static class queue_elm_game extends queue_elm {
+    /**
+     * Klasa wewnętrzna stanowiąca rozgrywkę samouczkową.
+     */
+    public static class QueueElementGame implements QueueElement {
 
         int level_num;
         LevelManager lvlMan;
 
-        public queue_elm_game(LevelManager lvl, int level)
+        QueueElementGame(LevelManager lvl, int level)
         {
             lvlMan = lvl;
             level_num = level;
@@ -61,10 +63,13 @@ public class TutorialQueue {
 
     }
 
-    public static class queue_elm_finish extends queue_elm {
+    /**
+     * Klasa wewnętrzna stanowiąca zakończenie samouczka.
+     */
+    public static class QueueElementFinish implements QueueElement {
         LevelManager lvlMan;
 
-        public queue_elm_finish(LevelManager lvl)
+        QueueElementFinish(LevelManager lvl)
         {
             lvlMan = lvl;
         }
@@ -80,28 +85,28 @@ public class TutorialQueue {
     }
 
     public static int current = -1;
-    public static Vector<queue_elm> queue;
+    public static Vector<QueueElement> queue;
 
     public static void prepare(LevelManager lvlMan)
     {
         current = -1;
-        queue = new Vector<queue_elm>();
+        queue = new Vector<QueueElement>();
 
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_BACK, "Welcome to the "+ Game.gameName +"!"));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, Game.gameName +" are those square little creatures."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "Although they're on a tough quest."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "And your job is to help them!"));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "In the up left corner you have menu, use it..."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "to choose a tile and place it on the LevelMap."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "Then press a play Button to let the "+ Game.gameName +"..."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_MENU, "pass the LevelMap."));
-        queue.add(new queue_elm_game(lvlMan, 0));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, "There are also some special blocks..."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, "Jump block for example..."));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_JUMP, Game.gameNameSingular +" jump when it steps on the block."));
-        queue.add(new queue_elm_game(lvlMan, 1));
-        queue.add(new queue_elm_gui(Render.TEXTURE_TUTORIAL_DES_BACK, "Have a nice play!"));
-        queue.add(new queue_elm_finish(lvlMan));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_BACK, "Welcome to the "+ Game.gameName +"!"));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, Game.gameName +" are those square little creatures."));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "Although they're on a tough quest."));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_ENTITIES, "And your job is to help them!"));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_MENU, "In the up left corner you have menu, use it..."));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_MENU, "to choose a tile and place it on the LevelMap."));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_MENU, "Then press a play Button to let the "+ Game.gameName +"..."));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_MENU, "pass the LevelMap."));
+        queue.add(new QueueElementGame(lvlMan, 0));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_JUMP, "There are also some special blocks..."));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_JUMP, "Jump block for example..."));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_JUMP, Game.gameNameSingular +" jump when it steps on the block."));
+        queue.add(new QueueElementGame(lvlMan, 1));
+        queue.add(new QueueElementGui(Render.TEXTURE_TUTORIAL_DES_BACK, "Have a nice play!"));
+        queue.add(new QueueElementFinish(lvlMan));
     }
 
     public static void start()

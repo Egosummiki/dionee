@@ -3,7 +3,7 @@ package com.square.game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * Created by Mikolaj on 19.11.2015.
+ * Klasa stanowiąca element loga gry, menu głównego.
  */
 public class Logo extends GuiElement {
 

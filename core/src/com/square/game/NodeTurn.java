@@ -1,7 +1,7 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 14.10.2015.
+ * Klasa odpowiedzialna za blok zmieniający kierunek podążania jednostek na ustalony.
  */
 public class NodeTurn extends Node {
 

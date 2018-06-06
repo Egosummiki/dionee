@@ -72,6 +72,19 @@ public class Generate {
         return new Texture(px_map);
     }
 
+    /**
+     * Wygeneruj gradient.
+     *
+     * @param width
+     * @param height
+     * @param r
+     * @param g
+     * @param b
+     * @param r2
+     * @param g2
+     * @param b2
+     * @return
+     */
     static Texture gradientBackground(int width, int height, float r, float g, float b, float r2, float g2, float b2)
     {
         Pixmap px_map = new Pixmap(width, height, Pixmap.Format.RGBA8888);
@@ -88,6 +101,13 @@ public class Generate {
         return new Texture(px_map);
     }
 
+    /**
+     * Wygeneruj półprzezroczystą teksturę na podstawie podanej mapy pikseli.
+     *
+     * @param px_map    Mapa pikseli.
+     * @param am        Poziom półprzezroczystości.
+     * @return          Tekstura.
+     */
     static Texture darkPixmap(Pixmap px_map, float am)
     {
         px_map.setColor(0.0f, 0.0f, 0.0f, am);

@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 18.10.2015.
+ * Klasa odpowiedzialna za blok wody.
  */
 public class NodeWater extends Node {
 

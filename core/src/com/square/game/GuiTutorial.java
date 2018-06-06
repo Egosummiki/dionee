@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by Mikolaj on 01.11.2015.
+ * Klasa interfejsu użytkownika odpowiedzialna za przerywniki tutorialowe.
  */
 public class GuiTutorial extends Gui {
 

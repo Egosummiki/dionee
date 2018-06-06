@@ -14,9 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 /**
- * Created by Mikolaj on 07.10.2015.
+ * Klasa jest odpowiedzialna za wyświetlanie elementów na ekranie.
  */
-
 public class Render {
 
     private AssetManager assetMan;
@@ -160,18 +159,21 @@ public class Render {
 
     public final static int TEXTURE_PLUS = 84;
 
-    private class load{
+    /**
+     * Klasa wewnętrzna, pomaga przy ładowaniu zasobów.
+     */
+    private class Load {
 
         Texture texture;
         String str;
 
-        public load(Texture t)
+        Load(Texture t)
         {
             texture = t;
             str = null;
         }
 
-        public load(String s)
+        Load(String s)
         {
             str = s;
             texture = null;
@@ -179,6 +181,11 @@ public class Render {
     }
 
 
+    /**
+     * Konstruktor klasy Render.
+     *
+     * @param blockDimension    Rozmiar pojedynczego bloku.
+     */
     public Render(int blockDimension)
     {
         level_registry = new Texture[LEVEL_NUMBER];
@@ -186,120 +193,120 @@ public class Render {
         batch = new SpriteBatch();
         assetMan = new AssetManager();
 
-        load[] load_queue = {
-                new load(Generate.squareBorder(blockDimension, 1f, 1f, 1f, 0.42f, 0f, 0f)),
-                new load(Generate.square(blockDimension, .0f, .5f, .0f)),
-                new load(Generate.square(blockDimension, .0f, .48f, .0f)),
-                new load(Generate.square(blockDimension, .0f, .46f, .0f)),
-                new load(Generate.square(blockDimension, .0f, .52f, .0f)),
-                new load(Generate.square(blockDimension, .48f, .0f, .0f)),
-                new load(Generate.square(blockDimension, .47f, .0f, .0f)),
-                new load(Generate.square(blockDimension, .46f, .0f, .0f)),
-                new load(Generate.square(blockDimension, .42f, .0f, .0f)),
-                new load("buttons/destroy.png"),
-                new load(Generate.gradientBackground(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 120.0f / 255.0f, 147.0f / 255.0f, 255.0f / 255.0f, 49.0f / 255.0f, 92.0f / 255.0f, 162.0f / 255.0f)),
-                new load("buttons/start.png"),
+        Load[] load_queue = {
+                new Load(Generate.squareBorder(blockDimension, 1f, 1f, 1f, 0.42f, 0f, 0f)),
+                new Load(Generate.square(blockDimension, .0f, .5f, .0f)),
+                new Load(Generate.square(blockDimension, .0f, .48f, .0f)),
+                new Load(Generate.square(blockDimension, .0f, .46f, .0f)),
+                new Load(Generate.square(blockDimension, .0f, .52f, .0f)),
+                new Load(Generate.square(blockDimension, .48f, .0f, .0f)),
+                new Load(Generate.square(blockDimension, .47f, .0f, .0f)),
+                new Load(Generate.square(blockDimension, .46f, .0f, .0f)),
+                new Load(Generate.square(blockDimension, .42f, .0f, .0f)),
+                new Load("buttons/destroy.png"),
+                new Load(Generate.gradientBackground(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 120.0f / 255.0f, 147.0f / 255.0f, 255.0f / 255.0f, 49.0f / 255.0f, 92.0f / 255.0f, 162.0f / 255.0f)),
+                new Load("buttons/start.png"),
 
-                new load("background/cloud.png"),
-                new load("background/cloud2.png"),
+                new Load("background/cloud.png"),
+                new Load("background/cloud2.png"),
 
-                new load("buttons/refresh.png"),
+                new Load("buttons/refresh.png"),
 
-                new load(Generate.square(blockDimension, .63f, .4f, .0f)),
-                new load(Generate.square(blockDimension, .64f, .4f, .0f)),
-                new load(Generate.square(blockDimension, .64f, .42f, .0f)),
-                new load(Generate.square(blockDimension, .6f, .392f, .0f)),
+                new Load(Generate.square(blockDimension, .63f, .4f, .0f)),
+                new Load(Generate.square(blockDimension, .64f, .4f, .0f)),
+                new Load(Generate.square(blockDimension, .64f, .42f, .0f)),
+                new Load(Generate.square(blockDimension, .6f, .392f, .0f)),
 
-                new load("buttons/highlight.png"), // 20
+                new Load("buttons/highlight.png"), // 20
 
-                new load("stairs.png"),
+                new Load("stairs.png"),
 
-                new load("nodes/jump.png"),
+                new Load("nodes/jump.png"),
 
-                new load("nodes/turnleft.png"),
-                new load("nodes/turnright.png"),
+                new Load("nodes/turnleft.png"),
+                new Load("nodes/turnright.png"),
 
-                new load("nodes/teleporta.png"),
-                new load("nodes/teleportb.png"),
+                new Load("nodes/teleporta.png"),
+                new Load("nodes/teleportb.png"),
 
-                new load(Generate.square(blockDimension, .26f, .0f, .0f)),
-                new load(Generate.square(blockDimension, .27f, .0f, .0f)),
-                new load(Generate.square(blockDimension, .24f, .0f, .0f)),
-                new load(Generate.square(blockDimension, .25f, .0f, .0f)),
+                new Load(Generate.square(blockDimension, .26f, .0f, .0f)),
+                new Load(Generate.square(blockDimension, .27f, .0f, .0f)),
+                new Load(Generate.square(blockDimension, .24f, .0f, .0f)),
+                new Load(Generate.square(blockDimension, .25f, .0f, .0f)),
 
-                new load("nodes/jumpuse.png"),
+                new Load("nodes/jumpuse.png"),
 
-                new load("menu/play.png"),
-                new load("menu/playpress.png"),
+                new Load("menu/play.png"),
+                new Load("menu/playpress.png"),
 
-                new load("menu/background.png"),
+                new Load("menu/background.png"),
 
-                new load("menu/options.png"),
-                new load("menu/optionspress.png"),
+                new Load("menu/options.png"),
+                new Load("menu/optionspress.png"),
 
-                new load("menu/level.png"),
-                new load("menu/levelpress.png"),
+                new Load("menu/level.png"),
+                new Load("menu/levelpress.png"),
 
-                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .106f, .227f, .51f)),
-                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .192f, .314f, .592f)),
-                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .055f, .165f, .42f)),
-                new load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .035f, .161f, .447f)),
+                new Load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .106f, .227f, .51f)),
+                new Load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .192f, .314f, .592f)),
+                new Load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .055f, .165f, .42f)),
+                new Load(Generate.downfill(blockDimension, (blockDimension / 4) * 3, .035f, .161f, .447f)),
 
-                new load("nodes/changeright.png"),
-                new load("nodes/changerightlight.png"),
-                new load("nodes/changeleft.png"),
-                new load("nodes/changeleftlight.png"),
+                new Load("nodes/changeright.png"),
+                new Load("nodes/changerightlight.png"),
+                new Load("nodes/changeleft.png"),
+                new Load("nodes/changeleftlight.png"),
 
-                new load("menu/levelback.png"),
-                new load("menu/levelbutton.png"),
-                new load("menu/levelbuttonpress.png"),
-                new load("menu/levellocked.png"),
+                new Load("menu/levelback.png"),
+                new Load("menu/levelbutton.png"),
+                new Load("menu/levelbuttonpress.png"),
+                new Load("menu/levellocked.png"),
 
-                new load("nodes/teleporta_u.png"),
-                new load("nodes/teleportb_u.png"),
+                new Load("nodes/teleporta_u.png"),
+                new Load("nodes/teleportb_u.png"),
 
-                new load("nodes/wood.png"),
-                new load("nodes/wood_end_r.png"),
-                new load("nodes/wood_end_l.png"),
-                new load("menu/back.png"),
+                new Load("nodes/wood.png"),
+                new Load("nodes/wood_end_r.png"),
+                new Load("nodes/wood_end_l.png"),
+                new Load("menu/back.png"),
 
-                new load("menu/playsmall.png"),
-                new load("menu/playsmallpress.png"),
+                new Load("menu/playsmall.png"),
+                new Load("menu/playsmallpress.png"),
 
-                new load("buttons/exit.png"),
+                new Load("buttons/exit.png"),
 
-                new load("menu/replay.png"),
-                new load("menu/replaypress.png"),
-                new load(Generate.gradientBackground(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 173.0f / 255.0f, 180.0f / 255.0f, 1.0f, 191.0f / 255.0f, 153.0f / 255.0f, 196.0f / 255.0f)),
+                new Load("menu/replay.png"),
+                new Load("menu/replaypress.png"),
+                new Load(Generate.gradientBackground(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 173.0f / 255.0f, 180.0f / 255.0f, 1.0f, 191.0f / 255.0f, 153.0f / 255.0f, 196.0f / 255.0f)),
 
-                new load("nodes/upwards.png"),
-                new load("nodes/metal.png"),
-                new load("nodes/metalback.png"),
+                new Load("nodes/upwards.png"),
+                new Load("nodes/metal.png"),
+                new Load("nodes/metalback.png"),
 
-                new load("menu/welldone.png"),
-                new load("menu/levelclearedback.png"),
+                new Load("menu/welldone.png"),
+                new Load("menu/levelclearedback.png"),
 
-                new load("menu/skip.png"),
-                new load("menu/skippress.png"),
-                new load("menu/continue.png"),
-                new load("menu/continuepress.png"),
+                new Load("menu/skip.png"),
+                new Load("menu/skippress.png"),
+                new Load("menu/continue.png"),
+                new Load("menu/continuepress.png"),
 
-                new load("levels/tutorial/description_back.png"),
-                new load("levels/tutorial/description_entities.png"),
-                new load("levels/tutorial/description_jump.png"),
-                new load("levels/tutorial/description_menu.png"),
+                new Load("levels/tutorial/description_back.png"),
+                new Load("levels/tutorial/description_entities.png"),
+                new Load("levels/tutorial/description_jump.png"),
+                new Load("levels/tutorial/description_menu.png"),
 
-                new load("menu/slidebar.png"),
-                new load("menu/slidebutton.png"),
-                new load("menu/note.png"),
-                new load("menu/notenot.png"),
+                new Load("menu/slidebar.png"),
+                new Load("menu/slidebutton.png"),
+                new Load("menu/note.png"),
+                new Load("menu/notenot.png"),
 
-                new load("menu/logo.png"),
-                new load("nodes/upwardslight.png"),
+                new Load("menu/logo.png"),
+                new Load("nodes/upwardslight.png"),
 
-                new load("menu/logolight.png"),
-                new load("menu/mask.png"),
-                new load("menu/plus.png")
+                new Load("menu/logolight.png"),
+                new Load("menu/mask.png"),
+                new Load("menu/plus.png")
 
         };
 
@@ -313,11 +320,9 @@ public class Render {
             assetMan.load("levels/tutorial/level"+i+".png", Texture.class);
         }
 
-        for(int i = 0 ; i < load_queue.length; i++)
-        {
-            if(load_queue[i].str != null)
-            {
-                assetMan.load(load_queue[i].str, Texture.class);
+        for (Load aLoad_queue : load_queue) {
+            if (aLoad_queue.str != null) {
+                assetMan.load(aLoad_queue.str, Texture.class);
             }
         }
 
@@ -374,7 +379,10 @@ public class Render {
 
     }
 
-    public void begin()
+    /**
+     * Rozpocznij rysowanie sceny.
+     */
+    void begin()
     {
         if(!batch_ready)
         {
@@ -384,7 +392,10 @@ public class Render {
         }
     }
 
-    public void end()
+    /**
+     * Zakończ rysowanie sceny.
+     */
+    void end()
     {
         if(batch_ready)
         {
@@ -397,11 +408,23 @@ public class Render {
         }
     }
 
-    public SpriteBatch getBatch()
+    /**
+     * Pobierz SpriteBatch.
+     *
+     * @return batch.
+     */
+    SpriteBatch getBatch()
     {
         return batch;
     }
 
+    /**
+     * Narysuj teksturę na ekranie.
+     *
+     * @param i     Id tesktury.
+     * @param x     Pozycja X.
+     * @param y     Pozycja Y.
+     */
     public void draw(int i, int x, int y)
     {
         if(i>0)
@@ -411,7 +434,16 @@ public class Render {
         }
     }
 
-    public void drawScale(int i, int x, int y, int w, int h)
+    /**
+     * Narysuj z zeskalowaniem.
+     *
+     * @param i     Id tekstury.
+     * @param x     Pozycja X.
+     * @param y     Pozycja Y.
+     * @param w     Szerokość.
+     * @param h     Wysokość.
+     */
+    void drawScale(int i, int x, int y, int w, int h)
     {
         if(i>0)
         {
@@ -420,17 +452,17 @@ public class Render {
         }
     }
 
-    public void drawCenter(int i, int x, int y, float r)
-    {
-        if(i>0) {
-            begin();
-            float d_w = getTexture(i).getWidth();
-            float d_h = getTexture(i).getHeight();
-            batch.draw(new TextureRegion(getTexture(i)), x, y, d_w/2, d_h/2, d_w, d_h, 1.0f, 1.0f, r);
-        }
-    }
-
-    public void drawCenterScale(int i, int x, int y, int w, int h, float r)
+    /**
+     * Narysuj pod kątem ze skalą.
+     *
+     * @param i     Id tekstury.
+     * @param x     Pozycja X.
+     * @param y     Pozycja Y.
+     * @param w     Szerokość.
+     * @param h     Wysokość.
+     * @param r     Kąt.
+     */
+    void drawCenterScale(int i, int x, int y, int w, int h, float r)
     {
         if(i>0) {
             begin();
@@ -438,18 +470,38 @@ public class Render {
         }
     }
 
-    public void drawText(String s, int x, int y)
+    /**
+     * Wyświet tekst.
+     *
+     * @param s     Tekst do wyświetlenia.
+     * @param x     Pozycja X.
+     * @param y     Pozycja Y.
+     */
+    void drawText(String s, int x, int y)
     {
         begin();
         font.draw(batch, s, x, y);
     }
 
-    public void drawTextSmall(String s, int x, int y)
+    /**
+     * Wyświetl tekst z mniejszą czcionką.
+     *
+     * @param s     Tekst do wyświetlenia.
+     * @param x     Pozycja X.
+     * @param y     Pozycja Y.
+     */
+    void drawTextSmall(String s, int x, int y)
     {
         font_small.draw(batch, s, x, y);
     }
 
-    public Vector2 getTextSize(String s)
+    /**
+     * Oblicz rozmiar tekstu.
+     *
+     * @param s     Tekst.
+     * @return  Rozmiar.
+     */
+    Vector2 getTextSize(String s)
     {
         GlyphLayout layout = new GlyphLayout();
         layout.setText(font, s);
@@ -457,17 +509,13 @@ public class Render {
         return new Vector2(layout.width, layout.height);
     }
 
-    public void drawSquare(int color, int x, int y, int w, int h)
-    {
-        end();
-
-        shape.begin(ShapeRenderer.ShapeType.Filled);
-        shape.setColor(new Color(color));
-        shape.rect(x, y, w, h);
-        shape.end();
-    }
-
-    public Vector2 getTextSmallSize(String s)
+    /**
+     * Oblicz rozmiar tekstu o mnieszej czcionce.
+     *
+     * @param s     Tekst.
+     * @return  Rozmiar.
+     */
+    Vector2 getTextSmallSize(String s)
     {
         GlyphLayout layout = new GlyphLayout();
         layout.setText(font_small, s);
@@ -475,21 +523,43 @@ public class Render {
         return new Vector2(layout.width, layout.height);
     }
 
-    public Texture getTexture(int i)
+    /**
+     * Podaj teksturę o id.
+     *
+     * @param i     Id.
+     * @return      Tekstura.
+     */
+    Texture getTexture(int i)
     {
         return tex_registry[i];
     }
-    public Texture getLevelTexture(int i)
+
+    /**
+     * Podaj teksturę określającą poziom.
+     *
+     * @param i     Id.
+     * @return  Tekstura.
+     */
+    Texture getLevelTexture(int i)
     {
         return level_registry[i];
     }
 
-    public Texture getLevelTutorialTexture(int i)
+    /**
+     * Podaj teksturę poziomu tutorialowego.
+     *
+     * @param i     Id tekstury.
+     * @return      Tekstura.
+     */
+    Texture getLevelTutorialTexture(int i)
     {
         return level_tut_registry[i];
     }
 
-    public void dispose()
+    /**
+     * Oddaj procesy renderowania.
+     */
+    void dispose()
     {
         batch.dispose();
         assetMan.dispose();

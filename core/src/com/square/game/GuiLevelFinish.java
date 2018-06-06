@@ -3,15 +3,18 @@ package com.square.game;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Mikolaj on 25.10.2015.
+ * Klasa reprezentuje interfejs użytkownika wyświetlany po przejściu poziomu.
  */
 public class GuiLevelFinish extends Gui {
 
-    private class action_next implements ButtonAction
+    /**
+     * Klasa wewnętrzna odpowiedzialna za wykonanie akcji przejścia do następnego poziomu.
+     */
+    private class ActionNext implements ButtonAction
     {
         LevelManager levelMan;
 
-        public action_next(LevelManager lvl)
+        ActionNext(LevelManager lvl)
         {
             levelMan = lvl;
         }
@@ -40,11 +43,14 @@ public class GuiLevelFinish extends Gui {
         }
     }
 
-    private class action_repeat implements ButtonAction
+    /**
+     * Klasa wewnętrzna odpowiedzialna za wykonanie akcji załadowania poziomu ponownie.
+     */
+    private class ActionRepeat implements ButtonAction
     {
         LevelManager levelMan;
 
-        public action_repeat(LevelManager lvl)
+        ActionRepeat(LevelManager lvl)
         {
             levelMan = lvl;
         }
@@ -73,21 +79,20 @@ public class GuiLevelFinish extends Gui {
         }
     }
 
-    public GuiLevelFinish(Render ren, LevelManager lman)
+    GuiLevelFinish(Render ren, LevelManager lman)
     {
-        int sx = (Gdx.graphics.getWidth()/2)-176;
-        int sy = (Gdx.graphics.getHeight()/2)-144;
+        int sx = (int) (Gdx.graphics.getWidth() * 0.2f);
+        int sy = (int) (Gdx.graphics.getHeight() * 0.2f);
 
-        addElement(new GuiImage(Render.TEXTURE_BACK_LVL_CLEARED, sx, sy, 352, 288));
-        //addElement(new GuiImage(Render.TEXTURE_LEVEL_DONE, sx + 10, sy + 144, 333, 61));
-        addElement(new Button(Render.TEXTURE_PLAY_SMALL, (Gdx.graphics.getWidth()/2)+16, sy+16, 64, 64).setAction(new action_next(lman)));
-        addElement(new Button(Render.TEXTURE_BUTTON_REPLAY, (Gdx.graphics.getWidth()/2)-16-64, sy+16, 64, 64).setAction(new action_repeat(lman)));
+        addElement(new GuiImage(Render.TEXTURE_BACK_LVL_CLEARED, sx, sy, (int) (Gdx.graphics.getWidth() * 0.6f), (int) (Gdx.graphics.getHeight()*0.6f) ));
+        addElement(new Button(Render.TEXTURE_PLAY_SMALL, (Gdx.graphics.getWidth()/2)+42, sy+42, 128, 128).setAction(new ActionNext(lman)));
+        addElement(new Button(Render.TEXTURE_BUTTON_REPLAY, (Gdx.graphics.getWidth()/2)-42-128, sy+42, 128, 128).setAction(new ActionRepeat(lman)));
     }
 
     @Override
     public void onSet()
     {
-        Game.background = new BackgroundTexture().setTexture(Generate.darkPixmap(Generate.getScreenshot(), 0.5f)/*new Texture(Generate.getScreenshot())*/);
+        Game.background = new BackgroundTexture().setTexture(Generate.darkPixmap(Generate.getScreenshot(), 0.8f));
         resetAll();
         setAnimationForEach(GuiElement.AnimationType.SLIDE_FROM_BOTTOM, 300);
     }

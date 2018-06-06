@@ -3,7 +3,7 @@ package com.square.game;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Mikolaj on 07.11.2015.
+ * Klasa odpowiadająca za menu ustawień gry.
  */
 public class GuiSettings extends Gui {
 

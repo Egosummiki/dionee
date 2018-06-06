@@ -10,6 +10,9 @@ import com.badlogic.gdx.audio.Music;
 public class GameMusic
 {
 
+    /**
+     * Enumeracja dostępnych teł muzycznych gry.
+     */
     public enum Song {
         main_theme, easter_egg
     }

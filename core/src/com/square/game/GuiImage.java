@@ -1,13 +1,13 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 18.10.2015.
+ * Klasa stanowi element interfejsu użytkownika wyświetlający wybraną teksturę.
  */
 public class GuiImage extends GuiElement {
 
     int texture;
 
-    public GuiImage(int _texture, int _x, int _y, int _width, int _height)
+    GuiImage(int _texture, int _x, int _y, int _width, int _height)
     {
         super(_x, _y, _width, _height);
         texture = _texture;

@@ -3,7 +3,7 @@ package com.square.game;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Mikolaj on 11.11.2015.
+ * Klasa odpowiedzialna za element interfejsu użytkownika - suwak.
  */
 public class Slidebar extends GuiElement {
 

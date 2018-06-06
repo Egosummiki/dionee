@@ -3,7 +3,7 @@ package com.square.game;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 04.11.2015.
+ * Klasa reprezentująca poziom tutorialowy gry.
  */
 public class LevelTutorial extends Level {
 

@@ -1,13 +1,13 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 29.10.2015.
+ * Klasa odpowiedzialna za blok unoszący jednostki do góry.
  */
 public class NodeUpwards extends Node {
 
-    public NodeUpwards(int type_id, int t, String node_name, int _color, boolean _removeable)
+    NodeUpwards(int type_id, int t, String node_name, int _color, boolean _removable)
     {
-        super(type_id, t, node_name, _color,  false, _removeable);
+        super(type_id, t, node_name, _color,  false, _removable);
     }
 
     @Override
@@ -31,7 +31,8 @@ public class NodeUpwards extends Node {
         int s = (int)(System.currentTimeMillis() % (4*200));
         int k = s / 200;
 
-        if(py%4 == k) ren.draw(Render.TEXTURE_UPWARDS_LIGHT, (int) x, (int) y);  else ren.draw(texture, (int) x, (int) y);
+        if(py%4 == k) ren.drawScale(Render.TEXTURE_UPWARDS_LIGHT, (int) x, (int) y, Game.blockDimension, Game.blockDimension);
+            else ren.drawScale(texture, (int) x, (int) y, Game.blockDimension, Game.blockDimension);
     }
 
     @Override
@@ -47,24 +48,6 @@ public class NodeUpwards extends Node {
 
         e.stop();
         if(e.getDirection() == Entity.Direction.RIGHT) e.applyForce(1.0f, 2.0f, 0); else e.applyForce(-1.0f, 2.0f, 0);
-
-
-        /*if(y < gameMap.getHeight()-1)
-        {
-            if(gameMap.getNode(x,y+1) == id)
-            {
-                e.stop();
-                e.applyForce(0, 2.0f, 0);
-            } else
-            {
-                e.continueDirection();
-                e.applyForce(0, 0.2f, 0);
-            }
-        } else
-        {
-            e.stop();
-            e.applyForce(0, 2.0f, 0);
-        }*/
 
     }
 }

@@ -3,7 +3,7 @@ package com.square.game;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 14.10.2015.
+ * Klasa obsługuje konkretny poziom gry.
  */
 public class Level {
 
@@ -14,17 +14,26 @@ public class Level {
     int texture;
     int startingBlock;
 
-    protected Vector<InvItem> items;
+    Vector<InvItem> items;
 
 
-    public Level(LevelMap gm, Render tr, Control c, int tex, int sb)
+    /**
+     * Konstruktor klasy level.
+     *
+     * @param gameMap           Mapa poziomu gry.
+     * @param render            Obiekt klasy render.
+     * @param control           Obiekt klasy control.
+     * @param texture           Tesktura poziomu.
+     * @param startingBlock     Wysokośc bloku startowego.
+     */
+    Level(LevelMap gameMap, Render render, Control control, int texture, int startingBlock)
     {
         items = new Vector<InvItem>();
-        gameMap = gm;
-        gameRender = tr;
-        texture = tex;
-        startingBlock = sb;
-        control = c;
+        this.gameMap = gameMap;
+        gameRender = render;
+        this.texture = texture;
+        this.startingBlock = startingBlock;
+        this.control = control;
     }
 
    /*
@@ -37,7 +46,7 @@ public class Level {
     }
 
     /*
-    * Funkcja load jest odpowiedzialna za ładowanie poziomu
+    * Funkcja Load jest odpowiedzialna za ładowanie poziomu
     * */
     public boolean load()
     {

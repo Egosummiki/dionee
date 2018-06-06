@@ -1,7 +1,8 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 14.10.2015.
+ * Klasa jest odpowiedzialna za interfejs użytkownika w trakcie gry.
+ * Właściwe wyświetlanie GUI znajduje się w klasie Control.
  */
 public class GuiGame extends Gui {
 
@@ -10,7 +11,7 @@ public class GuiGame extends Gui {
     private EntityManager entityMan;
     private int blockDimension;
 
-    public GuiGame(Control control, LevelMap gameMap, EntityManager entityMan, int blockDimension)
+    GuiGame(Control control, LevelMap gameMap, EntityManager entityMan, int blockDimension)
     {
         super();
 

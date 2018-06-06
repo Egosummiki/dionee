@@ -3,26 +3,31 @@ package com.square.game;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 11.10.2015.
+ * Klasa obsługująca graficzny interfejs użytkownika.
  */
 public class Gui {
 
-    public static Gui current_gui;
+    static Gui current_gui;
     public static Gui game;
-    public static Gui menu;
-    public static Gui levels;
-    public static Gui level_cleared;
-    public static Gui tutorial;
-    public static Gui settings;
+    static Gui menu;
+    static Gui levels;
+    static Gui level_cleared;
+    static Gui tutorial;
+    static Gui settings;
 
-    public static final int GUI_NONE = 0;
-    public static final int GUI_GAME = 1;
-    public static final int GUI_MENU = 2;
-    public static final int GUI_LEVELS = 3;
-    public static final int GUI_LEVEL_CLEARED = 4;
-    public static final int GUI_TUTORIAL = 5;
-    public static final int GUI_SETTINGS = 6;
+    private static final int GUI_NONE = 0;
+    static final int GUI_GAME = 1;
+    static final int GUI_MENU = 2;
+    static final int GUI_LEVELS = 3;
+    static final int GUI_LEVEL_CLEARED = 4;
+    static final int GUI_TUTORIAL = 5;
+    static final int GUI_SETTINGS = 6;
 
+    /**
+     * Ustaw interfejs użytkownika.
+     *
+     * @param id    Id interfejsu.
+     */
     public static void setGui(int id)
     {
         if(current_gui != null) current_gui.onUnset();
@@ -41,61 +46,74 @@ public class Gui {
         if(current_gui != null) current_gui.onSet();
     }
 
+    /**
+     * Kiedy interfejs zostanie ustawiony.
+     */
     public void onSet()
     {
     }
 
+    /**
+     * Kiedy interfejs przestanie być aktywny.
+     */
     public void onUnset()
     {
 
     }
 
-    protected void resetAll()
+    /**
+     * Ustaw domyślne ustawienie interfejstu
+     */
+    void resetAll()
     {
-        for(int i = 0; i < elements.size(); i++)
-        {
-            elements.get(i).resetPosition();
+        for (GuiElement element : elements) {
+            element.resetPosition();
         }
     }
 
-    protected void setAnimationForEach(GuiElement.AnimationType type, int time)
+    /**
+     * Dla każdego elementu interfejsu ustaw animację.
+     *
+     * @param type  Rodzaj animacji.
+     * @param time  Długość trwania.
+     */
+    void setAnimationForEach(GuiElement.AnimationType type, int time)
     {
-        int most = 0;
         int cur_val = 0;
 
         if(type == GuiElement.AnimationType.SLIDE_FROM_LEFT || type == GuiElement.AnimationType.SLIDE_TO_LEFT)
         {
-            for(int i = 0; i < elements.size(); i++)
-            {
-                if(elements.get(i).getX() + elements.get(i).getWidth() > cur_val)
-                {
-                    most = i;
-                    cur_val = elements.get(i).getX() + elements.get(i).getWidth();
+            for (GuiElement element : elements) {
+                if (element.getX() + element.getWidth() > cur_val) {
+                    cur_val = element.getX() + element.getWidth();
                 }
             }
 
-            for(int i = 0; i < elements.size(); i++)
-            {
-                elements.get(i).setAnimation(type, elements.get(i).getX() - cur_val, time);
+            for (GuiElement element : elements) {
+                element.setAnimation(type, element.getX() - cur_val, time);
             }
         } else if(type == GuiElement.AnimationType.SLIDE_FROM_BOTTOM || type == GuiElement.AnimationType.SLIDE_TO_BOTTOM)
         {
-            for(int i = 0; i < elements.size(); i++)
-            {
-                if(elements.get(i).getY() + elements.get(i).getHeight() > cur_val)
-                {
-                    cur_val = elements.get(i).getY() + elements.get(i).getHeight();
+            for (GuiElement element : elements) {
+                if (element.getY() + element.getHeight() > cur_val) {
+                    cur_val = element.getY() + element.getHeight();
                 }
             }
 
-            for(int i = 0; i < elements.size(); i++)
-            {
-                elements.get(i).setAnimation(type, elements.get(i).getY() - cur_val, time);
+            for (GuiElement element : elements) {
+                element.setAnimation(type, element.getY() - cur_val, time);
             }
         }
     }
 
-    protected void setAnimationExcluding(GuiElement.AnimationType type, int time, int[] excluding)
+    /**
+     * Ustaw animację dla każdego elementu interfejsu.
+     *
+     * @param type          Rodzaj animacji.
+     * @param time          Czas trwania animacji.
+     * @param excluding     Id elementów, które nie mają być wliczane do animacji.
+     */
+    void setAnimationExcluding(GuiElement.AnimationType type, int time, int[] excluding)
     {
         int cur_val = 0;
 
@@ -126,10 +144,8 @@ public class Gui {
             {
                 boolean cont = true;
 
-                for(int e_i = 0; e_i < excluding.length; e_i++)
-                {
-                    if(i == excluding[e_i])
-                    {
+                for (int anExcluding : excluding) {
+                    if (i == anExcluding) {
                         cont = false;
                     }
                 }
@@ -165,10 +181,8 @@ public class Gui {
             {
                 boolean cont = true;
 
-                for(int e_i = 0; e_i < excluding.length; e_i++)
-                {
-                    if(i == excluding[e_i])
-                    {
+                for (int anExcluding : excluding) {
+                    if (i == anExcluding) {
                         cont = false;
                     }
                 }
@@ -181,7 +195,14 @@ public class Gui {
         }
     }
 
-    protected void setAnimationForEach(GuiElement.AnimationType type, int time, GuiElement.AnimationCallback callback)
+    /**
+     * Ustaw animację dla każdego elementu interfejsu.
+     *
+     * @param type          Rodzaj animacji.
+     * @param time          Czas trwania animacji.
+     * @param callback      Reakcja na zdarzenie zakończenia animacji.
+     */
+    void setAnimationForEach(GuiElement.AnimationType type, int time, GuiElement.AnimationCallback callback)
     {
         int cur_val = 0;
 
@@ -222,7 +243,15 @@ public class Gui {
 
     }
 
-    protected void setAnimationExcluding(GuiElement.AnimationType type, int time, int[] excluding, GuiElement.AnimationCallback callback)
+    /**
+     * Ustaw animację dla każdego elementu interfejsu.
+     *
+     * @param type          Rodzaj animacji.
+     * @param time          Czas trwania animacji.
+     * @param excluding     Id elementów interfejsu, których animacja ma niedotyczyć.
+     * @param callback      Reakcja na zdarzenie zakończenia animacji.
+     */
+    void setAnimationExcluding(GuiElement.AnimationType type, int time, int[] excluding, GuiElement.AnimationCallback callback)
     {
         int cur_val = 0;
 
@@ -253,10 +282,8 @@ public class Gui {
             {
                 boolean cont = true;
 
-                for(int e_i = 0; e_i < excluding.length; e_i++)
-                {
-                    if(i == excluding[e_i])
-                    {
+                for (int anExcluding : excluding) {
+                    if (i == anExcluding) {
                         cont = false;
                     }
                 }
@@ -301,10 +328,8 @@ public class Gui {
             {
                 boolean cont = true;
 
-                for(int e_i = 0; e_i < excluding.length; e_i++)
-                {
-                    if(i == excluding[e_i])
-                    {
+                for (int anExcluding : excluding) {
+                    if (i == anExcluding) {
                         cont = false;
                     }
                 }
@@ -324,46 +349,63 @@ public class Gui {
         }
     }
 
-    protected Vector<GuiElement> elements;
+    Vector<GuiElement> elements;
 
+    /**
+     * Konstruktor klasy GUI.
+     */
     public Gui(){
         elements = new Vector<GuiElement>();
     }
 
+    /**
+     * Podaj ilość elementów interfejsu.
+     *
+     * @return Ilość elementów interfejsu.
+     */
     public int getSize()
     {
         return elements.size();
     }
 
-    public int addElement(GuiElement e)
+    /**
+     * Dodaj element interfejsu.
+     *
+     * @param e     Element interfejsu.
+     */
+    void addElement(GuiElement e)
     {
         elements.add(e);
-
-        return elements.size()-1;
     }
 
-    public void removeElement(int i)
-    {
-        elements.remove(i);
-    }
-
-    public void clear()
+    /**
+     * Usuń wszystkie elementu interfejsu.
+     */
+    void clear()
     {
         elements.clear();
     }
 
+    /**
+     * Metoda wykonywana co cylk rysowania gry.
+     *
+     * @param ren   Obiekt klasy render.
+     */
     public void draw(Render ren)
     {
-        for(int i = 0; i < elements.size(); i++)
-        {
-            elements.get(i).draw(ren);
+        for (GuiElement element : elements) {
+            element.draw(ren);
         }
     }
 
+    /**
+     * Metoda wykonywana co cylk logiki gry.
+     *
+     * @param time  Do usunięcia.
+     */
     public void update(float time)
     {
-        for(int i = 0; i < elements.size(); i++)
-        {
+        for (int i = 0; i < elements.size(); i++) {
             elements.get(i).update(time);
         }
     }

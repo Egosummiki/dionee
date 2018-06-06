@@ -8,9 +8,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 07.10.2015.
- *
- * Klasa LevelMap - Reprezentuje mapę danego poziomu.
+ * Klasa reprezentująca mapę danego poziomu gry.
  */
 public class LevelMap {
 

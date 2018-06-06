@@ -1,7 +1,7 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 22.10.2015.
+ * Klasa odpowiedzalna za blok zmieniający kierunek podążania jednostek, kierunek jest zmieniany za każdym razem.
  */
 public class NodeAlternate extends Node {
 

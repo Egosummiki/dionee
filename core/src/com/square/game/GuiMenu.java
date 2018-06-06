@@ -3,7 +3,7 @@ package com.square.game;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Mikolaj on 18.10.2015.
+ * Klasa odpowiadające za menu główne gry.
  */
 public class GuiMenu extends Gui {
 

@@ -3,7 +3,7 @@ package com.square.game;
 import java.util.Random;
 
 /**
- * Created by Mikolaj on 10.10.2015.
+ * Klasa stanowi blok, który loso przyjmuje różne kolory. (Np. trawa, ziemia, itd.)
  */
 public class NodeMultiColor extends Node {
 

@@ -1,9 +1,8 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 23.10.2015.
+ * Element interfejsu użytkownika stanowiący tekst.
  */
-
 public class GuiText extends GuiElement {
 
     String text;

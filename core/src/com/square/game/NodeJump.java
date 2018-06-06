@@ -1,11 +1,11 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 14.10.2015.
+ * Klasa odpowiedzialna za blok pozwalający na skok jednostek.
  */
 public class NodeJump extends Node {
 
-    public NodeJump(int type_id, int t, String node_name, int _color)
+    NodeJump(int type_id, int t, String node_name, int _color)
     {
         super(type_id, t, node_name, _color, true, true);
     }

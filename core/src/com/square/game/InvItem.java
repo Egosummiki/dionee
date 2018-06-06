@@ -1,7 +1,7 @@
 package com.square.game;
 
 /**
- * Created by Mikolaj on 10.10.2015.
+ * Klasa stanowiąca przedmiot znajdujący się w ekwipunku gracza.
  */
 public class InvItem {
 

@@ -3,7 +3,7 @@ package com.square.game;
 import java.util.Vector;
 
 /**
- * Created by Mikolaj on 18.10.2015.
+ * Klasa jest odpowiedzialna za sprawowanie kontroli nad poziomami gry.
  */
 public class LevelManager {
 

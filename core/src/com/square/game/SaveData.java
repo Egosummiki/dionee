@@ -4,14 +4,14 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Mikolaj on 14.10.2015.
+ * Klasa zawiera statyczne metody do zapisu i odczytu danych.
  */
 public class SaveData {
 
     private static Preferences prefs;
     private static final String prefs_name = "square_prefs";
 
-    public static void loadPreferences()
+    private static void loadPreferences()
     {
         if(prefs == null)
         {
@@ -19,7 +19,7 @@ public class SaveData {
         }
     }
 
-    public static void savePreferences()
+    private static void savePreferences()
     {
         if(prefs != null)
         {
@@ -28,14 +28,14 @@ public class SaveData {
         }
     }
 
-    public static void setMusicVol(float s)
+    static void setMusicVol(float s)
     {
         loadPreferences();
         prefs.putFloat("music_vol", s);
         savePreferences();
     }
 
-    public static float getMusicVol()
+    static float getMusicVol()
     {
         loadPreferences();
         return prefs.getFloat("music_vol", .5f);
@@ -48,27 +48,27 @@ public class SaveData {
         savePreferences();
     }
 
-    public static void unlockLevelUpTo(int l)
+    static void unlockLevelUpTo(int l)
     {
         loadPreferences();
         prefs.putInteger("max_level", l);
         savePreferences();
     }
 
-    public static void setTutorialPassed()
+    static void setTutorialPassed()
     {
         loadPreferences();
         prefs.putBoolean("tutorial_passed", true);
         savePreferences();
     }
 
-    public static Boolean tutorialPassed()
+    static Boolean tutorialPassed()
     {
         loadPreferences();
         return prefs.getBoolean("tutorial_passed", false);
     }
 
-    public static int getMaxLevel()
+    static int getMaxLevel()
     {
         loadPreferences();
         return prefs.getInteger("max_level");
